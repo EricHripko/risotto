@@ -69,10 +69,41 @@ public class SQLiteDB extends Database {
 		System.out.println("Set up completed/updated");
 	}
 
+	/*
+	 * insertBooking() method
+	 * 
+	 * overrides the Database class method and adds a new row to the Booking table.
+	 */
 	@Override
 	void insertBooking(String customerName, String phoneNumber, String email, int partySize, String date, String time) {
-		// TODO Auto-generated method stub
+
+		//Call setUp() method for database update
+		setUp();
 		
+		try {
+			//Connect to database
+			Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+
+			//Insert new row in the database
+			stmt = conn.createStatement();
+			String query = "INSERT INTO Booking (customerName, phoneNumber, email, partySize, date, time) " +
+	                       "VALUES ('"+ customerName + "', '" + phoneNumber + "', '" + email + "', '" + partySize + "', '" + date +"', '" + time + "');";        
+			
+			//Execute query
+			stmt.executeUpdate(query);
+
+			//Free resources
+			stmt.close();
+			conn.close();
+		} 
+		catch(Exception e) {
+			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+			System.exit(0);
+		}
+
+		//Console message
+		System.out.println("Booking completed");
 	}
 }
 
