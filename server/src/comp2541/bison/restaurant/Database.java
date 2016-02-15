@@ -1,5 +1,27 @@
 package comp2541.bison.restaurant;
 
-public class Database {
+/**
+ * Database abstract class that 
+ * defines the general usage of
+ * databAse using JDBC framework
+ * independently of what database
+ * engine is used.
+ * 
+ * 
+ * @author Ilyass Taouil
+ *
+ */
 
+public abstract class Database {
+	
+	//public abstract constructor
+	public Database(String dbName){}
+	
+	//insertBooking() abstract method
+	abstract void insertBooking(String customerName,
+								String phoneNumber,
+								String email,
+								int partySize,
+								String date,
+								String time);
 }
