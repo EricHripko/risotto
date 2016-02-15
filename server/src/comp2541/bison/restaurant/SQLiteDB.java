@@ -27,8 +27,7 @@ public class SQLiteDB extends Database {
 		this.dbName = dbName;
 	}
 
-	/*
-	 * setUp() method
+	/**
 	 * 
 	 * connect to existing database, otherwise it creates one with the specified name.
 	 */
@@ -69,8 +68,14 @@ public class SQLiteDB extends Database {
 		System.out.println("Set up completed/updated");
 	}
 
-	/*
-	 * insertBooking() method
+	/**
+	 *
+	 * @param customerName
+	 * @param phoneNumber
+	 * @param email
+	 * @param partySize
+	 * @param date
+	 * @param time
 	 * 
 	 * overrides the Database class method and adds a new row to the Booking table.
 	 */
