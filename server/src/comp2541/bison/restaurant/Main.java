@@ -9,7 +9,7 @@ import org.eclipse.jetty.util.thread.ExecutorThreadPool;
  */
 public class Main {
 	
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		// TODO Test the code
 		try {
 			RestaurantServer restaurantServer = new RestaurantServer(8080, new ExecutorThreadPool());
