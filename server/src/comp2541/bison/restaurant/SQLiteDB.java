@@ -8,7 +8,7 @@ public class SQLiteDB extends Database {
 	 * String dbName
 	 */
 	private String dbName = null;
-
+	
 
 	//public constructor
 	public SQLiteDB(String dbName) {
@@ -32,7 +32,7 @@ public class SQLiteDB extends Database {
 			//Create new table in the database
 			Statement stmt = conn.createStatement();
 			String query = "CREATE TABLE IF NOT EXISTS Booking " +
-						   "(ID			  TEXT     NOT NULL,"    +
+						   "(ID			  INT      NOT NULL,"    +
 						   " customerName TEXT     NOT NULL,"    +
 					       " phoneNumber  TEXT     NOT NULL, "   + 
 					       " email        TEXT     NOT NULL,"    +
@@ -68,7 +68,7 @@ public class SQLiteDB extends Database {
 	 * overrides the Database class method and adds a new row to the Booking table.
 	 */
 	@Override
-	void insertBooking(String ID, String customerName, String phoneNumber, String email, int partySize, long date) {
+	void insertBooking(int ID, String customerName, String phoneNumber, String email, int partySize, long dateTime) {
 		
 		try {
 			//Connect to database
@@ -78,7 +78,7 @@ public class SQLiteDB extends Database {
 			//Insert new row in the database
 			Statement stmt = conn.createStatement();
 			String query = "INSERT INTO Booking (ID, customerName, phoneNumber, email, partySize, dateTime) " +
-	                       "VALUES ('"+ ID + ", '"+ customerName + "', '" + phoneNumber + "', '" + email + "', '" + partySize + "', '" + date + "');";        
+	                       "VALUES ('"+ ID + ", '"+ customerName + "', '" + phoneNumber + "', '" + email + "', '" + partySize + "', '" + dateTime + "');";        
 			
 			//Execute query
 			stmt.executeUpdate(query);
