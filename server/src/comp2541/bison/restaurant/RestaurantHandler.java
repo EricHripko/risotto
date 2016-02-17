@@ -71,8 +71,7 @@ public class RestaurantHandler extends AbstractHandler {
 				String email = jsonBody.getString("email");
 				int partySize = jsonBody.getInt("partySize");
 				long unixDate = jsonBody.getLong("date");
-				Date date = new Date(unixDate * 1000);
-				restaurantDB.insertBooking(costumerName, phoneNumber, email, partySize, date);
+				restaurantDB.insertBooking(costumerName, phoneNumber, email, partySize, unixDate);
 			} else {
 				// TODO Handle other POST requests.
 			}
