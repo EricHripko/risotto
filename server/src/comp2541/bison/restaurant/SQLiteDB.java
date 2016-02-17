@@ -9,21 +9,12 @@ public class SQLiteDB extends Database {
 	 */
 	private String dbName = null;
 
-	/*
-	 * Connection object
-	 */
-	private Connection conn = null;
-
-	/*
-	 * Statement object
-	 */
-	private Statement stmt = null;
 
 	//public constructor
 	public SQLiteDB(String dbName) {
 		super(dbName);
 
-		//fields initialization
+		//fields initialisation
 		this.dbName = dbName;
 	}
 
@@ -36,21 +27,18 @@ public class SQLiteDB extends Database {
 		try {
 			//Connect to database
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 
 			//Create new table in the database
-			stmt = conn.createStatement();
+			Statement stmt = conn.createStatement();
 			String query = "CREATE TABLE IF NOT EXISTS Booking " +
-						   "(customerName TEXT     NOT NULL,"    +
+						   "(ID			  TEXT     NOT NULL,"    +
+						   " customerName TEXT     NOT NULL,"    +
 					       " phoneNumber  TEXT     NOT NULL, "   + 
 					       " email        TEXT     NOT NULL,"    +
 					       " partySize    INT      NOT NULL,"    +  
-					       " date         TEXT     NOT NULL,"    +
-					       " time         TEXT     NOT NULL,"    +
-					       " primary key(customerName,"          +
-					       				"phoneNumber, "	         +
-					       				"date,"                  +
-					       				"time)"					 +
+					       " dateTime     NUMERIC  NOT NULL,"    +
+					       " primary key(ID)"         			 +
 					       	");";
 			//Execute query
 			stmt.executeUpdate(query);
@@ -65,7 +53,7 @@ public class SQLiteDB extends Database {
 		}
 		
 		//Console message
-		System.out.println("Set up completed/updated");
+		System.out.println("Set up completed");
 	}
 
 	/**
@@ -80,20 +68,17 @@ public class SQLiteDB extends Database {
 	 * overrides the Database class method and adds a new row to the Booking table.
 	 */
 	@Override
-	void insertBooking(String customerName, String phoneNumber, String email, int partySize, String date, String time) {
-
-		//Call setUp() method for database update
-		setUp();
+	void insertBooking(String ID, String customerName, String phoneNumber, String email, int partySize, long date) {
 		
 		try {
 			//Connect to database
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 
 			//Insert new row in the database
-			stmt = conn.createStatement();
-			String query = "INSERT INTO Booking (customerName, phoneNumber, email, partySize, date, time) " +
-	                       "VALUES ('"+ customerName + "', '" + phoneNumber + "', '" + email + "', '" + partySize + "', '" + date +"', '" + time + "');";        
+			Statement stmt = conn.createStatement();
+			String query = "INSERT INTO Booking (ID, customerName, phoneNumber, email, partySize, dateTime) " +
+	                       "VALUES ('"+ ID + ", '"+ customerName + "', '" + phoneNumber + "', '" + email + "', '" + partySize + "', '" + date + "');";        
 			
 			//Execute query
 			stmt.executeUpdate(query);
@@ -111,4 +96,3 @@ public class SQLiteDB extends Database {
 		System.out.println("Booking completed");
 	}
 }
-

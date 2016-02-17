@@ -1,5 +1,6 @@
 package comp2541.bison.restaurant;
 
+
 /**
  * Database abstract class that 
  * defines the general usage of
@@ -18,10 +19,11 @@ public abstract class Database {
 	public Database(String dbName){}
 	
 	//insertBooking() abstract method
-	abstract void insertBooking(String customerName,
+	abstract void insertBooking(String ID,
+								String customerName,
 								String phoneNumber,
 								String email,
 								int partySize,
-								String date,
-								String time);
+								long date
+								);
 }
