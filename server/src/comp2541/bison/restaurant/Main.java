@@ -13,7 +13,7 @@ public class Main {
 		// TODO Test the code
 		try {
 			RestaurantServer restaurantServer = new RestaurantServer(8080, new ExecutorThreadPool());
-			restaurantServer.setHandler(new RestaurantHandler("nameofdatabase.db"));
+			restaurantServer.setHandler(new RestaurantHandler("restaurantdatabase.db"));
 			restaurantServer.start();
 			restaurantServer.join();
 		} catch (Exception e) {

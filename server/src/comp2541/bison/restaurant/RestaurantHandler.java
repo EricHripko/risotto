@@ -2,6 +2,7 @@ package comp2541.bison.restaurant;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +19,14 @@ import org.json.JSONObject;
  */
 public class RestaurantHandler extends AbstractHandler {
 
+	private Database restaurantDB;
+	
 	/**
 	 * 
 	 * @param dbString
 	 */
 	public RestaurantHandler(String dbString) {
-		// TODO Connect to database
+		restaurantDB = new SQLiteDB(dbString);
 	}
 	
 	/**
@@ -39,8 +42,6 @@ public class RestaurantHandler extends AbstractHandler {
 		response.addHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
 		response.addHeader("Access-Control-Allow-Headers", "Accept, Content-type");
 		response.addHeader("Access-Control-Max-Age", "1728000");
-		
-		// TODO Handle requests and db (Issue #6)
 		
 		// TODO Add proper logging to the server (Issue #10)
 		//System.out.printf("%s %s", request.getMethod(), request.getRequestURI());
@@ -64,18 +65,19 @@ public class RestaurantHandler extends AbstractHandler {
 				// StringBuilder to JSONObject:
 				JSONObject jsonBody = new JSONObject(sb.toString());
 				
-				// TODO Take elements from JSON object and put them to db.
+				// Take elements from JSON object and put them into the database.
+				String costumerName = jsonBody.getString("costumerName");
+				String phoneNumber = jsonBody.getString("phoneNumber");
+				String email = jsonBody.getString("email");
+				int partySize = jsonBody.getInt("partySize");
+				long unixDate = jsonBody.getLong("date");
+				Date date = new Date(unixDate * 1000);
+				restaurantDB.insertBooking(costumerName, phoneNumber, email, partySize, date);
 			} else {
-				// TODO Handle other requests.
+				// TODO Handle other POST requests.
 			}
 		} else {
 			// Dump the Request
-			
-			// TODO Why do you need to read a line?
-			//try (BufferedReader in = request.getReader()) {
-			//	System.out.println(in.readLine());
-			//}
-			
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("");
 		}
