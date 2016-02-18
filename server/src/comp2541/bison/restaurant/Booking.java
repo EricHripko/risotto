@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class Booking {
 	
 	private int referenceNumber; /** Reference number of the booking. */
-	private String costumerName; /** Name of the costumer. */
+	private String customerName; /** Name of the customer. */
 	private String phoneNumber;	 /** Phone number of the costumer. */
 	private String email;		 /** Email of the costumer. */
 	private int partySize;		 /** Number of people of the party. */
@@ -22,10 +22,9 @@ public class Booking {
 	 */
 	public Booking(JSONObject jsonBooking) {
 		// Take elements from JSONObject and create a Booking object.
-		referenceNumber = jsonBooking.getInt("referenceNumber");
-		costumerName = jsonBooking.getString("costumerName");
+		customerName = jsonBooking.getString("customerName");
 		phoneNumber = jsonBooking.getString("phoneNumber");
-		email = jsonBooking.getString("email");
+		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
 		unixDate = jsonBooking.getLong("date");
 		
@@ -45,7 +44,7 @@ public class Booking {
 	 * @return
 	 */
 	public String getCustomerName() {
-		return costumerName;
+		return customerName;
 	}
 	
 	/**
@@ -90,10 +89,10 @@ public class Booking {
 	
 	/**
 	 * 
-	 * @param pCostumerName
+	 * @param pCustomerName
 	 */
-	public void setCostumerName(String pCostumerName) {
-		costumerName = pCostumerName;
+	public void setCustomerName(String pCustomerName) {
+		customerName = pCustomerName;
 	}
 	
 	/**
@@ -136,9 +135,9 @@ public class Booking {
 		JSONObject jsonBooking = new JSONObject();
 		
 		jsonBooking.put("referenceNumber", referenceNumber);
-		jsonBooking.put("costumerName", costumerName);
+		jsonBooking.put("costomerName", customerName);
 		jsonBooking.put("phoneNumber", phoneNumber);
-		jsonBooking.put("email", email);
+		jsonBooking.put("emailAddress", email);
 		jsonBooking.put("partySize", partySize);
 		jsonBooking.put("date", unixDate);
 		

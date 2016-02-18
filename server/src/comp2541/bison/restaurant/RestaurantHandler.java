@@ -2,7 +2,6 @@ package comp2541.bison.restaurant;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,12 +46,12 @@ public class RestaurantHandler extends AbstractHandler {
 		//System.out.printf("%s %s", request.getMethod(), request.getRequestURI());
 		//System.out.println("Body:");
 		
-		if (request.getMethod().equalsIgnoreCase("GET")) {
+		if (request.getMethod().equalsIgnoreCase("options")) {
 			System.out.println("Requested URI: " + request.getRequestURI());
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("");
 		} else if (request.getMethod().equalsIgnoreCase("POST")) {
-			if (request.getRequestURI() == "/bookings") {
+			if (request.getRequestURI().equals("/bookings")) {
 				BufferedReader requestBodyBR = request.getReader(); // Reader for the body of the HTTP message
 				StringBuilder sb = new StringBuilder();				// Auxiliary object to tranform body to JSON
 				String line;										// String used to read from BufferedReader
