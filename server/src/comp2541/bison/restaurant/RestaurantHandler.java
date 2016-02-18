@@ -68,12 +68,14 @@ public class RestaurantHandler extends AbstractHandler {
 				// Booking requested, built from JSONObject:
 				Booking booking = new Booking(jsonBody);
 				
-				// Put booking into the database and get the reference number:
+				// Put booking into the database and get the reference number,
+				// then upload the object Booking with the received data:
 				int referenceNumber = restaurantDB.insertBooking(booking);
+				booking.setReferenceNumber(referenceNumber);
 				
 				// Send OK and referenceNumber to the client.
 				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().println(referenceNumber);
+				response.getWriter().println(booking);
 				
 				// TODO: Send other messages if the request fails.
 			} else {
