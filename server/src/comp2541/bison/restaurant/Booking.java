@@ -3,8 +3,10 @@ package comp2541.bison.restaurant;
 import org.json.JSONObject;
 
 /**
+ * The Booking class manages the Booking objects
+ * used in the requests in the HTTP communication.
  * 
- * @author michelecipriano
+ * @author Michele Cipriano
  *
  */
 public class Booking {
@@ -17,8 +19,9 @@ public class Booking {
 	private long unixDate;		 /** Date of the booking. */
 	
 	/**
+	 * Constructor from JSON object.
 	 * 
-	 * @param jsonBooking
+	 * @param jsonBooking A JSON object containing mandatory information for the booking.
 	 */
 	public Booking(JSONObject jsonBooking) {
 		// Take elements from JSONObject and create a Booking object.
@@ -31,105 +34,58 @@ public class Booking {
 		// TODO: All the inserted data MUST be correct.
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public int getReferenceNumber() {
 		return referenceNumber;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getCustomerName() {
 		return customerName;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getEmail() {
 		return email;
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
+
 	public int getPartySize() {
 		return partySize;
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
+
 	public long getUnixDate() {
 		return unixDate;
 	}
 
-	/**
-	 * 
-	 * @param pReferenceNumber
-	 */
 	public void setReferenceNumber(int pReferenceNumber) {
 		referenceNumber = pReferenceNumber;
 	}
-	
-	/**
-	 * 
-	 * @param pCustomerName
-	 */
+
 	public void setCustomerName(String pCustomerName) {
 		customerName = pCustomerName;
 	}
 	
-	/**
-	 * 
-	 * @param pPhoneNumber
-	 */
 	public void setPhoneNumber(String pPhoneNumber) {
 		phoneNumber = pPhoneNumber;
 	}
 	
-	/**
-	 * 
-	 * @param pEmail
-	 */
 	public void setEmail(String pEmail) {
 		email = pEmail;
 	}
 	
-	/**
-	 * 
-	 * @param pPartySize
-	 */
 	public void setPartySize(int pPartySize) {
 		partySize = pPartySize;
 	}
-	
-	/**
-	 * 
-	 * @param pUnixDate
-	 */
+
 	public void setDate(long pUnixDate) {
 		unixDate = pUnixDate;
 	}
 	
 	/**
+	 * Converts the Booking object to a JSONObject, useful for sending through HTTP.
 	 * 
-	 * @return
+	 * @return A JSON object corresponding to the Booking object.
 	 */
 	public JSONObject getJSONObject() {
 		JSONObject jsonBooking = new JSONObject();
