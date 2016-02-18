@@ -65,13 +65,13 @@ public class RestaurantHandler extends AbstractHandler {
 				// StringBuilder to JSONObject:
 				JSONObject jsonBody = new JSONObject(sb.toString());
 				
-				// Take elements from JSON object and put them into the database.
-				String costumerName = jsonBody.getString("costumerName");
-				String phoneNumber = jsonBody.getString("phoneNumber");
-				String email = jsonBody.getString("email");
-				int partySize = jsonBody.getInt("partySize");
-				long unixDate = jsonBody.getLong("date");
-				restaurantDB.insertBooking(costumerName, phoneNumber, email, partySize, unixDate);
+				// Booking requested, built from JSONObject:
+				Booking booking = new Booking(jsonBody);
+				
+				// Put booking into the database and get the reference number:
+				int referenceNumber = restaurantDB.insertBooking(booking);
+				
+				// TODO: Send OK and referenceNumber to the client.
 			} else {
 				// TODO Handle other POST requests.
 			}
