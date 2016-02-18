@@ -7,12 +7,18 @@ import org.eclipse.jetty.server.handler.RequestLogHandler;
 import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
 /**
+ * Main class for the server. Here the server is launched and connected
+ * with the HTTP data handler and the log handler.
  * 
- * @author michele cipriano
+ * @author Michele Cipriano
  *
  */
 public class Main {
 	
+	/**
+	 * The program starts from here.
+	 * @param args Standard arguments.
+	 */
 	public static void main(String[] args) {
 		// TODO Test the code
 		try {

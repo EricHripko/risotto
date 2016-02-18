@@ -3,142 +3,97 @@ package comp2541.bison.restaurant;
 import org.json.JSONObject;
 
 /**
+ * The Booking class manages the Booking objects
+ * used in the requests in the HTTP communication.
  * 
- * @author michelecipriano
+ * @author Michele Cipriano
  *
  */
 public class Booking {
 	
 	private int referenceNumber; /** Reference number of the booking. */
-	private String costumerName; /** Name of the costumer. */
+	private String customerName; /** Name of the customer. */
 	private String phoneNumber;	 /** Phone number of the costumer. */
 	private String email;		 /** Email of the costumer. */
 	private int partySize;		 /** Number of people of the party. */
 	private long unixDate;		 /** Date of the booking. */
 	
 	/**
+	 * Constructor from JSON object.
 	 * 
-	 * @param jsonBooking
+	 * @param jsonBooking A JSON object containing mandatory information for the booking.
 	 */
 	public Booking(JSONObject jsonBooking) {
 		// Take elements from JSONObject and create a Booking object.
-		referenceNumber = jsonBooking.getInt("referenceNumber");
-		costumerName = jsonBooking.getString("costumerName");
+		customerName = jsonBooking.getString("customerName");
 		phoneNumber = jsonBooking.getString("phoneNumber");
-		email = jsonBooking.getString("email");
+		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
 		unixDate = jsonBooking.getLong("date");
 		
 		// TODO: All the inserted data MUST be correct.
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public int getReferenceNumber() {
 		return referenceNumber;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getCustomerName() {
-		return costumerName;
+		return customerName;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getEmail() {
 		return email;
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
+
 	public int getPartySize() {
 		return partySize;
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
+
 	public long getUnixDate() {
 		return unixDate;
 	}
 
-	/**
-	 * 
-	 * @param pReferenceNumber
-	 */
 	public void setReferenceNumber(int pReferenceNumber) {
 		referenceNumber = pReferenceNumber;
 	}
-	
-	/**
-	 * 
-	 * @param pCostumerName
-	 */
-	public void setCostumerName(String pCostumerName) {
-		costumerName = pCostumerName;
+
+	public void setCustomerName(String pCustomerName) {
+		customerName = pCustomerName;
 	}
 	
-	/**
-	 * 
-	 * @param pPhoneNumber
-	 */
 	public void setPhoneNumber(String pPhoneNumber) {
 		phoneNumber = pPhoneNumber;
 	}
 	
-	/**
-	 * 
-	 * @param pEmail
-	 */
 	public void setEmail(String pEmail) {
 		email = pEmail;
 	}
 	
-	/**
-	 * 
-	 * @param pPartySize
-	 */
 	public void setPartySize(int pPartySize) {
 		partySize = pPartySize;
 	}
-	
-	/**
-	 * 
-	 * @param pUnixDate
-	 */
+
 	public void setDate(long pUnixDate) {
 		unixDate = pUnixDate;
 	}
 	
 	/**
+	 * Converts the Booking object to a JSONObject, useful for sending through HTTP.
 	 * 
-	 * @return
+	 * @return A JSON object corresponding to the Booking object.
 	 */
 	public JSONObject getJSONObject() {
 		JSONObject jsonBooking = new JSONObject();
 		
 		jsonBooking.put("referenceNumber", referenceNumber);
-		jsonBooking.put("costumerName", costumerName);
+		jsonBooking.put("costomerName", customerName);
 		jsonBooking.put("phoneNumber", phoneNumber);
-		jsonBooking.put("email", email);
+		jsonBooking.put("emailAddress", email);
 		jsonBooking.put("partySize", partySize);
 		jsonBooking.put("date", unixDate);
 		
