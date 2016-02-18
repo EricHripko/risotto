@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="servlet-api-3.1.jar"/>
 	<classpathentry kind="lib" path="jetty-io-9.3.7.v20160115.jar"/>
 	<classpathentry kind="lib" path="json-20160212.jar"/>
+	<classpathentry kind="lib" path="/Users/dailand10/Documents/2015-2016/SoftwareEng/SoftwareProject/bison/server/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

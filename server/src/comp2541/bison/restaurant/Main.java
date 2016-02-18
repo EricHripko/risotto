@@ -8,7 +8,7 @@ import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
 /**
  * 
- * @author michelecipriano
+ * @author michele cipriano
  *
  */
 public class Main {
@@ -16,7 +16,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Test the code
 		try {
-			RestaurantServer restaurantServer = new RestaurantServer(8080, new ExecutorThreadPool());
+			RestaurantServer restaurantServer = new RestaurantServer(8181, new ExecutorThreadPool());
 			restaurantServer.setHandler(new RestaurantHandler("restaurantdatabase.db"));
 			
 			HandlerCollection handlers = new HandlerCollection();

@@ -8,11 +8,7 @@ public class SQLiteDB extends Database {
 	 * String dbName
 	 */
 	private String dbName = null;
-	
-	/*
-	 * int ID 
-	 */
-	private static int ID = 1;
+
 
 	//public constructor
 	public SQLiteDB(String dbName) {
