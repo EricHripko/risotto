@@ -71,7 +71,11 @@ public class RestaurantHandler extends AbstractHandler {
 				// Put booking into the database and get the reference number:
 				int referenceNumber = restaurantDB.insertBooking(booking);
 				
-				// TODO: Send OK and referenceNumber to the client.
+				// Send OK and referenceNumber to the client.
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.getWriter().println(referenceNumber);
+				
+				// TODO: Send other messages if the request fails.
 			} else {
 				// TODO Handle other POST requests.
 			}
