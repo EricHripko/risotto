@@ -19,11 +19,5 @@ public abstract class Database {
 	public Database(String dbName){}
 	
 	//insertBooking() abstract method
-	abstract void insertBooking(int ID,
-								String customerName,
-								String phoneNumber,
-								String email,
-								int partySize,
-								long dateTime
-								);
+	abstract int insertBooking(Booking booking);
 }

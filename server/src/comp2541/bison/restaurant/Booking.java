@@ -44,7 +44,7 @@ public class Booking {
 	 * 
 	 * @return
 	 */
-	public String getCostumerName() {
+	public String getCustomerName() {
 		return costumerName;
 	}
 	

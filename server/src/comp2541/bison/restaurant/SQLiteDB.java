@@ -9,6 +9,10 @@ public class SQLiteDB extends Database {
 	 */
 	private String dbName = null;
 	
+	/*
+	 * int ID 
+	 */
+	private static int ID = 1;
 
 	//public constructor
 	public SQLiteDB(String dbName) {
@@ -32,7 +36,7 @@ public class SQLiteDB extends Database {
 			//Create new table in the database
 			Statement stmt = conn.createStatement();
 			String query = "CREATE TABLE IF NOT EXISTS Booking " +
-						   "(ID			  INT      NOT NULL,"    +
+						   "(ID			  INT      AUTOINCREMENT,"    +
 						   " customerName TEXT     NOT NULL,"    +
 					       " phoneNumber  TEXT     NOT NULL, "   + 
 					       " email        TEXT     NOT NULL,"    +
@@ -68,7 +72,10 @@ public class SQLiteDB extends Database {
 	 * overrides the Database class method and adds a new row to the Booking table.
 	 */
 	@Override
-	void insertBooking(int ID, String customerName, String phoneNumber, String email, int partySize, long dateTime) {
+	int insertBooking(Booking booking) {
+		
+		//reference variable
+		int ref = -1;
 		
 		try {
 			//Connect to database
@@ -78,11 +85,22 @@ public class SQLiteDB extends Database {
 			//Insert new row in the database
 			Statement stmt = conn.createStatement();
 			String query = "INSERT INTO Booking (ID, customerName, phoneNumber, email, partySize, dateTime) " +
-	                       "VALUES ('"+ ID + ", '"+ customerName + "', '" + phoneNumber + "', '" + email + "', '" + partySize + "', '" + dateTime + "');";        
+	                       "VALUES ('"+ 
+	                       booking.getCustomerName() + "', '" + 
+	                       booking.getPhoneNumber()  + "', '" + 
+	                       booking.getEmail()        + "', '" + 
+	                       booking.getPartySize()    + "', '" + 
+	                       booking.getUnixDate()     + "');";        
 			
-			//Execute query
+			//Execute query for insert booking
 			stmt.executeUpdate(query);
-
+			
+			//Get ID as reference for server
+			String id = "SELECT MAX(ID) FROM Booking;";
+			
+			//Execute query to retrieve the ID
+			ref = stmt.executeUpdate(id);
+			
 			//Free resources
 			stmt.close();
 			conn.close();
@@ -94,5 +112,8 @@ public class SQLiteDB extends Database {
 
 		//Console message
 		System.out.println("Booking completed");
+		
+		//return reference to server
+		return ref;
 	}
 }
