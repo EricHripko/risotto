@@ -9,6 +9,7 @@ import org.json.JSONObject;
  */
 public class Booking {
 	
+	private int referenceNumber; /** Reference number of the booking. */
 	private String costumerName; /** Name of the costumer. */
 	private String phoneNumber;	 /** Phone number of the costumer. */
 	private String email;		 /** Email of the costumer. */
@@ -21,6 +22,7 @@ public class Booking {
 	 */
 	public Booking(JSONObject jsonBooking) {
 		// Take elements from JSONObject and create a Booking object.
+		referenceNumber = jsonBooking.getInt("referenceNumber");
 		costumerName = jsonBooking.getString("costumerName");
 		phoneNumber = jsonBooking.getString("phoneNumber");
 		email = jsonBooking.getString("email");
@@ -28,6 +30,14 @@ public class Booking {
 		unixDate = jsonBooking.getLong("date");
 		
 		// TODO: All the inserted data MUST be correct.
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getReferenceNumber() {
+		return referenceNumber;
 	}
 	
 	/**
@@ -62,8 +72,76 @@ public class Booking {
 		return partySize;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public long getUnixDate() {
 		return unixDate;
 	}
 
+	/**
+	 * 
+	 * @param pReferenceNumber
+	 */
+	public void setReferenceNumber(int pReferenceNumber) {
+		referenceNumber = pReferenceNumber;
+	}
+	
+	/**
+	 * 
+	 * @param pCostumerName
+	 */
+	public void setCostumerName(String pCostumerName) {
+		costumerName = pCostumerName;
+	}
+	
+	/**
+	 * 
+	 * @param pPhoneNumber
+	 */
+	public void setPhoneNumber(String pPhoneNumber) {
+		phoneNumber = pPhoneNumber;
+	}
+	
+	/**
+	 * 
+	 * @param pEmail
+	 */
+	public void setEmail(String pEmail) {
+		email = pEmail;
+	}
+	
+	/**
+	 * 
+	 * @param pPartySize
+	 */
+	public void setPartySize(int pPartySize) {
+		partySize = pPartySize;
+	}
+	
+	/**
+	 * 
+	 * @param pUnixDate
+	 */
+	public void setDate(long pUnixDate) {
+		unixDate = pUnixDate;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public JSONObject getJSONObject() {
+		JSONObject jsonBooking = new JSONObject();
+		
+		jsonBooking.put("referenceNumber", referenceNumber);
+		jsonBooking.put("costumerName", costumerName);
+		jsonBooking.put("phoneNumber", phoneNumber);
+		jsonBooking.put("email", email);
+		jsonBooking.put("partySize", partySize);
+		jsonBooking.put("date", unixDate);
+		
+		return jsonBooking;
+	}
 }
