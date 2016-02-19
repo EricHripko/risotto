@@ -25,12 +25,12 @@ public class Main {
 		try {
 			 
 			RestaurantServer restaurantServer = new RestaurantServer(8181, new ExecutorThreadPool());
-			restaurantServer.setHandler(new RestaurantHandler("restaurantdatabase.db"));
+			
 			
 			HandlerCollection handlers = new HandlerCollection();
 			//Handler to log requests
 			RequestLogHandler requestLogHandler = new RequestLogHandler();
-			RestaurantHandler restaurantHandler = new RestaurantHandler("nameofdatabase.db");
+			RestaurantHandler restaurantHandler = new RestaurantHandler("restaurantdatabase.db");
 			handlers.setHandlers(new Handler[]{requestLogHandler, restaurantHandler });
 			restaurantServer.setHandler(handlers);
 			

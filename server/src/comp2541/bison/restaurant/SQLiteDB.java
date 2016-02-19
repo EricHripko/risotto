@@ -35,13 +35,12 @@ public class SQLiteDB extends Database {
 			//Create new table in the database
 			Statement stmt = conn.createStatement();
 			String query = "CREATE TABLE IF NOT EXISTS Booking " +
-						   "(ID			  INT      AUTOINCREMENT,"    +
-						   " customerName TEXT     NOT NULL,"    +
-					       " phoneNumber  TEXT     NOT NULL, "   + 
-					       " email        TEXT     NOT NULL,"    +
-					       " partySize    INT      NOT NULL,"    +  
-					       " dateTime     NUMERIC  NOT NULL,"    +
-					       " primary key(ID)"         			 +
+						   "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+						   " customerName TEXT NOT NULL,"+
+					       " phoneNumber TEXT NOT NULL,"+ 
+					       " email TEXT NOT NULL,"+
+					       " partySize INT NOT NULL,"+  
+					       " dateTime NUMERIC NOT NULL"+
 					       	");";
 			//Execute query
 			stmt.executeUpdate(query);
