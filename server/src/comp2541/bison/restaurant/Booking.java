@@ -1,5 +1,8 @@
 package comp2541.bison.restaurant;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+
 import org.json.JSONObject;
 
 /**
@@ -17,7 +20,6 @@ public class Booking {
 	private String email;		 /** Email of the costumer. */
 	private int partySize;		 /** Number of people of the party. */
 	private long unixDate;		 /** Date of the booking. */
-	
 	/**
 	 * Constructor from JSON object.
 	 * 
