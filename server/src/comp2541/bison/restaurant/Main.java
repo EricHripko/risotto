@@ -22,7 +22,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Test the code
 		try {
-			RestaurantServer restaurantServer = new RestaurantServer(8181, new ExecutorThreadPool());
+			RestaurantServer restaurantServer = new RestaurantServer(8080, new ExecutorThreadPool());
 			
 			HandlerCollection handlers = new HandlerCollection();
 			//Handler to log requests
