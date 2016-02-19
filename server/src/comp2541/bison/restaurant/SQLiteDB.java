@@ -16,13 +16,16 @@ public class SQLiteDB extends Database {
 
 		//fields initialisation
 		this.dbName = dbName;
+		
+		//Call setUp()
+		setUp();
 	}
 
 	/**
 	 * 
 	 * connect to existing database, otherwise it creates one with the specified name.
 	 */
-	public void setUp() {
+	private void setUp() {
 
 		try {
 			//Connect to database
@@ -68,7 +71,7 @@ public class SQLiteDB extends Database {
 	 * overrides the Database class method and adds a new row to the Booking table.
 	 */
 	@Override
-	int insertBooking(Booking booking) {
+	public int insertBooking(Booking booking) {
 		
 		//reference variable
 		int ref = -1;
