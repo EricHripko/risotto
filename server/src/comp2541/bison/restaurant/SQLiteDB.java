@@ -25,7 +25,7 @@ public class SQLiteDB extends Database {
 	 * 
 	 * connect to existing database, otherwise it creates one with the specified name.
 	 */
-	public void setUp() {
+	private void setUp() {
 		
 		//Declare DB's objects
 		Connection conn = null;
