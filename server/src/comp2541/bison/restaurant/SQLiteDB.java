@@ -38,7 +38,7 @@ public class SQLiteDB extends Database {
 			conn.setAutoCommit(false);
 
 			//Create new table in the database
-			Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 			String query = "CREATE TABLE IF NOT EXISTS Booking " +
 						   "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"+
 						   " customerName TEXT NOT NULL,"+
