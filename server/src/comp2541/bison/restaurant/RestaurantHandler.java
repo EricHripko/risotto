@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
  *
  */
 public class RestaurantHandler extends AbstractHandler {
+	static Logger log = Logger.getLogger(RestaurantHandler.class.getName());
 
 	private Database restaurantDB; /** The database where are stored the data.
 	
@@ -94,6 +96,7 @@ public class RestaurantHandler extends AbstractHandler {
 		
 		// The request has been handled correctly.
 		baseRequest.setHandled(true);
+		log.info("Request Handled successfully");
 	}
 
 }

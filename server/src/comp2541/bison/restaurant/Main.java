@@ -1,7 +1,7 @@
 package comp2541.bison.restaurant;
 
-import java.util.logging.Level;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -20,6 +20,8 @@ public class Main {
 	 * The program starts from here.
 	 * @param args Standard arguments.
 	 */
+	static Logger log = Logger.getLogger(Main.class.getName());
+
 	public static void main(String[] args) {
 		// TODO Test the code
 		try {
@@ -43,11 +45,12 @@ public class Main {
 			requestLogHandler.setRequestLog(requestLog);
 			
 			restaurantServer.start();
-			
+			log.info("Server started");
 			restaurantServer.join();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.fatal(e.getMessage());
 			
 		}
 	}

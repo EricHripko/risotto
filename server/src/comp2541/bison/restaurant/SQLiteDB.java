@@ -1,14 +1,14 @@
 package comp2541.bison.restaurant;
 
 import java.sql.*;
-
+import org.apache.log4j.*;
 public class SQLiteDB extends Database {
 
 	/*
 	 * String dbName
 	 */
 	private String dbName = null;
-
+	static Logger log = Logger.getLogger(SQLiteDB.class.getName());
 
 	//public constructor
 	public SQLiteDB(String dbName) {
@@ -49,6 +49,7 @@ public class SQLiteDB extends Database {
 					       	");";
 			//Execute query
 			stmt.executeUpdate(query);
+			log.info("Table created successfully");
 			System.out.println("Table created successfully");
 			
 			//Free resources + commit
@@ -58,8 +59,10 @@ public class SQLiteDB extends Database {
 			
 		} 
 		catch(Exception e) {
+			log.fatal(e.getMessage());
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			System.exit(0);
+			
 		}
 		
 		//Console message
@@ -109,7 +112,7 @@ public class SQLiteDB extends Database {
 			
 			//Execute query for insert booking
 			stmt.executeUpdate(query1);
-			
+			log.info("Booking Inserted in table");
 			//Get ID as reference for server
 			String query2 = "SELECT ID FROM Booking;";
 			
@@ -124,14 +127,18 @@ public class SQLiteDB extends Database {
 			stmt.close();
 			//conn.commit();
 			conn.close();
+			log.info("Database closed");
 		} 
 		catch(Exception e) {
+			log.fatal(e.getMessage());
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			System.exit(0);
+			
 		}
 
 		//Console message
 		System.out.println("Booking completed");
+		
 		
 		//return reference to server
 		return ref;

@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="jetty-io-9.3.7.v20160115.jar"/>
 	<classpathentry kind="lib" path="json-20160212.jar"/>
 	<classpathentry kind="lib" path="sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jones/Documents/log4j-1.2.17/apache-log4j-1.2.17/log4j-1.2.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

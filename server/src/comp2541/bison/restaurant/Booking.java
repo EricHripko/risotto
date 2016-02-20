@@ -1,8 +1,5 @@
 package comp2541.bison.restaurant;
 
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-
 import org.json.JSONObject;
 
 /**
