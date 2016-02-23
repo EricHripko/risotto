@@ -18,4 +18,4 @@ build:
     - copy client\*.html %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client
     - copy client\css\*.css %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\css
     - copy client\scripts\*.js %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\scripts
-    - @echo Binaries available at %BINARIES_HREF%/Bison-%CI_BUILD_ID%/
+    - echo Binaries available at %BINARIES_HREF%/Bison-%CI_BUILD_ID%/
