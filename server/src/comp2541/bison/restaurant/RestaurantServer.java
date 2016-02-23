@@ -5,16 +5,18 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.thread.ThreadPool;
 
 /**
+ * The server of the restaurant.
  * 
- * @author michelecipriano
+ * @author Michele Cipriano
  *
  */
 public class RestaurantServer extends Server {
 
 	/**
+	 * Basic constructor with port and thread management.
 	 * 
-	 * @param port
-	 * @param pool
+	 * @param port Port where the server will be launched.
+	 * @param pool Type of thread pool, how the different clients will be handled.
 	 */
 	public RestaurantServer(int port, ThreadPool pool) {
 		// Uses a ThreadPool allow multiple threads.

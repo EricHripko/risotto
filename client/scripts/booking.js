@@ -13,7 +13,7 @@ var Booking = function (customerName, phoneNumber, emailAddress, partySize, date
      */
     this.date = date;
     if(this.date instanceof Date)
-        this.date = this.date.getTime();
+        this.date = this.date.getTime() / 1000;
     /**
      * How many people booked.
      */
