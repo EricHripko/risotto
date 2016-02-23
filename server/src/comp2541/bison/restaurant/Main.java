@@ -26,7 +26,7 @@ public class Main {
 		// TODO Test the code
 		try {
 			 
-			RestaurantServer restaurantServer = new RestaurantServer(8181, new ExecutorThreadPool());
+			RestaurantServer restaurantServer = new RestaurantServer(8080, new ExecutorThreadPool());
 			
 			
 			HandlerCollection handlers = new HandlerCollection();
