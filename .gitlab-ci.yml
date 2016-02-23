@@ -4,24 +4,18 @@ variables:
 
 build:
   script:
-    # Build server
     - cd server
     - call ant distribute
-    # Build client
     - cd client
     - call npm install
     - call npm run build
-    # Create folder structure
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\server
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\css
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\scripts
-    # Drop server binaries 
     - copy server/bin/RestaurantServer.jar %BINARIES_DROP%\Bison-%CI_BUILD_ID%\server
-    # Drop client binaries
     - copy client\*.html %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client
     - copy client\css\*.css %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\css
     - copy client\scripts\*.js %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\scripts
-    # Signal finish
     - @echo Binaries available at %BINARIES_HREF%/Bison-%CI_BUILD_ID%/
