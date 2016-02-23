@@ -1,0 +1,7 @@
+stages:
+  - build
+
+backend-build:
+  stage: build
+  script:
+    - ant -Dbasedir=./server -f server/build.xml dist
