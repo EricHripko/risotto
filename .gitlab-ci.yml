@@ -4,4 +4,4 @@ stages:
 backend-build:
   stage: build
   script:
-    - ant -Dbasedir=./server -f server/build.xml dist
+    - call ant -Dbasedir=./server -f server/build.xml distribute
