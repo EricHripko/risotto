@@ -9,6 +9,7 @@ build:
     - cd ..\client
     - call npm install
     - call npm run build
+    - cd ..
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\server
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client
