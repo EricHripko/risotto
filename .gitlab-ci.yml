@@ -4,4 +4,11 @@ stages:
 backend-build:
   stage: build
   script:
-    - call ant -Dbasedir=./server -f server/build.xml distribute
+    - cd server
+    - call ant distribute
+
+frontend-build:
+  stage: build
+  script:
+    - cd client
+    - call npm install
