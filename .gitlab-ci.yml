@@ -1,5 +1,10 @@
 stages:
   - build
+  - package
+
+variables:
+  BINARIES_DROP: "C:\\inetpub\\wwwroot"
+  BINARIES_HREF: "http://bison.isat.xyz"
 
 backend-build:
   stage: build
@@ -12,3 +17,10 @@ frontend-build:
   script:
     - cd client
     - call npm install
+    - call npm build
+    - call npm run build
+
+all-package:
+  stage: package
+  script:
+    - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%
