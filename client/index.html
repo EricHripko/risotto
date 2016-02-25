@@ -18,24 +18,28 @@
         <a href="#"> Take Orders</a>
     </nav>
 
-    <table id="calendar" style="background: white;">
-        <tr>
-            <th>&nbsp;</th>
-            <th rv-each-table="tables">{table.description}</th>
-        </tr>
-        <tr rv-each-time="timescale">
-            <td>{time.hour | padZeroes}:{time.mins | padZeroes}</td>
-            <td rv-each-table="time.tables">
-                <div class="booking" rv-each-booking="table.bookings" style="width:100%;background:red;">
-                    {booking.customerName}
-                    <br>
-                    {booking.partySize} customers
-                    <br>
-                    {booking.phoneNumber}
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div id="bookingGrid">
+        <table id="calendar" style="background: white;">
+            <tr>
+                <th rv-each-table="tables" class="header">{table.description}</th>
+            </tr>
+            <tr rv-each-time="timescale" rv-hours="time.hour" rv-mins="time.mins">
+                <td rv-each-table="time.tables">
+                    <div class="booking" rv-each-booking="table.bookings">
+                        {booking.customerName}
+                        <br>
+                        {booking.partySize} customers
+                        <br>
+                        {booking.phoneNumber}
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <ul id="timescale">
+            <li rv-each-hour="hours">{hour}</li>
+        </ul>
+    </div>
 </div>
 
 </body>

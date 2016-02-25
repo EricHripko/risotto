@@ -62,9 +62,14 @@ var granularity = 15;
 var timescale = [];
 var openTime = 9;
 var closeTime = 17;
+var hours = [];
 // Create time intervals
-for(var hour = openTime; hour < closeTime; hour++)
-    for(var minutes = 0; minutes < 60; minutes = minutes + 15) {
+for(var hour = openTime; hour < closeTime; hour++) {
+    // Save all the opening hours
+    if(hours.indexOf(hour) == -1)
+        hours.push(hour);
+
+    for (var minutes = 0; minutes < 60; minutes = minutes + 15) {
         var interval = {hour: hour, mins: minutes, tables: []};
         // For each interval add a table
         tables.forEach(function (table) {
@@ -78,15 +83,16 @@ for(var hour = openTime; hour < closeTime; hour++)
         });
         timescale.push(interval);
     }
-
+}
 // Create the model for the view
 var viewModel = {
     tables: tables,
+    hours: hours,
     granularity: granularity,
     timescale: timescale
 };
 
 // Perform data binding
 document.addEventListener("DOMContentLoaded", function () {
-    rivets.bind(document.getElementById("calendar"), viewModel);
+    rivets.bind(document.getElementById("bookingGrid"), viewModel);
 });
