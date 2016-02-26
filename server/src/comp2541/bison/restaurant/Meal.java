@@ -6,57 +6,100 @@ package comp2541.bison.restaurant;
  */
 public class Meal {
 	private int id;
-	private String mealName;
-	private String mealDescription;
-	private int mealPrice;
-	private String mealType;
-	
-	public Meal(int pId,String pName, String pDescription, int pPrice, String pType){
-		this.id = pId;
-		this.mealName = pName;
-		this.mealDescription = pDescription;
-		this.mealPrice = pPrice;
-		this.mealType = pType;
+	private String name;
+	private String description;
+	private int price;
+	private String type;
+	/**
+	 * 
+	 * @param pName
+	 * @param pDescription
+	 * @param pPrice
+	 * @param pType
+	 */
+	public Meal(String pName, String pDescription, int pPrice, String pType){
+		name = pName;
+		description = pDescription;
+		price = pPrice;
+		type = pType;
 		
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return name;
 	}
-
-	public String getMealName() {
-		return mealName;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDescription() {
+		return description;
 	}
-
-	public void setMealName(String mealName) {
-		this.mealName = mealName;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getPrice() {
+		return price;
 	}
-
-	public String getMealDescription() {
-		return mealDescription;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getType() {
+		return type;
 	}
-
-	public void setMealDescription(String mealDescription) {
-		this.mealDescription = mealDescription;
+	/**
+	 * 
+	 * @param pId
+	 */
+	public void setId(int pId) {
+		id = pId;
 	}
-
-	public int getMealPrice() {
-		return mealPrice;
+	
+	/**
+	 * 
+	 * @param pMealName
+	 */
+	public void setName(String pMealName) {
+		name = pMealName;
 	}
-
-	public void setMealPrice(int mealPrice) {
-		this.mealPrice = mealPrice;
+	
+	/**
+	 * 
+	 * @param pDescription
+	 */
+	public void setDescription(String pDescription) {
+		description = pDescription;
 	}
-
-	public String getMealType() {
-		return mealType;
+	
+	/**
+	 * 
+	 * @param pPrice
+	 */
+	public void setPrice(int pPrice) {
+		price = pPrice;
 	}
-
-	public void setMealType(String mealType) {
-		this.mealType = mealType;
+	
+	/**
+	 * 
+	 * @param pType
+	 */
+	public void setType(String pType) {
+		type = pType;
 	}
 }
