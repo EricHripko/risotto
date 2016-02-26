@@ -2,6 +2,7 @@ package comp2541.bison.restaurant;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -66,18 +67,20 @@ public class RestaurantHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("");
 		} else if (request.getMethod().equalsIgnoreCase("POST")) {
+			
+			BufferedReader requestBodyBR = request.getReader(); // Reader for the body of the HTTP message
+			StringBuilder sb = new StringBuilder();				// Auxiliary object to tranform body to JSON
+			String line;										// String used to read from BufferedReader
+			
+			// Reading the body:
+			while ((line = requestBodyBR.readLine()) != null) {
+				sb.append(line);
+			}
+			
+			// StringBuilder to JSONObject:
+			JSONObject jsonBody = new JSONObject(sb.toString());
+			
 			if (request.getRequestURI().equals("/bookings")) {
-				BufferedReader requestBodyBR = request.getReader(); // Reader for the body of the HTTP message
-				StringBuilder sb = new StringBuilder();				// Auxiliary object to tranform body to JSON
-				String line;										// String used to read from BufferedReader
-				
-				// Reading the body:
-				while ((line = requestBodyBR.readLine()) != null) {
-					sb.append(line);
-				}
-				
-				// StringBuilder to JSONObject:
-				JSONObject jsonBody = new JSONObject(sb.toString());
 				
 				// Booking requested, built from JSONObject:
 				Booking booking = new Booking(jsonBody);
@@ -104,6 +107,33 @@ public class RestaurantHandler extends AbstractHandler {
 					e.printStackTrace();
 				}
 				
+				
+			} else if (request.getRequestURI().equals("/bookingsoverview")) {
+				// Starting and ending time of the request:
+				long startingTime = jsonBody.getLong("startingTime");
+				long endingTime = jsonBody.getLong("endingTime");
+				
+				try {
+					// Get all the bookings from time to time:
+					ArrayList<Booking> bookings = restaurantDB.getBookings(startingTime, endingTime);
+					
+					// Build the JSON message:
+					JSONObject jsonResponse = new JSONObject();
+					jsonResponse.put("bookings", bookings);
+					
+					// Send OK and list of bookings:
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().println(jsonResponse.toString());
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+					
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+				}
 				
 			} else {
 				// TODO Handle other POST requests.
