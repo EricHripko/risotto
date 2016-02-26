@@ -11,6 +11,7 @@ import org.json.JSONObject;
  */
 public class Booking {
 	
+	private int id;              /** id booking reference **/
 	private int referenceNumber; /** Reference number of the booking. */
 	private String customerName; /** Name of the customer. */
 	private String phoneNumber;	 /** Phone number of the costumer. */
@@ -31,6 +32,16 @@ public class Booking {
 		unixDate = jsonBooking.getLong("date");
 		
 		// TODO: All the inserted data MUST be correct.
+	}
+	
+	public Booking(int id, String customerName, String phoneNumber, String email, int partySize, long unixDate) {
+		// States initialization
+		this.id = id;
+		this.customerName = customerName;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.partySize = partySize;
+		this.unixDate = unixDate;
 	}
 	
 	public int getReferenceNumber() {
