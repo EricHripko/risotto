@@ -18,7 +18,7 @@ public class Booking {
 	private int partySize;		 /** Number of people of the party. */
 	private long unixStart;		 /** Date of start of the booking. */
 	private long unixEnd;		 /** Date of end of the booking. */
-	// Add Table object.
+	private Table table;		 /** Table assigned to the booking. */
 	
 	/**
 	 * Constructor from JSON object.
@@ -27,12 +27,14 @@ public class Booking {
 	 */
 	public Booking(JSONObject jsonBooking) {
 		// Take elements from JSONObject and create a Booking object.
+		
 		customerName = jsonBooking.getString("customerName");
 		phoneNumber = jsonBooking.getString("phoneNumber");
 		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
 		unixStart = jsonBooking.getLong("date");
 		unixEnd = jsonBooking.optLong("endingDate");
+		// TODO: table = ... use opt()
 		
 		// TODO: All the inserted data MUST be correct.
 	}
@@ -76,6 +78,10 @@ public class Booking {
 		return unixEnd;
 	}
 	
+	public Table getTable() {
+		return table;
+	}
+	
 	public void setReferenceNumber(int pReferenceNumber) {
 		referenceNumber = pReferenceNumber;
 	}
@@ -104,6 +110,10 @@ public class Booking {
 		unixEnd = pUnixEnd;
 	}
 	
+	public void setTable(Table pTable) {
+		table = pTable;
+	}
+	
 	/**
 	 * Converts the Booking object to a JSONObject, useful for sending through HTTP.
 	 * 
@@ -119,6 +129,7 @@ public class Booking {
 		jsonBooking.put("partySize", partySize);
 		jsonBooking.put("date", unixStart);
 		jsonBooking.put("endingDate", unixEnd);
+		jsonBooking.put("table", table.getJSONObject().toString());
 		
 		return jsonBooking;
 	}
