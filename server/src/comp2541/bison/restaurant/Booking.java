@@ -32,7 +32,7 @@ public class Booking {
 		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
 		unixStart = jsonBooking.getLong("date");
-		unixEnd = jsonBooking.getLong("endingDate"); // TODO: this is not compulsory in JSON, it should launch an exception.
+		unixEnd = jsonBooking.optLong("endingDate");
 		
 		// TODO: All the inserted data MUST be correct.
 	}
