@@ -44,6 +44,10 @@ public class Booking {
 		this.unixDate = unixDate;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
 	public int getReferenceNumber() {
 		return referenceNumber;
 	}
@@ -68,6 +72,10 @@ public class Booking {
 		return unixDate;
 	}
 
+	public void setId(int pId) {
+		id = pId;
+	}
+	
 	public void setReferenceNumber(int pReferenceNumber) {
 		referenceNumber = pReferenceNumber;
 	}
