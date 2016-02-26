@@ -1,5 +1,6 @@
 package comp2541.bison.restaurant;
 
+import java.util.ArrayList;
 
 /**
  * Database abstract class that 
@@ -15,9 +16,27 @@ package comp2541.bison.restaurant;
 
 public abstract class Database {
 	
+	/*
+	 * ArrayList of type Booking
+	 */
+	ArrayList<Booking> bookings = new ArrayList<>();
+	
 	//public abstract constructor
 	public Database(String dbName){}
 	
-	//insertBooking() abstract method
-	abstract int insertBooking(Booking booking);
+	/**
+	 * 
+	 * @param booking
+	 * @return referenceID
+	 * @throws Exception
+	 */
+	abstract int insertBooking(Booking booking) throws Exception;
+	
+	/**
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @return ArrayList<Booking>
+	 */
+	abstract ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception;
 }
