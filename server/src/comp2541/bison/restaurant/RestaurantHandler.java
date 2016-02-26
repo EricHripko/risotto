@@ -30,7 +30,14 @@ public class RestaurantHandler extends AbstractHandler {
 	 * @param dbString Name of the database to use.
 	 */
 	public RestaurantHandler(String dbString) {
-		restaurantDB = new SQLiteDB(dbString);
+		try {
+			restaurantDB = new SQLiteDB(dbString);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.info("Cannot open the database.");
+			System.exit(0);
+		}
 	}
 	
 	/**
@@ -77,14 +84,27 @@ public class RestaurantHandler extends AbstractHandler {
 				
 				// Put booking into the database and get the reference number,
 				// then upload the object Booking with the received data:
-				int referenceNumber = restaurantDB.insertBooking(booking);
-				booking.setReferenceNumber(referenceNumber);
+				try {
+					int referenceNumber = restaurantDB.insertBooking(booking);
+					
+					booking.setReferenceNumber(referenceNumber);
+					
+					// Send OK and referenceNumber to the client.
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().println(booking.getJSONObject().toString());
+					
+				} catch (Exception e) {
+					// Send JSON error message to the client
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+					
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+					
+					e.printStackTrace();
+				}
 				
-				// Send OK and referenceNumber to the client.
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().println(booking);
 				
-				// TODO: Send other messages if the request fails.
 			} else {
 				// TODO Handle other POST requests.
 			}
