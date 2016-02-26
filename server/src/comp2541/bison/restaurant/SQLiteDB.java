@@ -21,8 +21,6 @@ public class SQLiteDB extends Database {
 
 		//Call setUp()
 		setUp();
-		
-		getBookings(0, 1456664);
 	}
 
 	/**
@@ -48,7 +46,8 @@ public class SQLiteDB extends Database {
 				         " phoneNumber TEXT NOT NULL,"             + 
 				         " email TEXT NOT NULL,"                   +
 				         " partySize INT NOT NULL,"                +  
-				         " unixDate NUMERIC NOT NULL"              +
+				         " unixStart NUMERIC NOT NULL,"             +
+				         " unixEnd   NUMERIC NOT NULL"             +
 				         ");";
 
 		//Execute query
@@ -93,8 +92,8 @@ public class SQLiteDB extends Database {
 		System.out.println(dbName + " opened");
 
 		//Initialize prepared statement execution for insertion into the DB
-		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixDate)" +
-				        "VALUES(?, ?, ?, ?, ?);";
+		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixStart, unixEnd)" +
+				        "VALUES(?, ?, ?, ?, ?, ?);";
 		pstmt = conn.prepareStatement(insert);
 
 		//insert into database the Booking entry
@@ -102,7 +101,9 @@ public class SQLiteDB extends Database {
 		pstmt.setString(2, booking.getPhoneNumber());
 		pstmt.setString(3, booking.getEmail());
 		pstmt.setInt(4, booking.getPartySize());
-		pstmt.setLong(5, booking.getUnixDate());
+		pstmt.setLong(5, booking.getUnixStart());
+		pstmt.setLong(6, booking.getUnixEnd());
+		
 		pstmt.executeUpdate();
 
 		//Log info (Booking insert success)
@@ -148,24 +149,27 @@ public class SQLiteDB extends Database {
 
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
-		String retrieve = "SELECT ID, customerName, phoneNumber, email, partySize, unixDate FROM Booking " +
-						  "WHERE unixDate >= " + startTime + " AND unixDate <= " + endTime + ";";
+		String retrieve = "SELECT ID, customerName, phoneNumber, email, partySize, unixStart, unixEnd FROM Booking " +
+						  "WHERE unixStart >= " + startTime + " OR unixStart <= " + endTime                          +
+						  "OR unixEnd >= " + startTime + "OR unixEnd <= " + endTime                                  + 
+						  ";";
 		
 		//Retrieve booking objects
 		rs = stmt.executeQuery(retrieve);
 
-		//Retrieve max ID from ResultSet
+		//Retrieve booking objects from ResultSet
 		while(rs.next()) {
 			//Retrieve data
-			int id = rs.getInt("ID");
+			int referenceNumber = rs.getInt("ID");
 			String customerName = rs.getString("customerName");
 			String phoneNumber = rs.getString("phoneNumber");
 			String email = rs.getString("email");
 			int partySize = rs.getInt("partySize");
-			long unixDate = rs.getLong("unixDate");
+			long unixStart = rs.getLong("unixStart");
+			long unixEnd = rs.getLong("unixEnd");
 			
 			//Create Booking instance 
-			Booking booking = new Booking(id, customerName, phoneNumber, email, partySize, unixDate);
+			Booking booking = new Booking(referenceNumber, customerName, phoneNumber, email, partySize, unixStart, unixEnd);
 			bookings.add(booking);
 		}
 		

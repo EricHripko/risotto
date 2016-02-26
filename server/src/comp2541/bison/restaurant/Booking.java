@@ -37,14 +37,15 @@ public class Booking {
 		// TODO: All the inserted data MUST be correct.
 	}
 	
-	public Booking(int referenceNumber, String customerName, String phoneNumber, String email, int partySize, long unixDate) {
+	public Booking(int referenceNumber, String customerName, String phoneNumber, String email, int partySize, long unixStart, long unixEnd) {
 		// States initialization
 		this.referenceNumber = referenceNumber;
 		this.customerName = customerName;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.partySize = partySize;
-		this.unixStart = unixDate;
+		this.unixStart = unixStart;
+		this.unixEnd = unixEnd;
 	}
 
 	public int getReferenceNumber() {
