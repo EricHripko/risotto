@@ -11,13 +11,15 @@ import org.json.JSONObject;
  */
 public class Booking {
 	
-	private int id;              /** id booking reference **/
-	private int referenceNumber; /** Reference number of the booking. */
+	private int referenceNumber; /** Reference number of the booking. (ID in the database) */
 	private String customerName; /** Name of the customer. */
 	private String phoneNumber;	 /** Phone number of the costumer. */
 	private String email;		 /** Email of the costumer. */
 	private int partySize;		 /** Number of people of the party. */
-	private long unixDate;		 /** Date of the booking. */
+	private long unixStart;		 /** Date of start of the booking. */
+	private long unixEnd;		 /** Date of end of the booking. */
+	// Add Table object.
+	
 	/**
 	 * Constructor from JSON object.
 	 * 
@@ -29,25 +31,22 @@ public class Booking {
 		phoneNumber = jsonBooking.getString("phoneNumber");
 		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
-		unixDate = jsonBooking.getLong("date");
+		unixStart = jsonBooking.getLong("date");
+		unixEnd = jsonBooking.getLong("endingDate"); // TODO: this is not compulsory in JSON, it should launch an exception.
 		
 		// TODO: All the inserted data MUST be correct.
 	}
 	
-	public Booking(int id, String customerName, String phoneNumber, String email, int partySize, long unixDate) {
+	public Booking(int referenceNumber, String customerName, String phoneNumber, String email, int partySize, long unixDate) {
 		// States initialization
-		this.id = id;
+		this.referenceNumber = referenceNumber;
 		this.customerName = customerName;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.partySize = partySize;
-		this.unixDate = unixDate;
+		this.unixStart = unixDate;
 	}
-	
-	public int getId() {
-		return id;
-	}
-	
+
 	public int getReferenceNumber() {
 		return referenceNumber;
 	}
@@ -68,12 +67,12 @@ public class Booking {
 		return partySize;
 	}
 
-	public long getUnixDate() {
-		return unixDate;
+	public long getUnixStart() {
+		return unixStart;
 	}
-
-	public void setId(int pId) {
-		id = pId;
+	
+	public long getUnixEnd() {
+		return unixEnd;
 	}
 	
 	public void setReferenceNumber(int pReferenceNumber) {
@@ -96,8 +95,12 @@ public class Booking {
 		partySize = pPartySize;
 	}
 
-	public void setDate(long pUnixDate) {
-		unixDate = pUnixDate;
+	public void setUnixStart(long pUnixStart) {
+		unixStart = pUnixStart;
+	}
+	
+	public void setUnixEnd(long pUnixEnd) {
+		unixEnd = pUnixEnd;
 	}
 	
 	/**
@@ -113,7 +116,8 @@ public class Booking {
 		jsonBooking.put("phoneNumber", phoneNumber);
 		jsonBooking.put("emailAddress", email);
 		jsonBooking.put("partySize", partySize);
-		jsonBooking.put("date", unixDate);
+		jsonBooking.put("date", unixStart);
+		jsonBooking.put("endingDate", unixEnd);
 		
 		return jsonBooking;
 	}
