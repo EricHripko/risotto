@@ -118,8 +118,10 @@ public class RestaurantHandler extends AbstractHandler {
 				// Starting and ending time of the request:
 				int indexOfQuestionMark = request.getRequestURI().indexOf("?");
 				int indexOfAmpersend = request.getRequestURI().indexOf("&");
-				long startingTime = Integer.parseInt(request.getRequestURI().substring(indexOfQuestionMark+1, indexOfAmpersend));
-				long endingTime = Integer.parseInt(request.getRequestURI().substring(indexOfAmpersend+1));
+				String startingTimeStr = request.getRequestURI().substring(indexOfQuestionMark+1, indexOfAmpersend);
+				String endingTimeStr = request.getRequestURI().substring(indexOfAmpersend+1);
+				long startingTime = Integer.parseInt(startingTimeStr.substring(startingTimeStr.indexOf("=") + 1));
+				long endingTime = Integer.parseInt(endingTimeStr.substring(endingTimeStr.indexOf("=") + 1));
 				
 				try {
 					// Get all the bookings from time to time:
