@@ -107,11 +107,19 @@ public class RestaurantHandler extends AbstractHandler {
 					e.printStackTrace();
 				}
 				
+			} else {
+				// TODO Handle other POST requests.
+			}
+		} else if (request.getMethod().equalsIgnoreCase("GET")) {
+			
+			if (request.getRequestURI().startsWith("/bookings")) {
+				// Overview of bookings request
 				
-			} else if (request.getRequestURI().equals("/bookingsoverview")) {
 				// Starting and ending time of the request:
-				long startingTime = jsonBody.getLong("startingTime");
-				long endingTime = jsonBody.getLong("endingTime");
+				int indexOfQuestionMark = request.getRequestURI().indexOf("?");
+				int indexOfAmpersend = request.getRequestURI().indexOf("&");
+				long startingTime = Integer.parseInt(request.getRequestURI().substring(indexOfQuestionMark+1, indexOfAmpersend));
+				long endingTime = Integer.parseInt(request.getRequestURI().substring(indexOfAmpersend+1));
 				
 				try {
 					// Get all the bookings from time to time:
@@ -135,8 +143,6 @@ public class RestaurantHandler extends AbstractHandler {
 					response.getWriter().println(jsonError.toString());
 				}
 				
-			} else {
-				// TODO Handle other POST requests.
 			}
 		} else {
 			// Dump the Request
