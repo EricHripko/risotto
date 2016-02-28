@@ -30,18 +30,22 @@ public class Menu {
 		meals = pMeal;
 	}
 	/**
-	 * 
+	 * adds meal to meals arrraylist
 	 * @param meal
 	 */
 	public void addMeal(Meal meal){
-		//TODO add functionality to addMeal
+		//add meal to meals arraylist
+		meals.add(meal);
 	}
 	/**
-	 * 
+	 * Removes meal from arraylist
 	 * @param meal
 	 */
 	public void removeMeal(Meal meal){
-		//TODO add functionality to removeMeal
+		//find index of meal in meals arraylist
+		int mealIndex = meals.indexOf(meal);
+		
+		meals.remove(mealIndex);
 	}
 	/**
 	 * 
