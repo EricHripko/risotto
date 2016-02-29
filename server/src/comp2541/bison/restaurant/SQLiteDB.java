@@ -230,6 +230,9 @@ public class SQLiteDB extends Database {
 
 		//Retrieve booking objects
 		rs = stmt.executeQuery(retrieve);
+		
+		//Clear tables from previous data
+		tables.clear();
 
 		//Retrieve booking objects from ResultSet
 		while(rs.next()) {

@@ -56,3 +56,22 @@
 69     [main] INFO  comp2541.bison.restaurant.Main  - Server started
 0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
 61     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+67     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+14986  [pool-1-thread-4] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+15041  [pool-1-thread-4] INFO  2541.bison.restaurant.SQLiteDB  - ResturantTable objects retrieved from database
+15074  [pool-1-thread-4] INFO  2541.bison.restaurant.SQLiteDB  - booking inserted
+15086  [pool-1-thread-4] INFO  2541.bison.restaurant.SQLiteDB  - Database closed
+15088  [pool-1-thread-4] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+26596  [pool-1-thread-5] INFO  2541.bison.restaurant.SQLiteDB  - ResturantTable objects retrieved from database
+26610  [pool-1-thread-5] INFO  2541.bison.restaurant.SQLiteDB  - booking inserted
+26614  [pool-1-thread-5] INFO  2541.bison.restaurant.SQLiteDB  - Database closed
+26615  [pool-1-thread-5] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+39132  [pool-1-thread-6] INFO  2541.bison.restaurant.SQLiteDB  - ResturantTable objects retrieved from database
+39142  [pool-1-thread-6] INFO  2541.bison.restaurant.SQLiteDB  - booking inserted
+39149  [pool-1-thread-6] INFO  2541.bison.restaurant.SQLiteDB  - Database closed
+39149  [pool-1-thread-6] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+73660  [pool-1-thread-9] INFO  2541.bison.restaurant.SQLiteDB  - ResturantTable objects retrieved from database
+73674  [pool-1-thread-9] INFO  2541.bison.restaurant.SQLiteDB  - booking inserted
+73682  [pool-1-thread-9] INFO  2541.bison.restaurant.SQLiteDB  - Database closed
+73682  [pool-1-thread-9] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
