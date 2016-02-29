@@ -99,10 +99,11 @@ public class RestaurantHandler extends AbstractHandler {
 							// If the table is found then the request could be satisfied:
 							tableFound = true;
 							
-							int referenceNumber = restaurantDB.insertBooking(booking);
-							
-							booking.setReferenceNumber(referenceNumber);
+							// Update table ID
 							booking.getTable().setId(table.getId());
+							
+							int referenceNumber = restaurantDB.insertBooking(booking);
+							booking.setReferenceNumber(referenceNumber);
 							
 							// Send OK and referenceNumber to the client.
 							response.setStatus(HttpServletResponse.SC_OK);
