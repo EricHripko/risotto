@@ -88,13 +88,36 @@ public class RestaurantHandler extends AbstractHandler {
 				// Put booking into the database and get the reference number,
 				// then upload the object Booking with the received data:
 				try {
-					int referenceNumber = restaurantDB.insertBooking(booking);
 					
-					booking.setReferenceNumber(referenceNumber);
+					// Get all the available tables and check if the request can be satisfied:
+					ArrayList<Table> availableTables = restaurantDB.getAvailableTables(booking.getUnixStart(), booking.getUnixEnd());
+					boolean tableFound = false;
 					
-					// Send OK and referenceNumber to the client.
-					response.setStatus(HttpServletResponse.SC_OK);
-					response.getWriter().println(booking.getJSONObject().toString());
+					for (Table table : availableTables) {
+						// TODO: This searches only for a perfect number, it should be changed to be more versatile.
+						if (table.getSize() == booking.getPartySize()) {
+							// If the table is found then the request could be satisfied:
+							tableFound = true;
+							
+							int referenceNumber = restaurantDB.insertBooking(booking);
+							
+							booking.setReferenceNumber(referenceNumber);
+							
+							// Send OK and referenceNumber to the client.
+							response.setStatus(HttpServletResponse.SC_OK);
+							response.getWriter().println(booking.getJSONObject().toString());
+						}
+					}
+					
+					// If after the search the table hasn't been found then the request couldn't be satisfied:
+					if (tableFound == false) {
+						// Send JSON error message to the client
+						JSONObject jsonError = new JSONObject();
+						jsonError.put("errorMessage", "There are no tables available at the requested time.");
+						
+						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						response.getWriter().println(jsonError.toString());
+					}
 					
 				} catch (Exception e) {
 					// Send JSON error message to the client
