@@ -106,6 +106,8 @@ public class RestaurantHandler extends AbstractHandler {
 							// Send OK and referenceNumber to the client.
 							response.setStatus(HttpServletResponse.SC_OK);
 							response.getWriter().println(booking.getJSONObject().toString());
+							
+							break;
 						}
 					}
 					
