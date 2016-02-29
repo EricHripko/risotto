@@ -102,6 +102,7 @@ public class RestaurantHandler extends AbstractHandler {
 							int referenceNumber = restaurantDB.insertBooking(booking);
 							
 							booking.setReferenceNumber(referenceNumber);
+							booking.getTable().setId(table.getId());
 							
 							// Send OK and referenceNumber to the client.
 							response.setStatus(HttpServletResponse.SC_OK);
