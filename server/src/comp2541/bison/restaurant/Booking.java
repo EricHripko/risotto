@@ -18,7 +18,6 @@ public class Booking {
 	private int partySize;		 /** Number of people of the party. */
 	private long unixStart;		 /** Date of start of the booking. */
 	private long unixEnd;		 /** Date of end of the booking. */
-	private int tableID;		 /** Table ID reference          */
 	private Table table;		 /** Table assigned to the booking. */
 	
 	/**
@@ -28,14 +27,14 @@ public class Booking {
 	 */
 	public Booking(JSONObject jsonBooking) {
 		// Take elements from JSONObject and create a Booking object.
-		
+		bookingID = jsonBooking.optInt("referenceNumber");
 		customerName = jsonBooking.getString("customerName");
 		phoneNumber = jsonBooking.getString("phoneNumber");
 		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
 		unixStart = jsonBooking.getLong("date");
 		unixEnd = jsonBooking.optLong("endingDate");
-		// TODO: table = ... use opt()
+		table = new Table(0, "", 0); // TODO: Edit with correct values.
 		
 		// TODO: All the inserted data MUST be correct.
 	}
@@ -57,7 +56,7 @@ public class Booking {
 		this.partySize = partySize;
 		this.unixStart = unixStart;
 		this.unixEnd = unixEnd;
-		this.tableID = tableID;
+		this.table = new Table(tableID, "", 0); // TODO: All the data should be correct.
 	}
 
 	public int getReferenceNumber() {
@@ -86,10 +85,6 @@ public class Booking {
 	
 	public long getUnixEnd() {
 		return unixEnd;
-	}
-	
-	public int getTableID() {
-		return tableID;
 	}
 	
 	public Table getTable() {
@@ -122,11 +117,6 @@ public class Booking {
 	
 	public void setUnixEnd(long pUnixEnd) {
 		unixEnd = pUnixEnd;
-	}
-	
-	public void setTableID(int ptableID) {
-		tableID = ptableID;
-		
 	}
 	
 	public void setTable(Table pTable) {
