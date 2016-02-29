@@ -26,6 +26,7 @@ public class Booking {
 	 * @param jsonBooking A JSON object containing mandatory information for the booking.
 	 */
 	public Booking(JSONObject jsonBooking) {
+		
 		// Take elements from JSONObject and create a Booking object.
 		bookingID = jsonBooking.optInt("referenceNumber");
 		customerName = jsonBooking.getString("customerName");
@@ -33,7 +34,13 @@ public class Booking {
 		email = jsonBooking.getString("emailAddress");
 		partySize = jsonBooking.getInt("partySize");
 		unixStart = jsonBooking.getLong("date");
-		unixEnd = jsonBooking.optLong("endingDate");
+		
+		if (jsonBooking.isNull("endingDate")) {
+			unixEnd = unixStart + 3600*2; // +2hours by default
+		} else {
+			unixEnd = jsonBooking.getLong("endingDate");
+		}
+		
 		table = new Table(0, "", 0); // TODO: Edit with correct values.
 		
 		// TODO: All the inserted data MUST be correct.
