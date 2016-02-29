@@ -11,13 +11,14 @@ import org.json.JSONObject;
  */
 public class Booking {
 	
-	private int referenceNumber; /** Reference number of the booking. (ID in the database) */
+	private int bookingID; /** Reference number of the booking. (ID in the database) */
 	private String customerName; /** Name of the customer. */
 	private String phoneNumber;	 /** Phone number of the costumer. */
 	private String email;		 /** Email of the costumer. */
 	private int partySize;		 /** Number of people of the party. */
 	private long unixStart;		 /** Date of start of the booking. */
 	private long unixEnd;		 /** Date of end of the booking. */
+	private int tableID;		 /** Table ID reference          */
 	private Table table;		 /** Table assigned to the booking. */
 	
 	/**
@@ -39,19 +40,28 @@ public class Booking {
 		// TODO: All the inserted data MUST be correct.
 	}
 	
-	public Booking(int referenceNumber, String customerName, String phoneNumber, String email, int partySize, long unixStart, long unixEnd) {
+	public Booking(int bookingID, 
+				   String customerName, 
+				   String phoneNumber, 
+				   String email, 
+				   int partySize, 
+				   long unixStart, 
+				   long unixEnd,
+				   int tableID) {
+		
 		// States initialization
-		this.referenceNumber = referenceNumber;
+		this.bookingID = bookingID;
 		this.customerName = customerName;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.partySize = partySize;
 		this.unixStart = unixStart;
 		this.unixEnd = unixEnd;
+		this.tableID = tableID;
 	}
 
 	public int getReferenceNumber() {
-		return referenceNumber;
+		return bookingID;
 	}
 	
 	public String getCustomerName() {
@@ -78,12 +88,16 @@ public class Booking {
 		return unixEnd;
 	}
 	
+	public int getTableID() {
+		return tableID;
+	}
+	
 	public Table getTable() {
 		return table;
 	}
 	
 	public void setReferenceNumber(int pReferenceNumber) {
-		referenceNumber = pReferenceNumber;
+		bookingID = pReferenceNumber;
 	}
 
 	public void setCustomerName(String pCustomerName) {
@@ -110,6 +124,11 @@ public class Booking {
 		unixEnd = pUnixEnd;
 	}
 	
+	public void setTableID(int ptableID) {
+		tableID = ptableID;
+		
+	}
+	
 	public void setTable(Table pTable) {
 		table = pTable;
 	}
@@ -122,7 +141,7 @@ public class Booking {
 	public JSONObject getJSONObject() {
 		JSONObject jsonBooking = new JSONObject();
 		
-		jsonBooking.put("referenceNumber", referenceNumber);
+		jsonBooking.put("referenceNumber", bookingID);
 		jsonBooking.put("costomerName", customerName);
 		jsonBooking.put("phoneNumber", phoneNumber);
 		jsonBooking.put("emailAddress", email);

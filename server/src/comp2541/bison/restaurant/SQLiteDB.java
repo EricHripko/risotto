@@ -16,7 +16,7 @@ public class SQLiteDB extends Database {
 	public SQLiteDB(String dbName) throws Exception {
 		super(dbName);
 
-		//fields initialisation
+		//fields initialization
 		this.dbName = dbName;
 
 		//Call setUp()
@@ -38,19 +38,29 @@ public class SQLiteDB extends Database {
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
 
-		//Create new table in the database
+		//Create needed tables in the database
 		stmt = conn.createStatement();
-		String booking = "CREATE TABLE IF NOT EXISTS Booking "   +
-					     "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"  +
-				         " customerName TEXT NOT NULL,"            +
-				         " phoneNumber TEXT NOT NULL,"             + 
-				         " email TEXT NOT NULL,"                   +
-				         " partySize INT NOT NULL,"                +  
-				         " unixStart NUMERIC NOT NULL,"             +
-				         " unixEnd   NUMERIC NOT NULL"             +
+		
+		String table = "CREATE TABLE IF NOT EXISTS RestaurantTable "	+
+		     	       "(ID INTEGER PRIMARY KEY NOT NULL,"				+
+	                   " description TEXT NOT NULL,"					+
+	                   " size INTEGER NOT NULL"							+ 
+	                   ");";
+		
+		String booking = "CREATE TABLE IF NOT EXISTS Booking "					+
+					     "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"				+
+				         " customerName TEXT NOT NULL,"							+
+				         " phoneNumber TEXT NOT NULL,"							+ 
+				         " email TEXT NOT NULL,"								+
+				         " partySize INTEGER NOT NULL,"							+  
+				         " unixStart NUMERIC NOT NULL,"							+
+				         " unixEnd   NUMERIC NOT NULL,"							+
+				         " tableID INTEGER,"									+
+				         " FOREIGN KEY(tableID) REFERENCES RestaurantTable(ID)"	+
 				         ");";
 
-		//Execute query
+		//Execute queries
+		stmt.executeUpdate(table);
 		stmt.executeUpdate(booking);
 		
 		//Log info (table created successfully)
@@ -92,8 +102,8 @@ public class SQLiteDB extends Database {
 		System.out.println(dbName + " opened");
 
 		//Initialize prepared statement execution for insertion into the DB
-		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixStart, unixEnd)" +
-				        "VALUES(?, ?, ?, ?, ?, ?);";
+		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixStart, unixEnd, tableID)" +
+				        "VALUES(?, ?, ?, ?, ?, ?, ?);";
 		pstmt = conn.prepareStatement(insert);
 
 		//insert into database the Booking entry
@@ -103,7 +113,9 @@ public class SQLiteDB extends Database {
 		pstmt.setInt(4, booking.getPartySize());
 		pstmt.setLong(5, booking.getUnixStart());
 		pstmt.setLong(6, booking.getUnixEnd());
+		pstmt.setInt(7, booking.getTable().getId());
 		
+		//Execute insert into the DB
 		pstmt.executeUpdate();
 
 		//Log info (Booking insert success)
@@ -145,13 +157,12 @@ public class SQLiteDB extends Database {
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
-		System.out.println(dbName + " opened");
 
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
-		String retrieve = "SELECT ID, customerName, phoneNumber, email, partySize, unixStart, unixEnd FROM Booking " +
-						  "WHERE unixStart >= " + startTime + " OR unixStart <= " + endTime                          +
-						  "OR unixEnd >= " + startTime + "OR unixEnd <= " + endTime                                  + 
+		String retrieve = "SELECT * FROM Booking "+
+						  "WHERE unixStart >= "	+	startTime	+	" OR unixStart <= "	+	endTime	+
+						  "OR unixEnd >= "		+	startTime	+	" OR unixEnd <= "	+	endTime	+ 
 						  ";";
 		
 		//Retrieve booking objects
@@ -167,9 +178,17 @@ public class SQLiteDB extends Database {
 			int partySize = rs.getInt("partySize");
 			long unixStart = rs.getLong("unixStart");
 			long unixEnd = rs.getLong("unixEnd");
+			int tableID = rs.getInt("tableID");
 			
 			//Create Booking instance 
-			Booking booking = new Booking(referenceNumber, customerName, phoneNumber, email, partySize, unixStart, unixEnd);
+			Booking booking = new Booking(referenceNumber, 
+					                      customerName, 
+					                      phoneNumber, 
+					                      email, 
+					                      partySize, 
+					                      unixStart, 
+					                      unixEnd,
+					                      tableID);
 			bookings.add(booking);
 		}
 		
@@ -183,5 +202,52 @@ public class SQLiteDB extends Database {
 
 		//return reference to server
 		return bookings;
+	}
+
+	@Override
+	ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception {
+
+		//Create DB's object
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+
+		//Initialize prepared statement execution to retrieve bookings
+		stmt = conn.createStatement();
+		String retrieve = "SELECT RestaurantTable.ID FROM"												+
+						  " Booking INNER JOIN RestaurantTable"											+
+						  " ON Booking.tableID = RestaurantTable.ID"									+
+						  " WHERE Booking."; 													
+
+		//Retrieve booking objects
+		rs = stmt.executeQuery(retrieve);
+
+		//Retrieve booking objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String description = rs.getString("description");
+			int size = rs.getInt("size");
+
+			//Create Booking instance 
+			Table table = new Table(referenceNumber, description, size);
+			tables.add(table);
+		}
+
+		//Log info
+		log.info("ResturantTable objects retrieved from database");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
+		//return reference to server
+		return tables;
 	}
 }

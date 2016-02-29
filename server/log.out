@@ -28,3 +28,31 @@
 0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
 85     [main] INFO  comp2541.bison.restaurant.Main  - Server started
 127449 [pool-1-thread-4] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+59     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+8677   [pool-1-thread-4] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+8709   [pool-1-thread-4] INFO  2541.bison.restaurant.SQLiteDB  - booking inserted
+8713   [pool-1-thread-4] INFO  2541.bison.restaurant.SQLiteDB  - Database closed
+8720   [pool-1-thread-4] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+22944  [pool-1-thread-5] INFO  2541.bison.restaurant.SQLiteDB  - booking inserted
+22948  [pool-1-thread-5] INFO  2541.bison.restaurant.SQLiteDB  - Database closed
+22948  [pool-1-thread-5] INFO  n.restaurant.RestaurantHandler  - Request Handled successfully
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+83     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+0      [main] INFO  n.restaurant.RestaurantHandler  - Cannot open the database.
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+69     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+64     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+63     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+69     [main] INFO  comp2541.bison.restaurant.Main  - Server started
+0      [main] INFO  2541.bison.restaurant.SQLiteDB  - Tables created successfully
+61     [main] INFO  comp2541.bison.restaurant.Main  - Server started

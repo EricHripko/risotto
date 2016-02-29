@@ -16,12 +16,20 @@ import java.util.ArrayList;
 
 public abstract class Database {
 	
-	/*
+	/**
 	 * ArrayList of type Booking
 	 */
 	ArrayList<Booking> bookings = new ArrayList<>();
 	
-	//public abstract constructor
+	/**
+	 * ArrayList of type Table
+	 */
+	ArrayList<Table> tables = new ArrayList<>();
+	
+	/**
+	 * 
+	 * @param dbName
+	 */
 	public Database(String dbName){}
 	
 	/**
@@ -37,6 +45,16 @@ public abstract class Database {
 	 * @param startTime
 	 * @param endTime
 	 * @return ArrayList<Booking>
+	 * @throws Exception
 	 */
 	abstract ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception;
+	
+	/**
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @return ArrayList<Table>
+	 * @throws Exception
+	 */
+	abstract ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception;
 }
