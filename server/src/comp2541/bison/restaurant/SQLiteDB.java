@@ -219,11 +219,14 @@ public class SQLiteDB extends Database {
 
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
-		String retrieve = "SELECT RestaurantTable.ID FROM"														+
-						  " Booking INNER JOIN RestaurantTable"													+
-						  " ON Booking.tableID = RestaurantTable.ID"											+
-						  " WHERE Booking.unixStart <= " + startTime + " AND Booking.unixStart >= " + endTime 	+
-						  " AND Booking.unixEnd <= startTime " + " AND Booking.unixEnd >= " + endTime;
+		String retrieve = "SELECT * FROM RestaurantTable"														+
+						  " except"													+
+						  " SELECT RestaurantTable.* FROM"											+
+						  " RestaurantTable INNER JOIN Booking" +
+						  " ON RestaurantTable.ID = Booking.tableID" +
+						  " WHERE Booking.unixStart >= " + startTime + " AND Booking.unixStart <= " + endTime 	+
+						  " OR Booking.unixEnd >= "+ startTime + " AND Booking.unixEnd <= " + endTime +
+						  " OR Booking.unixStart < " + startTime + " AND Booking.unixEnd > " + endTime; 
 
 		//Retrieve booking objects
 		rs = stmt.executeQuery(retrieve);
@@ -234,6 +237,10 @@ public class SQLiteDB extends Database {
 			int referenceNumber = rs.getInt("ID");
 			String description = rs.getString("description");
 			int size = rs.getInt("size");
+			
+			System.out.println("ID: " + referenceNumber);
+			System.out.println("Desc: " + description);
+			System.out.println("Size: " + size + "\n");
 
 			//Create Booking instance 
 			Table table = new Table(referenceNumber, description, size);
