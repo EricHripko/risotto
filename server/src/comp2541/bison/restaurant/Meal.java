@@ -1,15 +1,20 @@
 package comp2541.bison.restaurant;
+
+import org.json.JSONObject;
+
 /**
  * 
  * @author Jones Agwata
  *
  */
 public class Meal {
+	
 	private int id;
 	private String name;
 	private String description;
 	private int price;
 	private String type;
+	
 	/**
 	 * 
 	 * @param pName
@@ -24,6 +29,7 @@ public class Meal {
 		type = pType;
 		
 	}
+	
 	/**
 	 * 
 	 * @return
@@ -63,6 +69,19 @@ public class Meal {
 	public String getType() {
 		return type;
 	}
+	
+	public JSONObject getJSONObject() {
+		JSONObject jsonMeal = new JSONObject();
+		
+		jsonMeal.put("id", id);
+		jsonMeal.put("name", name);
+		jsonMeal.put("description", description);
+		jsonMeal.put("price", price);
+		jsonMeal.put("category", type);
+		
+		return jsonMeal;
+	}
+	
 	/**
 	 * 
 	 * @param pId
