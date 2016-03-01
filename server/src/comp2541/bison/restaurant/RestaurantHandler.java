@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -158,7 +159,11 @@ public class RestaurantHandler extends AbstractHandler {
 					
 					// Build the JSON message:
 					JSONObject jsonResponse = new JSONObject();
-					jsonResponse.put("bookings", bookings);
+					JSONArray jsonBookingsArray = new JSONArray();
+					for (Booking b : bookings) {
+						jsonBookingsArray.put(b.getJSONObject());
+					}
+					jsonResponse.put("bookings", jsonBookingsArray);
 					
 					// Send OK and list of bookings:
 					response.setStatus(HttpServletResponse.SC_OK);
