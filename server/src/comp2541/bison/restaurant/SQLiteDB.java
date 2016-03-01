@@ -267,4 +267,10 @@ public class SQLiteDB extends Database {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	ArrayList<Order> getOrders() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
