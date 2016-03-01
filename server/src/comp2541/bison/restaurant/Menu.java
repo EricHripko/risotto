@@ -5,6 +5,9 @@ package comp2541.bison.restaurant;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * @author Jones Agwata
  *
@@ -13,6 +16,7 @@ public class Menu {
 	private int id;
 	private String name;
 	private ArrayList<Meal> meals;
+	
 	/**
 	 * 
 	 * @param pName
@@ -20,6 +24,7 @@ public class Menu {
 	public Menu(String pName) {
 		name = pName;
 	}
+	
 	/**
 	 * 
 	 * @param pName
@@ -29,6 +34,7 @@ public class Menu {
 		name = pName;
 		meals = pMeal;
 	}
+	
 	/**
 	 * adds meal to meals arrraylist
 	 * @param meal
@@ -37,6 +43,7 @@ public class Menu {
 		//add meal to meals arraylist
 		meals.add(meal);
 	}
+	
 	/**
 	 * Removes meal from arraylist
 	 * @param meal
@@ -47,6 +54,7 @@ public class Menu {
 		
 		meals.remove(mealIndex);
 	}
+	
 	/**
 	 * 
 	 * @return
@@ -70,6 +78,24 @@ public class Menu {
 	public ArrayList<Meal> getMeals() {
 		return meals;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public JSONObject getJSONObject() {
+		JSONObject jsonMenu = new JSONObject();
+		
+		// Add every meal to the JSONObject:
+		for (Meal meal : meals) {
+			// If the key doesn't exist the method append create it, the value
+			// is a JSONArray, which respects the communication protocol.
+			jsonMenu.append(meal.getType(), meal.getJSONObject());
+		}
+		
+		return jsonMenu;
+	}
+	
 	/**
 	 * 
 	 * @param pId
