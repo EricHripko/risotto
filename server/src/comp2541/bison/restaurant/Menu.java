@@ -5,7 +5,6 @@ package comp2541.bison.restaurant;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
