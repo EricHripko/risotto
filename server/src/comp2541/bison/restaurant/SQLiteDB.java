@@ -144,6 +144,12 @@ public class SQLiteDB extends Database {
 		//return reference to server
 		return ref;
 	}
+	
+	@Override
+	void insertOrder(Order order) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
@@ -273,4 +279,5 @@ public class SQLiteDB extends Database {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

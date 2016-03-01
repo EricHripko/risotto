@@ -40,6 +40,8 @@ public abstract class Database {
 	 */
 	abstract int insertBooking(Booking booking) throws Exception;
 	
+	abstract void insertOrder(Order order) throws Exception;
+	
 	/**
 	 * 
 	 * @param startTime
