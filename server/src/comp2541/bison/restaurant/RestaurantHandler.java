@@ -139,16 +139,18 @@ public class RestaurantHandler extends AbstractHandler {
 			}
 		} else if (request.getMethod().equalsIgnoreCase("GET")) {
 			
-			if (request.getRequestURI().startsWith("/bookings")) {
+			if (request.getRequestURI().equals("/bookings")) {
 				// Overview of bookings request
 				
+				String query = request.getQueryString();
+				
 				// Starting and ending time of the request:
-				int indexOfQuestionMark = request.getRequestURI().indexOf("?");
-				int indexOfAmpersend = request.getRequestURI().indexOf("&");
-				String startingTimeStr = request.getRequestURI().substring(indexOfQuestionMark+1, indexOfAmpersend);
-				String endingTimeStr = request.getRequestURI().substring(indexOfAmpersend+1);
-				long startingTime = Integer.parseInt(startingTimeStr.substring(startingTimeStr.indexOf("=") + 1));
-				long endingTime = Integer.parseInt(endingTimeStr.substring(endingTimeStr.indexOf("=") + 1));
+				int indexOfQuestionMark = query.indexOf("?");
+				int indexOfAmpersend = query.indexOf("&");
+				String startingTimeStr = query.substring(indexOfQuestionMark+1, indexOfAmpersend);
+				String endingTimeStr = query.substring(indexOfAmpersend+1);
+				long startingTime = Long.parseLong(startingTimeStr.substring(startingTimeStr.indexOf("=") + 1));
+				long endingTime = Long.parseLong(endingTimeStr.substring(endingTimeStr.indexOf("=") + 1));
 				
 				try {
 					// Get all the bookings from time to time:
