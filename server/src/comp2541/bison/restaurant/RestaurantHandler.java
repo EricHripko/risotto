@@ -180,6 +180,27 @@ public class RestaurantHandler extends AbstractHandler {
 				}
 				
 			}
+		} else if (request.getRequestURI().equals("/menu")) {
+			try {
+				// TODO:
+				// 1. Get the menu from the db; ArrayList<Meal> menuArrayList = restaurantDB.getMeals();
+				// 2. Group meals by category;  Menu menu = new Menu(ArrayList<Meal> pMenu);
+				// 3. Convert to JSONObject;    menu.getJSONObject();
+				// 4. Send JSONObject.          send.
+				
+				// Send OK and menu:
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.getWriter().println("");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+				JSONObject jsonError = new JSONObject();
+				jsonError.put("errorMessage", "The request cannot be satisfied");
+				
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().println(jsonError.toString());
+			}		
 		} else {
 			// Dump the Request
 			response.setStatus(HttpServletResponse.SC_OK);
