@@ -57,4 +57,6 @@ public abstract class Database {
 	 * @throws Exception
 	 */
 	abstract ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception;
+	
+	abstract ArrayList<Meal> getMeals() throws Exception;
 }

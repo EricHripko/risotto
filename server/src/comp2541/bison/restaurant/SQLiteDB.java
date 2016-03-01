@@ -261,4 +261,10 @@ public class SQLiteDB extends Database {
 		//return reference to server
 		return tables;
 	}
+
+	@Override
+	ArrayList<Meal> getMeals() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
