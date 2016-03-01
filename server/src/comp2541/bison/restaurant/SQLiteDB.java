@@ -162,7 +162,7 @@ public class SQLiteDB extends Database {
 		stmt = conn.createStatement();
 		String retrieve = "SELECT * FROM Booking "+
 						  "WHERE unixStart >= "	+	startTime	+	" OR unixStart <= "	+	endTime	+
-						  "OR unixEnd >= "		+	startTime	+	" OR unixEnd <= "	+	endTime	+ 
+						  " OR unixEnd >= "		+	startTime	+	" OR unixEnd <= "	+	endTime	+ 
 						  ";";
 		
 		//Retrieve booking objects
