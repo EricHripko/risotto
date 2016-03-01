@@ -135,6 +135,41 @@ public class RestaurantHandler extends AbstractHandler {
 					e.printStackTrace();
 				}
 				
+			} else if (request.getRequestURI().equals("/orders")) {
+				
+				try {
+					JSONArray jsonArrayOrder = jsonBody.getJSONArray("orders");
+					
+					// Insert all the orders into the database:
+					for (Object objectOrder : jsonArrayOrder) {
+						// jsonOrder must be a JSONObject as specified in the Wiki,
+						// otherwise the structure of the JSON message is not correct.
+						JSONObject jsonOrder = (JSONObject) objectOrder;
+						Order order = new Order(jsonOrder);
+						
+						try {
+							restaurantDB.insertOrder(order);
+						} catch (Exception e) {
+							// TODO: Add unsatisfied orders (the object order) to an array and send them
+							// back to the client to let them know that something wrong occurred.
+						}
+						
+					}
+					
+					// Send OK to the client.
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().println("");
+					
+				} catch (Exception e) {
+					// Send JSON error message to the client
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+					
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+					
+					e.printStackTrace();
+				}
 			} else {
 				// TODO Handle other POST requests.
 			}
