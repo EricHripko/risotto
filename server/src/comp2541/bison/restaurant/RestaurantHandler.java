@@ -2,6 +2,7 @@ package comp2541.bison.restaurant;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -30,7 +32,14 @@ public class RestaurantHandler extends AbstractHandler {
 	 * @param dbString Name of the database to use.
 	 */
 	public RestaurantHandler(String dbString) {
-		restaurantDB = new SQLiteDB(dbString);
+		try {
+			restaurantDB = new SQLiteDB(dbString);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.info("Cannot open the database.");
+			System.exit(0);
+		}
 	}
 	
 	/**
@@ -59,34 +68,117 @@ public class RestaurantHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("");
 		} else if (request.getMethod().equalsIgnoreCase("POST")) {
+			
+			BufferedReader requestBodyBR = request.getReader(); // Reader for the body of the HTTP message
+			StringBuilder sb = new StringBuilder();				// Auxiliary object to tranform body to JSON
+			String line;										// String used to read from BufferedReader
+			
+			// Reading the body:
+			while ((line = requestBodyBR.readLine()) != null) {
+				sb.append(line);
+			}
+			
+			// StringBuilder to JSONObject:
+			JSONObject jsonBody = new JSONObject(sb.toString());
+			
 			if (request.getRequestURI().equals("/bookings")) {
-				BufferedReader requestBodyBR = request.getReader(); // Reader for the body of the HTTP message
-				StringBuilder sb = new StringBuilder();				// Auxiliary object to tranform body to JSON
-				String line;										// String used to read from BufferedReader
-				
-				// Reading the body:
-				while ((line = requestBodyBR.readLine()) != null) {
-					sb.append(line);
-				}
-				
-				// StringBuilder to JSONObject:
-				JSONObject jsonBody = new JSONObject(sb.toString());
 				
 				// Booking requested, built from JSONObject:
 				Booking booking = new Booking(jsonBody);
 				
 				// Put booking into the database and get the reference number,
 				// then upload the object Booking with the received data:
-				int referenceNumber = restaurantDB.insertBooking(booking);
-				booking.setReferenceNumber(referenceNumber);
+				try {
+					
+					// Get all the available tables and check if the request can be satisfied:
+					ArrayList<Table> availableTables = restaurantDB.getAvailableTables(booking.getUnixStart(), booking.getUnixEnd());
+					boolean tableFound = false;
+					
+					for (Table table : availableTables) {
+						// TODO: This searches only for a perfect number, it should be changed to be more versatile.
+						if (table.getSize() == booking.getPartySize()) {
+							// If the table is found then the request could be satisfied:
+							tableFound = true;
+							
+							// Update table ID
+							booking.getTable().setId(table.getId());
+							
+							int referenceNumber = restaurantDB.insertBooking(booking);
+							booking.setReferenceNumber(referenceNumber);
+							
+							// Send OK and referenceNumber to the client.
+							response.setStatus(HttpServletResponse.SC_OK);
+							response.getWriter().println(booking.getJSONObject().toString());
+							
+							break;
+						}
+					}
+					
+					// If after the search the table hasn't been found then the request couldn't be satisfied:
+					if (tableFound == false) {
+						// Send JSON error message to the client
+						JSONObject jsonError = new JSONObject();
+						jsonError.put("errorMessage", "There are no tables available at the requested time.");
+						
+						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						response.getWriter().println(jsonError.toString());
+					}
+					
+				} catch (Exception e) {
+					// Send JSON error message to the client
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+					
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+					
+					e.printStackTrace();
+				}
 				
-				// Send OK and referenceNumber to the client.
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().println(booking);
-				
-				// TODO: Send other messages if the request fails.
 			} else {
 				// TODO Handle other POST requests.
+			}
+		} else if (request.getMethod().equalsIgnoreCase("GET")) {
+			
+			if (request.getRequestURI().equals("/bookings")) {
+				// Overview of bookings request
+				
+				String query = request.getQueryString();
+				
+				// Starting and ending time of the request:
+				int indexOfQuestionMark = query.indexOf("?");
+				int indexOfAmpersend = query.indexOf("&");
+				String startingTimeStr = query.substring(indexOfQuestionMark+1, indexOfAmpersend);
+				String endingTimeStr = query.substring(indexOfAmpersend+1);
+				long startingTime = Long.parseLong(startingTimeStr.substring(startingTimeStr.indexOf("=") + 1));
+				long endingTime = Long.parseLong(endingTimeStr.substring(endingTimeStr.indexOf("=") + 1));
+				
+				try {
+					// Get all the bookings from time to time:
+					ArrayList<Booking> bookings = restaurantDB.getBookings(startingTime, endingTime);
+					
+					// Build the JSON message:
+					JSONObject jsonResponse = new JSONObject();
+					JSONArray jsonBookingsArray = new JSONArray();
+					for (Booking b : bookings) {
+						jsonBookingsArray.put(b.getJSONObject());
+					}
+					jsonResponse.put("bookings", jsonBookingsArray);
+					
+					// Send OK and list of bookings:
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().println(jsonResponse.toString());
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+					
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+				}
+				
 			}
 		} else {
 			// Dump the Request

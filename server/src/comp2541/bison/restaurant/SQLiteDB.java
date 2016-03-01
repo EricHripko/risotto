@@ -1,6 +1,8 @@
 package comp2541.bison.restaurant;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import org.apache.log4j.*;
 public class SQLiteDB extends Database {
 
@@ -11,12 +13,12 @@ public class SQLiteDB extends Database {
 	static Logger log = Logger.getLogger(SQLiteDB.class.getName());
 
 	//public constructor
-	public SQLiteDB(String dbName) {
+	public SQLiteDB(String dbName) throws Exception {
 		super(dbName);
 
-		//fields initialisation
+		//fields initialization
 		this.dbName = dbName;
-		
+
 		//Call setUp()
 		setUp();
 	}
@@ -25,48 +27,49 @@ public class SQLiteDB extends Database {
 	 * 
 	 * connect to existing database, otherwise it creates one with the specified name.
 	 */
-	private void setUp() {
-		
+	private void setUp() throws Exception {
+
 		//Declare DB's objects
 		Connection conn = null;
 		Statement stmt = null;
 
-		try {
-			//Connect to database
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
-			conn.setAutoCommit(false);
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
 
-			//Create new table in the database
-			stmt = conn.createStatement();
-			String query = "CREATE TABLE IF NOT EXISTS Booking " +
-						   "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-						   " customerName TEXT NOT NULL,"+
-					       " phoneNumber TEXT NOT NULL,"+ 
-					       " email TEXT NOT NULL,"+
-					       " partySize INT NOT NULL,"+  
-					       " dateTime NUMERIC NOT NULL"+
-					       	");";
-			//Execute query
-			stmt.executeUpdate(query);
-			log.info("Table created successfully");
-			System.out.println("Table created successfully");
-			
-			//Free resources + commit
-			stmt.close();
-			conn.commit();
-			conn.close();
-			
-		} 
-		catch(Exception e) {
-			log.fatal(e.getMessage());
-			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-			System.exit(0);
-			
-		}
+		//Create needed tables in the database
+		stmt = conn.createStatement();
 		
-		//Console message
-		System.out.println("Set up completed");
+		String table = "CREATE TABLE IF NOT EXISTS RestaurantTable "	+
+		     	       "(ID INTEGER PRIMARY KEY NOT NULL,"				+
+	                   " description TEXT NOT NULL,"					+
+	                   " size INTEGER NOT NULL"							+ 
+	                   ");";
+		
+		String booking = "CREATE TABLE IF NOT EXISTS Booking "					+
+					     "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"				+
+				         " customerName TEXT NOT NULL,"							+
+				         " phoneNumber TEXT NOT NULL,"							+ 
+				         " email TEXT NOT NULL,"								+
+				         " partySize INTEGER NOT NULL,"							+  
+				         " unixStart NUMERIC NOT NULL,"							+
+				         " unixEnd   NUMERIC NOT NULL,"							+
+				         " tableID INTEGER,"									+
+				         " FOREIGN KEY(tableID) REFERENCES RestaurantTable(ID)"	+
+				         ");";
+
+		//Execute queries
+		stmt.executeUpdate(table);
+		stmt.executeUpdate(booking);
+		
+		//Log info (table created successfully)
+		log.info("Tables created successfully");
+		
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
 	}
 
 	/**
@@ -81,66 +84,181 @@ public class SQLiteDB extends Database {
 	 * overrides the Database class method and adds a new row to the Booking table.
 	 */
 	@Override
-	public int insertBooking(Booking booking) {
-		
+	public int insertBooking(Booking booking) throws Exception {
+
 		//reference variable
 		int ref = -1;
+
+		//Create DB's object
+		Connection conn = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+		System.out.println(dbName + " opened");
+
+		//Initialize prepared statement execution for insertion into the DB
+		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixStart, unixEnd, tableID)" +
+				        "VALUES(?, ?, ?, ?, ?, ?, ?);";
+		pstmt = conn.prepareStatement(insert);
+
+		//insert into database the Booking entry
+		pstmt.setString(1, booking.getCustomerName());
+		pstmt.setString(2, booking.getPhoneNumber());
+		pstmt.setString(3, booking.getEmail());
+		pstmt.setInt(4, booking.getPartySize());
+		pstmt.setLong(5, booking.getUnixStart());
+		pstmt.setLong(6, booking.getUnixEnd());
+		pstmt.setInt(7, booking.getTable().getId());
+		
+		//Execute insert into the DB
+		pstmt.executeUpdate();
+
+		//Log info (Booking insert success)
+		log.info("booking inserted");
+
+		//Execute query to retrieve ID from Booking table
+		stmt = conn.createStatement();
+		String idQuery = "SELECT MAX(ID) FROM Booking;";
+		rs = stmt.executeQuery(idQuery);
+
+		//Retrieve max ID from ResultSet
+		if(rs.next()) {
+			ref = rs.getInt(1);
+		}
+		
+		System.out.println("Reference: " + ref);
+
+		//Free resources + commit
+		pstmt.close();
+		conn.commit();
+		conn.close();
+
+		//Log info (Database closed)
+		log.info("Database closed");
+
+		//return reference to server
+		return ref;
+	}
+
+	@Override
+	ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
 		
 		//Create DB's object
 		Connection conn = null;
 		Statement stmt = null;
+		ResultSet rs = null;
 
-		//Database booking query
-		try {
-			//Connect to database
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
-			//conn.setAutoCommit(false);
-			System.out.println(dbName + " opened");
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
 
-			//Insert new row in the database
-			stmt = conn.createStatement();
+		//Initialize prepared statement execution to retrieve bookings
+		stmt = conn.createStatement();
+		String retrieve = "SELECT * FROM Booking "+
+						  "WHERE unixStart >= "	+	startTime	+	" OR unixStart <= "	+	endTime	+
+						  " OR unixEnd >= "		+	startTime	+	" OR unixEnd <= "	+	endTime	+ 
+						  ";";
+		
+		//Retrieve booking objects
+		rs = stmt.executeQuery(retrieve);
+
+		//Retrieve booking objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String customerName = rs.getString("customerName");
+			String phoneNumber = rs.getString("phoneNumber");
+			String email = rs.getString("email");
+			int partySize = rs.getInt("partySize");
+			long unixStart = rs.getLong("unixStart");
+			long unixEnd = rs.getLong("unixEnd");
+			int tableID = rs.getInt("tableID");
 			
-			String query1 = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, dateTime) " +
-	                       "VALUES('"                          + 
-	                       booking.getCustomerName()  + "', '" + 
-	                       booking.getPhoneNumber()  + "', '" + 
-	                       booking.getEmail()         + "', "  + 
-	                       booking.getPartySize()     + ", "   + 
-	                       booking.getUnixDate()      + ");";    
-	                     
+			//Create Booking instance 
+			Booking booking = new Booking(referenceNumber, 
+					                      customerName, 
+					                      phoneNumber, 
+					                      email, 
+					                      partySize, 
+					                      unixStart, 
+					                      unixEnd,
+					                      tableID);
+			bookings.add(booking);
+		}
+		
+		//Log info
+		log.info("Booking objects retrieved from database");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
+		//return reference to server
+		return bookings;
+	}
+
+	@Override
+	ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception {
+
+		//Create DB's object
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+
+		//Initialize prepared statement execution to retrieve bookings
+		stmt = conn.createStatement();
+		String retrieve = "SELECT * FROM RestaurantTable"														+
+						  " except"													+
+						  " SELECT RestaurantTable.* FROM"											+
+						  " RestaurantTable INNER JOIN Booking" +
+						  " ON RestaurantTable.ID = Booking.tableID" +
+						  " WHERE Booking.unixStart >= " + startTime + " AND Booking.unixStart <= " + endTime 	+
+						  " OR Booking.unixEnd >= "+ startTime + " AND Booking.unixEnd <= " + endTime +
+						  " OR Booking.unixStart < " + startTime + " AND Booking.unixEnd > " + endTime; 
+
+		//Retrieve booking objects
+		rs = stmt.executeQuery(retrieve);
+		
+		//Clear tables from previous data
+		tables.clear();
+
+		//Retrieve booking objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String description = rs.getString("description");
+			int size = rs.getInt("size");
 			
-			//Execute query for insert booking
-			stmt.executeUpdate(query1);
-			log.info("Booking Inserted in table");
-			//Get ID as reference for server
-			String query2 = "SELECT ID FROM Booking;";
-			
-			//Execute query to retrieve the ID
-			ResultSet rs = stmt.executeQuery(query2);
-			while(rs.next()) {
-				ref = rs.getInt("ID");
-			}
-			System.out.println("Reference: " + ref);
-			
-			//Free resources + commit
-			stmt.close();
-			//conn.commit();
-			conn.close();
-			log.info("Database closed");
-		} 
-		catch(Exception e) {
-			log.fatal(e.getMessage());
-			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-			System.exit(0);
-			
+			System.out.println("ID: " + referenceNumber);
+			System.out.println("Desc: " + description);
+			System.out.println("Size: " + size + "\n");
+
+			//Create Booking instance 
+			Table table = new Table(referenceNumber, description, size);
+			tables.add(table);
 		}
 
-		//Console message
-		System.out.println("Booking completed");
-		
-		
+		//Log info
+		log.info("ResturantTable objects retrieved from database");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
 		//return reference to server
-		return ref;
+		return tables;
 	}
 }
