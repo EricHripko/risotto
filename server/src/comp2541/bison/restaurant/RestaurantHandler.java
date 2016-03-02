@@ -174,7 +174,7 @@ public class RestaurantHandler extends AbstractHandler {
 							jsonUnsatisfiedOrders.put(order.getJSONObject());
 						}
 						
-						jsonError.put("errorMessage", "The request cannot be satisfied");
+						jsonError.put("errorMessage", "Some of the requested orders cannot be satisfied.");
 						jsonError.put("orders", jsonUnsatisfiedOrders);
 						
 						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
