@@ -22,7 +22,8 @@ public class Meal {
 	 * @param pPrice
 	 * @param pType
 	 */
-	public Meal(String pName, String pDescription, int pPrice, String pType){
+	public Meal(int pID, String pName, String pDescription, int pPrice, String pType){
+		id = pID;
 		name = pName;
 		description = pDescription;
 		price = pPrice;

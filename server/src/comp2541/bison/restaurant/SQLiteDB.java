@@ -58,10 +58,28 @@ public class SQLiteDB extends Database {
 				         " tableID INTEGER,"									+
 				         " FOREIGN KEY(tableID) REFERENCES RestaurantTable(ID)"	+
 				         ");";
+		
+		String meal = "CREATE TABLE IF NOT EXISTS Meal "	+
+			     	  "(ID INTEGER PRIMARY KEY NOT NULL,"	+
+			     	  " name TEXT NOT NULL,"				+
+			     	  " description TEXT NOT NULL,"			+ 
+			     	  " price REAL NOT NULL,"				+  
+			     	  " category TEXT NOT NULL"				+
+			     	  ");";
+		
+		String order = "CREATE TABLE IF NOT EXISTS RestaurantOrder "	+
+			     	   "(ID INTEGER PRIMARY KEY AUTOINCREMENT,"			+
+			     	   " mealID INTEGER NOT NULL,"						+
+			     	   " bookingID INTEGER NOT NULL,"					+ 
+			     	   " FOREIGN KEY(mealID) REFERENCES Meal(ID),"		+
+			     	   " FOREIGN KEY(bookingID) REFERENCES Booking(ID)"	+
+			     	   ");";
 
 		//Execute queries
 		stmt.executeUpdate(table);
 		stmt.executeUpdate(booking);
+		stmt.executeUpdate(meal);
+		stmt.executeUpdate(order);
 		
 		//Log info (table created successfully)
 		log.info("Tables created successfully");
@@ -101,7 +119,7 @@ public class SQLiteDB extends Database {
 		conn.setAutoCommit(false);
 		System.out.println(dbName + " opened");
 
-		//Initialize prepared statement execution for insertion into the DB
+		//Initialize prepared statement execution for insertion into the DB (Booking)
 		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixStart, unixEnd, tableID)" +
 				        "VALUES(?, ?, ?, ?, ?, ?, ?);";
 		pstmt = conn.prepareStatement(insert);
@@ -131,8 +149,6 @@ public class SQLiteDB extends Database {
 			ref = rs.getInt(1);
 		}
 		
-		System.out.println("Reference: " + ref);
-
 		//Free resources + commit
 		pstmt.close();
 		conn.commit();
@@ -147,8 +163,39 @@ public class SQLiteDB extends Database {
 	
 	@Override
 	void insertOrder(Order order) throws Exception {
-		// TODO Auto-generated method stub
 		
+		//Create DB's object
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+		System.out.println(dbName + " opened");
+
+		//Initialize prepared statement execution for insertion into the DB (Order)
+		String insert = "INSERT INTO RestaurantOrder(mealID, bookingID)" +
+						"VALUES(?, ?);";
+		pstmt = conn.prepareStatement(insert);
+
+		//insert into database the Order entry
+		pstmt.setInt(1, order.getMealId());
+		pstmt.setInt(2, order.getBookingId());
+
+		//Execute insert into the DB
+		pstmt.executeUpdate();
+
+		//Log info (Booking insert success)
+		log.info("order inserted");
+
+		//Free resources + commit
+		pstmt.close();
+		conn.commit();
+		conn.close();
+
+		//Log info (Database closed)
+		log.info("Database closed");
 	}
 
 	@Override
@@ -166,13 +213,16 @@ public class SQLiteDB extends Database {
 
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
-		String retrieve = "SELECT * FROM Booking "+
-						  "WHERE unixStart >= "	+	startTime	+	" OR unixStart <= "	+	endTime	+
+		String retrieve = "SELECT * FROM Booking"+
+						  " WHERE unixStart >= "	+	startTime	+	" OR unixStart <= "	+	endTime	+
 						  " OR unixEnd >= "		+	startTime	+	" OR unixEnd <= "	+	endTime	+ 
 						  ";";
 		
 		//Retrieve booking objects
 		rs = stmt.executeQuery(retrieve);
+		
+		//Clear tables from previous data
+		tables.clear();
 
 		//Retrieve booking objects from ResultSet
 		while(rs.next()) {
@@ -226,12 +276,12 @@ public class SQLiteDB extends Database {
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
 		String retrieve = "SELECT * FROM RestaurantTable"														+
-						  " except"													+
-						  " SELECT RestaurantTable.* FROM"											+
-						  " RestaurantTable INNER JOIN Booking" +
-						  " ON RestaurantTable.ID = Booking.tableID" +
+						  " except"																				+
+						  " SELECT RestaurantTable.* FROM"														+
+						  " RestaurantTable INNER JOIN Booking" 												+
+						  " ON RestaurantTable.ID = Booking.tableID" 											+
 						  " WHERE Booking.unixStart >= " + startTime + " AND Booking.unixStart <= " + endTime 	+
-						  " OR Booking.unixEnd >= "+ startTime + " AND Booking.unixEnd <= " + endTime +
+						  " OR Booking.unixEnd >= "+ startTime + " AND Booking.unixEnd <= " + endTime 			+
 						  " OR Booking.unixStart < " + startTime + " AND Booking.unixEnd > " + endTime; 
 
 		//Retrieve booking objects
@@ -270,14 +320,50 @@ public class SQLiteDB extends Database {
 
 	@Override
 	ArrayList<Meal> getMeals() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		
+		//Create DB's object
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 
-	@Override
-	ArrayList<Order> getOrders() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
 
+		//Initialize prepared statement execution to retrieve bookings
+		stmt = conn.createStatement();
+		String retrieve = "SELECT * FROM Meal";
+
+		//Retrieve booking objects
+		rs = stmt.executeQuery(retrieve);
+
+		//Clear tables from previous data
+		meals.clear();
+
+		//Retrieve booking objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String name = rs.getString("name");
+			String description = rs.getString("description");
+			int price = rs.getInt("price");
+			String category = rs.getString("category");
+
+			//Create Booking instance 
+			Meal meal = new Meal(referenceNumber, name, description, price, category);
+			meals.add(meal);
+		}
+
+		//Log info
+		log.info("Meal objects retrieved from database");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
+		//return reference to server
+		return meals;
+	}
 }

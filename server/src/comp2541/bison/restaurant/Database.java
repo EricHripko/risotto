@@ -27,6 +27,16 @@ public abstract class Database {
 	ArrayList<Table> tables = new ArrayList<>();
 	
 	/**
+	 * ArrayList of type Table
+	 */
+	ArrayList<Meal> meals = new ArrayList<>();
+	
+	/**
+	 * ArrayList of type Table
+	 */
+	ArrayList<Order> orders = new ArrayList<>();
+	
+	/**
 	 * 
 	 * @param dbName
 	 */
@@ -40,6 +50,11 @@ public abstract class Database {
 	 */
 	abstract int insertBooking(Booking booking) throws Exception;
 	
+	/**
+	 * 
+	 * @param order
+	 * @throws Exception
+	 */
 	abstract void insertOrder(Order order) throws Exception;
 	
 	/**
@@ -60,6 +75,10 @@ public abstract class Database {
 	 */
 	abstract ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception;
 	
+	/**
+	 * 
+	 * @return ArrayList<Meal>
+	 * @throws Exception
+	 */
 	abstract ArrayList<Meal> getMeals() throws Exception;
-	abstract ArrayList<Order> getOrders() throws Exception;
 }
