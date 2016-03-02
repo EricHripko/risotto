@@ -138,7 +138,9 @@ public class RestaurantHandler extends AbstractHandler {
 			} else if (request.getRequestURI().equals("/orders")) {
 				
 				try {
-					JSONArray jsonArrayOrder = jsonBody.getJSONArray("orders");
+					JSONArray jsonArrayOrder = jsonBody.getJSONArray("orders");   // Orders in the request.
+					ArrayList<Order> unsatisfiedOrders = new ArrayList<Order>();  // Unsatisfied orders to send back
+					boolean requestFullySatisfied = true; // Are all the requests satisfied?
 					
 					// Insert all the orders into the database:
 					for (Object objectOrder : jsonArrayOrder) {
@@ -152,13 +154,33 @@ public class RestaurantHandler extends AbstractHandler {
 						} catch (Exception e) {
 							// TODO: Add unsatisfied orders (the object order) to an array and send them
 							// back to the client to let them know that something wrong occurred.
+							unsatisfiedOrders.add(order);
+							requestFullySatisfied = false;
 						}
 						
 					}
 					
-					// Send OK to the client.
-					response.setStatus(HttpServletResponse.SC_OK);
-					response.getWriter().println("");
+					if (requestFullySatisfied) {
+						// Send OK to the client.
+						response.setStatus(HttpServletResponse.SC_OK);
+						response.getWriter().println("");
+					} else {
+						// Send JSON error message to the client with unsatisifed orders.
+						JSONObject jsonError = new JSONObject();
+						JSONArray jsonUnsatisfiedOrders = new JSONArray();
+						
+						// Construct a JSONArray including unsatisfied orders:
+						for (Order order : unsatisfiedOrders) {
+							jsonUnsatisfiedOrders.put(order.getJSONObject());
+						}
+						
+						jsonError.put("errorMessage", "The request cannot be satisfied");
+						jsonError.put("orders", jsonUnsatisfiedOrders);
+						
+						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						response.getWriter().println(jsonError.toString());
+					}
+					
 					
 				} catch (Exception e) {
 					// Send JSON error message to the client
