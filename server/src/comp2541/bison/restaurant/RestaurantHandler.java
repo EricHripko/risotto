@@ -64,7 +64,7 @@ public class RestaurantHandler extends AbstractHandler {
 		response.addHeader("Access-Control-Max-Age", "1728000");
 
 		if (request.getMethod().equalsIgnoreCase("options")) {
-			System.out.println("Requested URI: " + request.getRequestURI());
+			//System.out.println("Requested URI: " + request.getRequestURI());
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().println("");
 		} else if (request.getMethod().equalsIgnoreCase("POST")) {
