@@ -260,10 +260,10 @@ public class RestaurantHandler extends AbstractHandler {
 				response.getWriter().println("");
 			}
 
-			// The request has been handled correctly.
-			baseRequest.setHandled(true);
-			log.info("Request Handled successfully");
 		}
 
+		// The request has been handled correctly.
+		baseRequest.setHandled(true);
+		log.info("Request Handled successfully");
 	}
 }
