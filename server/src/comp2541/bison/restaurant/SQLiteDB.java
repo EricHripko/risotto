@@ -118,7 +118,7 @@ public class SQLiteDB extends Database {
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
-		System.out.println(dbName + " opened");
+		log.info(dbName + " opened");
 
 		//Initialize prepared statement execution for insertion into the DB (Booking)
 		String insert = "INSERT INTO Booking(customerName, phoneNumber, email, partySize, unixStart, unixEnd, tableID)" +
@@ -327,10 +327,6 @@ public class SQLiteDB extends Database {
 			int referenceNumber = rs.getInt("ID");
 			String description = rs.getString("description");
 			int size = rs.getInt("size");
-			
-			System.out.println("ID: " + referenceNumber);
-			System.out.println("Desc: " + description);
-			System.out.println("Size: " + size + "\n");
 
 			//Create Booking instance 
 			Table table = new Table(referenceNumber, description, size);
