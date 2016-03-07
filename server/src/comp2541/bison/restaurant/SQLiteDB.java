@@ -345,8 +345,8 @@ public class SQLiteDB extends Database {
 						  " SELECT RestaurantTable.* FROM"														+
 						  " RestaurantTable INNER JOIN Booking" 												+
 						  " ON RestaurantTable.ID = Booking.tableID" 											+
-						  " WHERE Booking.unixStart >= " + startTime + " AND Booking.unixStart <= " + endTime 	+
-						  " OR Booking.unixEnd >= "+ startTime + " AND Booking.unixEnd <= " + endTime 			+
+						  " WHERE Booking.unixStart >= " + startTime + " AND Booking.unixStart < " + endTime 	+
+						  " OR Booking.unixEnd > "+ startTime + " AND Booking.unixEnd <= " + endTime 			+
 						  " OR Booking.unixStart < " + startTime + " AND Booking.unixEnd > " + endTime; 
 
 		//Retrieve booking objects
