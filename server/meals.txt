@@ -1,5 +1,5 @@
-1,margherita,mozzarella,4.50,pizza
-2,salmone,affumicato,8,pizza
-3,tortellini,pesto,9,pasta
-4,gnocchi,arrabbiata,10.50,pasta
-5,arrabbiata,buona,8,pizza
+1,margherita,mozzarella,450,pizza
+2,salmone,affumicato,800,pizza
+3,tortellini,pesto,900,pasta
+4,gnocchi,arrabbiata,10500,pasta
+5,arrabbiata,buona,800,pizza

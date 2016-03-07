@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import org.apache.log4j.*;
+
 public class SQLiteDB extends Database {
 
 	/*
@@ -63,7 +64,7 @@ public class SQLiteDB extends Database {
 			     	  "(ID INTEGER PRIMARY KEY NOT NULL,"	+
 			     	  " name TEXT NOT NULL,"				+
 			     	  " description TEXT NOT NULL,"			+ 
-			     	  " price REAL NOT NULL,"				+  
+			     	  " price INTEGER NOT NULL,"			+  
 			     	  " category TEXT NOT NULL"				+
 			     	  ");";
 		
@@ -167,24 +168,54 @@ public class SQLiteDB extends Database {
 		//Create DB's object
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean check = false;
 
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
 		System.out.println(dbName + " opened");
-
-		//Initialize prepared statement execution for insertion into the DB (Order)
+		
+		//Statements string preparation
+		String mealID 	 = "SELECT ID FROM Meal" +
+						   " WHERE ID = ?;";
+		
+		String bookingID = "SELECT ID FROM Booking " +
+						   " WHERE ID = ?;";
+		
 		String insert = "INSERT INTO RestaurantOrder(mealID, bookingID)" +
 						"VALUES(?, ?);";
+		
+		//Prepared statement initialization
+		pstmt = conn.prepareStatement(mealID);
+		pstmt = conn.prepareStatement(bookingID);
 		pstmt = conn.prepareStatement(insert);
-
-		//insert into database the Order entry
+		
+		//Insert into database the Order entry
 		pstmt.setInt(1, order.getMealId());
 		pstmt.setInt(2, order.getBookingId());
 
-		//Execute insert into the DB
-		pstmt.executeUpdate();
+		//Execute mealID query
+		rs = pstmt.executeQuery(mealID);
+		if(rs.next()) {
+			check = true;
+		}
+		
+		//Execute bookingID query
+		rs = pstmt.executeQuery(bookingID);
+		if(rs.next()) {
+			check = true;
+		}
+		
+		//Execute insert query given condition
+		if(check == true) {
+			pstmt.setInt(3, order.getMealId());
+			pstmt.setInt(4, order.getBookingId());
+			pstmt.executeUpdate(insert);
+		}
+		
+		
 
 		//Log info (Booking insert success)
 		log.info("order inserted");
