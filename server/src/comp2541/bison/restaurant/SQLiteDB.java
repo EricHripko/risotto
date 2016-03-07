@@ -54,13 +54,13 @@ public class SQLiteDB extends Database {
 		this.dbName = dbName;
 		
 		//Drop tables via shell script
-		executeScript("dropScriptDB.sh");
+		//executeScript("dropScriptDB.sh");
 
 		//Call setUp()
 		setUp();
 		
 		//Import data into tables
-		executeScript("importScriptDB.sh");
+		//executeScript("importScriptDB.sh");
 	}
 
 	/**
@@ -197,6 +197,10 @@ public class SQLiteDB extends Database {
 		
 		//variable used for checking
 		boolean check = false;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
 
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
@@ -204,7 +208,7 @@ public class SQLiteDB extends Database {
 		conn.setAutoCommit(false);
 		System.out.println(dbName + " opened");
 		
-		//Statements string preparation
+		//Statements preparation
 		String mealID 	 = "SELECT ID FROM Meal" +
 						   " WHERE ID = ?;";
 		
@@ -215,35 +219,36 @@ public class SQLiteDB extends Database {
 						"VALUES(?, ?);";
 		
 		//Prepared statement initialization
-		pstmt = conn.prepareStatement(mealID);
-		pstmt = conn.prepareStatement(bookingID);
+		pstmt1 = conn.prepareStatement(mealID);
+		pstmt2 = conn.prepareStatement(bookingID);
 		pstmt = conn.prepareStatement(insert);
 		
-		//Insert into database the Order entry
+		//Order entries
+		pstmt1.setInt(1, order.getMealId());
+		pstmt2.setInt(1, order.getBookingId());
 		pstmt.setInt(1, order.getMealId());
 		pstmt.setInt(2, order.getBookingId());
 
+		
 		//Execute mealID query
-		rs = pstmt.executeQuery(mealID);
-		if(rs.next()) {
+		rs1 = pstmt1.executeQuery();
+		if(rs1.next()) {
 			check = true;
 		}
 		
 		//Execute bookingID query
-		rs = pstmt.executeQuery(bookingID);
-		if(rs.next()) {
+		rs2 = pstmt2.executeQuery();
+		if(rs2.next()) {
 			check = true;
 		}
 		
 		//Execute insert query given condition
 		if(check == true) {
-			pstmt.setInt(3, order.getMealId());
-			pstmt.setInt(4, order.getBookingId());
-			pstmt.executeUpdate(insert);
+			pstmt.executeUpdate();
 		}
 		else 
 			throw new IllegalAnnotationException("mealID and bookingID not valid");
-		
+			
 		
 
 		//Log info (Booking insert success)
@@ -277,7 +282,7 @@ public class SQLiteDB extends Database {
 		rs = stmt.executeQuery(retrieve);
 		
 		//Clear tables from previous data
-		tables.clear();
+		bookings.clear();
 
 		//Retrieve booking objects from ResultSet
 		while(rs.next()) {
