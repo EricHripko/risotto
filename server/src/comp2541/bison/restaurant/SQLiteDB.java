@@ -1,38 +1,74 @@
 package comp2541.bison.restaurant;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
 import org.apache.log4j.*;
 
-public class SQLiteDB extends Database {
+import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
-	/*
+public class SQLiteDB extends Database {
+	
+	/**
+	 * Logger file 
+	 */
+	static Logger log = Logger.getLogger(SQLiteDB.class.getName());
+
+	/**
 	 * String dbName
 	 */
 	private String dbName = null;
-	static Logger log = Logger.getLogger(SQLiteDB.class.getName());
+	
+	/**
+	 * Connection object
+	 */
+	private Connection conn = null;
+	
+	/**
+	 * Statement object
+	 */
+	private Statement stmt = null;
+	
+	/**
+	 * PreparedStatement object
+	 */
+	private PreparedStatement pstmt = null;
+	
+	/**
+	 * Result Set object
+	 */
+	private ResultSet rs = null;
+	
 
-	//public constructor
+	/**
+	 * SQLiteDB public constructor
+	 * 
+	 * @param dbName
+	 * @throws Exception
+	 */
 	public SQLiteDB(String dbName) throws Exception {
 		super(dbName);
 
 		//fields initialization
 		this.dbName = dbName;
+		
+		//Drop tables via shell script
+		executeScript("dropScriptDB.sh");
+		
+		//Import data into tables
+		executeScript("importScriptDB.sh");
 
 		//Call setUp()
 		setUp();
 	}
 
 	/**
+	 * setUp()
 	 * 
 	 * connect to existing database, otherwise it creates one with the specified name.
 	 */
 	private void setUp() throws Exception {
-
-		//Declare DB's objects
-		Connection conn = null;
-		Statement stmt = null;
 
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
@@ -108,12 +144,6 @@ public class SQLiteDB extends Database {
 		//reference variable
 		int ref = -1;
 
-		//Create DB's object
-		Connection conn = null;
-		Statement stmt = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -165,10 +195,7 @@ public class SQLiteDB extends Database {
 	@Override
 	void insertOrder(Order order) throws Exception {
 		
-		//Create DB's object
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		//variable used for checking
 		boolean check = false;
 
 		//Connect to database
@@ -214,6 +241,8 @@ public class SQLiteDB extends Database {
 			pstmt.setInt(4, order.getBookingId());
 			pstmt.executeUpdate(insert);
 		}
+		else 
+			throw new IllegalAnnotationException("mealID and bookingID not valid");
 		
 		
 
@@ -232,11 +261,6 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
 		
-		//Create DB's object
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -294,11 +318,6 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception {
 
-		//Create DB's object
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -348,11 +367,6 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Meal> getMeals() throws Exception {
 		
-		//Create DB's object
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
 		//Connect to database
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -392,5 +406,26 @@ public class SQLiteDB extends Database {
 
 		//return reference to server
 		return meals;
+	}
+	
+	/**
+	 * Method that runs shell
+	 * script for testing 
+	 * purposes
+	 */
+	public void executeScript(String script) throws Exception {
+		
+		//Get file path for execution
+		File file = new File(script);
+		String path = file.getAbsolutePath();
+
+		//Process builder object instantiation
+		ProcessBuilder pb = new ProcessBuilder(path);
+		//Process execution
+		Process p = pb.start();     
+		p.waitFor();           
+		
+		//Console message
+		System.out.println(script + " executed successfully");
 	}
 }
