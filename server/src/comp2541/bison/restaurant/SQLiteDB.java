@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.*;
 
-import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
 public class SQLiteDB extends Database {
 	
@@ -284,8 +283,9 @@ public class SQLiteDB extends Database {
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
 		String retrieve = "SELECT * FROM Booking"+
-						  " WHERE unixStart >= "	+	startTime	+	" OR unixStart <= "	+	endTime	+
-						  " OR unixEnd >= "		+	startTime	+	" OR unixEnd <= "	+	endTime	+ 
+						  " WHERE unixStart >= "	+	startTime	+	" AND unixStart < "	+	endTime	+
+						  " OR unixEnd > "		+	startTime	+	" AND unixEnd <= "	+	endTime	+
+						  " OR unixStart <= "		+	startTime	+	" AND unixEnd >= "	+	endTime	+
 						  ";";
 		
 		//Retrieve booking objects
