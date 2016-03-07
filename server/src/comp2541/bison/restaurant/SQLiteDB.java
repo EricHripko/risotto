@@ -55,12 +55,12 @@ public class SQLiteDB extends Database {
 		
 		//Drop tables via shell script
 		executeScript("dropScriptDB.sh");
-		
-		//Import data into tables
-		executeScript("importScriptDB.sh");
 
 		//Call setUp()
 		setUp();
+		
+		//Import data into tables
+		executeScript("importScriptDB.sh");
 	}
 
 	/**
