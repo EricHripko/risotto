@@ -196,7 +196,8 @@ public class SQLiteDB extends Database {
 	void insertOrder(Order order) throws Exception {
 		
 		//variable used for checking
-		boolean check = false;
+		boolean checkMeal = false;
+		boolean checkBooking = false;
 		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
 		ResultSet rs1 = null;
@@ -209,11 +210,11 @@ public class SQLiteDB extends Database {
 		System.out.println(dbName + " opened");
 		
 		//Statements preparation
-		String mealID 	 = "SELECT ID FROM Meal" +
-						   " WHERE ID = ?;";
+		String mealID 	 = "SELECT ID FROM Meal " +
+						   "WHERE ID = ?;";
 		
 		String bookingID = "SELECT ID FROM Booking " +
-						   " WHERE ID = ?;";
+						   "WHERE ID = ?;";
 		
 		String insert = "INSERT INTO RestaurantOrder(mealID, bookingID)" +
 						"VALUES(?, ?);";
@@ -232,22 +233,29 @@ public class SQLiteDB extends Database {
 		
 		//Execute mealID query
 		rs1 = pstmt1.executeQuery();
-		if(rs1.next()) {
-			check = true;
-		}
+		if(rs1.next()) 
+			checkMeal = true;
+		else
+			checkMeal = false;
 		
 		//Execute bookingID query
 		rs2 = pstmt2.executeQuery();
-		if(rs2.next()) {
-			check = true;
-		}
+		if(rs2.next()) 
+			checkBooking = true;
+		else
+			checkBooking = false;
 		
 		//Execute insert query given condition
-		if(check == true) {
+		if((checkMeal & checkBooking) == true) {
 			pstmt.executeUpdate();
 		}
-		else 
-			throw new IllegalAnnotationException("mealID and bookingID not valid");
+		else {
+			pstmt1.close();
+			pstmt2.close();
+			pstmt.close();
+			conn.close();
+			throw new IllegalArgumentException("mealID and/or bookingID invalid");
+		}
 			
 		
 
@@ -255,6 +263,8 @@ public class SQLiteDB extends Database {
 		log.info("order inserted");
 
 		//Free resources + commit
+		pstmt1.close();
+		pstmt2.close();
 		pstmt.close();
 		conn.commit();
 		conn.close();
