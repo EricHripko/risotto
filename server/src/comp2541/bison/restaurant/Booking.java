@@ -41,7 +41,9 @@ public class Booking {
 			unixEnd = jsonBooking.getLong("endingDate");
 		}
 		
-		table = new Table(0, "", 0); // TODO: Edit with correct values.
+		table = new Table(jsonBooking.getJSONObject("table").getInt("id"),
+						  jsonBooking.getJSONObject("table").getString("description"),
+						  jsonBooking.getJSONObject("table").getInt("size"));
 		
 		// TODO: All the inserted data MUST be correct.
 	}
@@ -53,7 +55,7 @@ public class Booking {
 				   int partySize, 
 				   long unixStart, 
 				   long unixEnd,
-				   int tableID) {
+				   Table table) {
 		
 		// States initialization
 		this.bookingID = bookingID;
@@ -63,7 +65,7 @@ public class Booking {
 		this.partySize = partySize;
 		this.unixStart = unixStart;
 		this.unixEnd = unixEnd;
-		this.table = new Table(tableID, "", 0); // TODO: All the data should be correct.
+		this.table = table;
 	}
 
 	public int getReferenceNumber() {
@@ -139,7 +141,7 @@ public class Booking {
 		JSONObject jsonBooking = new JSONObject();
 		
 		jsonBooking.put("referenceNumber", bookingID);
-		jsonBooking.put("costomerName", customerName);
+		jsonBooking.put("customerName", customerName);
 		jsonBooking.put("phoneNumber", phoneNumber);
 		jsonBooking.put("emailAddress", email);
 		jsonBooking.put("partySize", partySize);

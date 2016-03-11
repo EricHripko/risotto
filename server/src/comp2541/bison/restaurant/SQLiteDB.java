@@ -282,7 +282,9 @@ public class SQLiteDB extends Database {
 
 		//Initialize prepared statement execution to retrieve bookings
 		stmt = conn.createStatement();
-		String retrieve = "SELECT * FROM Booking"+
+		String retrieve = "SELECT Booking.*, RestaurantTable.description, RestaurantTable.size FROM"																+
+						  " Booking INNER JOIN RestaurantTable" 										+
+						  " ON Booking.tableID = RestaurantTable.ID"	 								+
 						  " WHERE unixStart >= "	+	startTime	+	" AND unixStart < "	+	endTime	+
 						  " OR unixEnd > "		+	startTime	+	" AND unixEnd <= "	+	endTime	+
 						  " OR unixStart <= "		+	startTime	+	" AND unixEnd >= "	+	endTime	+
@@ -305,6 +307,12 @@ public class SQLiteDB extends Database {
 			long unixStart = rs.getLong("unixStart");
 			long unixEnd = rs.getLong("unixEnd");
 			int tableID = rs.getInt("tableID");
+			String description = rs.getString("description");
+			int size = rs.getInt("size");
+
+			
+			//Create table instance
+			Table table = new Table(tableID, description, size);
 			
 			//Create Booking instance 
 			Booking booking = new Booking(referenceNumber, 
@@ -314,7 +322,7 @@ public class SQLiteDB extends Database {
 					                      partySize, 
 					                      unixStart, 
 					                      unixEnd,
-					                      tableID);
+					                      table);
 			bookings.add(booking);
 		}
 		
