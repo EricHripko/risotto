@@ -451,4 +451,10 @@ public class SQLiteDB extends Database {
 		//Console message
 		System.out.println(script + " executed successfully");
 	}
+
+	@Override
+	ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

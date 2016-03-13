@@ -81,4 +81,6 @@ public abstract class Database {
 	 * @throws Exception
 	 */
 	abstract ArrayList<Meal> getMeals() throws Exception;
+
+	abstract ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception;
 }
