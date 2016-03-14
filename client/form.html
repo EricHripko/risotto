@@ -21,28 +21,20 @@
 
 
 <body>
-<div class="formContainer">
-    <form>
-        <input type="text" id="name" placeholder="Name">
-        <br>
 
-        <input type="tel" id="phone" placeholder="Phone">
-        <br>
+<form id="bookingCreation">
+    <input type="text" id="name" placeholder="Name">
+    <br>
 
-        <input type="number" id="party" placeholder="Party size" min=1 step=1>
-        <br>
+    <input type="tel" id="phone" placeholder="Phone">
+    <br>
 
-        <input type="email" id="email" placeholder="Email">
-        <br>
+    <input type="number" id="party" placeholder="Party size" min=1 step=1>
+    <br>
 
-        <input type="date" id="date" placeholder="Date">
-        <input type="time" id="time" placeholder="Time">
-        <br>
-
-    </form>
-
-    <button id="buttonForm" type="button">Create</button>
-</div>
+    <input type="email" id="email" placeholder="Email">
+    <br>
+</form>
 
 <script type="text/javascript">
     document.getElementById("buttonForm").addEventListener("click", function () {
