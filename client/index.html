@@ -1,18 +1,15 @@
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <title>Risotto</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+    <title>Risotto</title>
 
-<link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="scripts/rivets.bundled.js"></script>
+    <script type="text/javascript" src="scripts/model-main.js"></script>
 </head>
-
 <body>
-  <script src="js/mainPage.js"></script>
 
 <div class="master">
     <h1>February 14th</h1>
@@ -20,76 +17,30 @@
         <a href="#">Bookings</a>
         <a href="#"> Take Orders</a>
     </nav>
-    
-   <ul>
-       <li>12</li>
-       <li>13</li>
-       <li>14</li>
-       <li>15</li>
-       <li>16</li>
-       <li>17</li>
-       <li>18</li>
-       <li>19</li>
-       <li>20</li>
-       <li>21</li>
-   </ul>
-   
-   <table>
-       <tr>
-           <td onclick="myfunction(this)">
-           </td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"> </td>
-       </tr>
-       
-       
-           <tr>
-           <td onclick="myfunction(this)">
-               
-           </td>
-           <td onclick="myfunction(this)">
-               <div class="text">            <form> 
-   Name: <br>
-   <input class="inp" type="text" name="firstname"><br>
-   Customers number: <br>
-   <input class="inp"  type="text" name="lastname"><br>
-   Telephone Number <br>
-   <input class="inp" type="text" name="firstname"><br> 
-   Email <br>
-   <input class="inp" type="text" name="firstname"><br>
-   
-   </form></div>
-           </td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"> </td>
-       </tr>
-       
-         <tr>
-           <td onclick="myfunction(this)"></td><div class="text">            <form> 
-   Name: <br>
-   <input  type="text" name="firstname"><br>
-   Customers number: <br>
-   <input   type="text" name="lastname"><br>
-   Telephone Number <br>
-   <input  type="text" name="firstname"><br> 
-   Email <br>
-   <input  type="text" name="firstname"><br>
-   
-   </form></div>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"></td>
-           <td onclick="myfunction(this)"> </td>
-       </tr>
-   </table>
-   
- 
-    <p> this is a paragraph</p>
-    
-    
+
+    <div id="bookingGrid">
+        <table id="calendar" style="background: white;">
+            <tr>
+                <th rv-each-table="tables" class="header">{table.description}</th>
+            </tr>
+            <tr rv-each-time="timescale" rv-hours="time.hour" rv-mins="time.mins">
+                <td rv-each-table="time.tables">
+                    <div class="booking" rv-each-booking="table.bookings">
+                        {booking.customerName}
+                        <br>
+                        {booking.partySize} customers
+                        <br>
+                        {booking.phoneNumber}
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <ul id="timescale">
+            <li rv-each-hour="hours">{hour}</li>
+        </ul>
+    </div>
 </div>
+
 </body>
 </html>
