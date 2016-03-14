@@ -103,7 +103,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 tables: tables,
                 hours: hours,
                 granularity: granularity,
-                timescale: timescale
+                timescale: timescale,
+                activeSlot: {
+                    hour: 0,
+                    mins: 0
+                }
             };
 
             // Update the current time
@@ -118,3 +122,35 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Failed to load bookings:" + JSON.stringify(ex));
         });
 });
+
+function createBooking(e)
+{
+    // Identify the grid slots
+    var slot = e.target;
+    var row = slot.parentNode;
+
+    // Identify the time and date of a booking
+    vmMainScreen.activeSlot.hour = row.getAttribute("hours");
+    vmMainScreen.activeSlot.mins = row.getAttribute("mins");
+
+    // Display booking creation form
+    var bounds = slot.getBoundingClientRect();
+    var form = document.getElementById("bookingCreation");
+    var fBounds = form.getBoundingClientRect();
+    if(bounds.top + fBounds.height < window.innerHeight)
+        form.style.top = bounds.top + "px";
+    else
+        form.style.top = (window.innerHeight - fBounds.height) + "px";
+    form.style.left = bounds.left + "px";
+    form.style.width = bounds.width + "px";
+    form.classList.remove("hidden");
+}
+
+function cancelBooking(e)
+{
+    // Hide previously opened form
+    var form = document.getElementById("bookingCreation");
+    form.classList.add("hidden");
+    // Reset the input
+    form.reset();
+}

@@ -11,7 +11,8 @@
     <script type="text/javascript" src="scripts/booking.js"></script>
     <script type="text/javascript" src="scripts/rivets.bundled.js"></script>
     <script type="text/javascript" src="scripts/model-main.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
                 <th rv-each-table="tables" class="header">{table.description}</th>
             </tr>
             <tr rv-each-time="timescale" rv-hours="time.hour" rv-mins="time.mins">
-                <td rv-each-table="time.tables">
+                <td rv-each-table="time.tables" rv-table="table.id" onclick="createBooking(event)">
                     <div class="booking" rv-each-booking="table.bookings">
                        <div class="bookingTime">
                            {booking.date | time}<br>
@@ -51,7 +52,26 @@
         <ul id="timescale">
             <li rv-each-hour="hours">{hour}</li>
         </ul>
+
+        <form id="bookingCreation" class="hidden">
+            <div id="time">{activeSlot.hour}:{activeSlot.mins | padZeroes}</div>
+            <i id="bookingCancel" class="material-icons" onclick="cancelBooking(event)">close</i>
+            <i id="bookingConfirm" class="material-icons">check</i>
+
+            <input type="text" id="name" placeholder="Name">
+            <br>
+
+            <input type="tel" id="phone" placeholder="Phone">
+            <br>
+
+            <input type="number" id="party" placeholder="Party size" min=1 step=1>
+            <br>
+
+            <input type="email" id="email" placeholder="Email">
+            <br>
+        </form>
     </div>
+
 </div>
 
 </body>
