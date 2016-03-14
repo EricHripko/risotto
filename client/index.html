@@ -6,31 +6,45 @@
     <title>Risotto</title>
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="scripts/crud.js"></script>
+    <script type="text/javascript">var server = new CRUDResource("http://localhost:8080", ["bookings"]);</script>
+    <script type="text/javascript" src="scripts/booking.js"></script>
     <script type="text/javascript" src="scripts/rivets.bundled.js"></script>
     <script type="text/javascript" src="scripts/model-main.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-<div class="master">
-    <h1>February 14th</h1>
-    <nav>
-        <a href="#">Bookings</a>
-        <a href="#"> Take Orders</a>
-    </nav>
+<div id="mainScreen">
+   <div id="header">
+       <h1>Bookings</h1>
+       <h2>{now | time}</h2>
+       <h3>{now | shortDate}</h3>
+   </div>
 
     <div id="bookingGrid">
-        <table id="calendar" style="background: white;">
+        <table id="calendar" style="background: #263238;">
             <tr>
                 <th rv-each-table="tables" class="header">{table.description}</th>
             </tr>
             <tr rv-each-time="timescale" rv-hours="time.hour" rv-mins="time.mins">
                 <td rv-each-table="time.tables">
                     <div class="booking" rv-each-booking="table.bookings">
-                        {booking.customerName}
-                        <br>
-                        {booking.partySize} customers
-                        <br>
-                        {booking.phoneNumber}
+                       <div class="bookingTime">
+                           {booking.date | time}<br>
+                       </div>
+                       <div class="customerName">
+                           <!-- TODO fix typo -->
+                        <strong>{booking.costomerName}</strong>
+                       </div>
+                       <div class ="otherInfo">
+                           {booking.partySize} customers
+                            <br>
+                            {booking.phoneNumber}
+                            <br> 
+                       </div>
+                        
+                        
                     </div>
                 </td>
             </tr>
