@@ -21,12 +21,53 @@
        <h2> Table n3</h2><br> 
        <div class ="starter">
            <h3>Starter</h3>
-           <h4>Salmon Tartare</h4> 
-        
+           <div id="input_div">
+                    <label type="text" id="textItem"value="salmon">salmon</label>
+                    <div id="button">
+                        <input type="button" value="-" id="moins" onclick="minus()">
+                        <input type="text" size="25" value="0" id="count">
+                        <input type="button" value="+" id="plus" onclick="plus()">
+                    </div>
+           </div>
+           
+           <div id="input_div">
+                <label type="text" id="textItem"value="prawn">prawn</label>
+                <div id="button">
+                   <input type="button" value="-" id="moins" onclick="minus()">
+                   <input type="text" size="25" value="0" id="count">
+                   <input type="button" value="+" id="plus" onclick="plus()">
+
+                </div>
+           </div>
+           
+           <div id="input_div">
+               <label type="text" id="textItem" value="soup">soup</label>
+               <div id="button">
+                    <input type="button" value="-" id="moins" onclick="minus()">
+                    <input type="text" size="25" value="0" id="count">
+                    <input type="button" value="+" id="plus" onclick="plus()">
+                </div>
+           </div>
+       </div>
+       <div class="main">
+           <h3>Main</h3>
+           
+       </div>
+       <div class="dessert">
+           <h3>Dessert</h3>
+       </div> 
+       <div class="drink">
+           <h3>Drinks</h3>
+       </div>
+           <div id="total">
+               <h4>Total Amount :</h4>
+               <h5>£216</h5>
+           </div>
+           
+           
        </div>
        
-       
-   </div> 
+    
     
     <div class="rightPannel">
         <h2>Menu</h2>
@@ -53,6 +94,15 @@
                 <button type="button" id="creme">French traditional Creme Brulee</button>
                 <button type="button" id="chocolate">Chocolate mousse with creme anglaise</button>
                 <button type="button" id="brownie">Homemade Brownie with vanila icecream</button>
+            </div>
+        </div>
+        
+        <div class="drink">
+            <h3>Drinks</h3>
+            <div class="drinkItems">
+                <button type="button" id="wine">Bordeau 2006 Red Wine</button>
+                <button type="button" id="beer">San Miguel Beer</button>
+                <button type="button" id="water">Evian Mineral Water</button>
             </div>
         </div>
         <script type="text/javascript" src="scripts/menuSelect.js" async></script>
