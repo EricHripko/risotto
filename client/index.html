@@ -35,8 +35,7 @@
                            {booking.date | time}<br>
                        </div>
                        <div class="customerName">
-                           <!-- TODO fix typo -->
-                        <strong>{booking.costomerName}</strong>
+                        <strong>{booking.customerName}</strong>
                        </div>
                        <div class ="otherInfo">
                            {booking.partySize} customers
@@ -56,9 +55,9 @@
         <form id="bookingCreation" class="hidden">
             <div id="time">{activeSlot.hour}:{activeSlot.mins | padZeroes}</div>
             <i id="bookingCancel" class="material-icons" onclick="cancelBooking(event)">close</i>
-            <i id="bookingConfirm" class="material-icons">check</i>
+            <i id="bookingConfirm" class="material-icons" onclick="confirmBooking(event)">check</i>
 
-            <input type="text" id="name" placeholder="Name">
+            <input type="text" id="name" placeholder="Name" value="Walk In">
             <br>
 
             <input type="tel" id="phone" placeholder="Phone">

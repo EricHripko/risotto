@@ -54,7 +54,10 @@ function CRUDResource(url, children) {
             request.onload = function () {
                 // An error returned by the server
                 if(this.status >= 400) {
-                    reject(new ResourceError(this.status, this.responseText));
+                    //if(this.getResponseHeader("Content-type") == "application/json")
+                        reject(JSON.parse(this.responseText));
+                    //else
+                    //    reject(new ResourceError(this.status, this.responseText));
                     return;
                 }
 
