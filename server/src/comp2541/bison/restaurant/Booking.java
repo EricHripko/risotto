@@ -41,7 +41,7 @@ public class Booking {
 			unixEnd = jsonBooking.getLong("endingDate");
 		}
 		
-		tableId = jsonBooking.getInt("id");
+		tableId = jsonBooking.getInt("table");
 		
 		// TODO: All the inserted data MUST be correct.
 	}
