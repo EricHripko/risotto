@@ -147,7 +147,7 @@ public class Booking {
 		jsonBooking.put("partySize", partySize);
 		jsonBooking.put("date", unixStart);
 		jsonBooking.put("endingDate", unixEnd);
-		jsonBooking.put("table", table.getJSONObject());
+		jsonBooking.put("table", table.getId());
 		
 		return jsonBooking;
 	}
