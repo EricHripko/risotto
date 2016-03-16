@@ -14,6 +14,10 @@ public class Table {
 	private String description;
 	private int size;
 	
+	public Table(int pId) {
+		id = pId;
+	}
+	
 	public Table(String pDescription, int pSize) {
 		description = pDescription;
 		size = pSize;

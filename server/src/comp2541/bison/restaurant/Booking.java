@@ -18,7 +18,7 @@ public class Booking {
 	private int partySize;		 /** Number of people of the party. */
 	private long unixStart;		 /** Date of start of the booking. */
 	private long unixEnd;		 /** Date of end of the booking. */
-	private Table table;		 /** Table assigned to the booking. */
+	private int tableId;		 /** Table assigned to the booking. */
 	
 	/**
 	 * Constructor from JSON object.
@@ -41,9 +41,7 @@ public class Booking {
 			unixEnd = jsonBooking.getLong("endingDate");
 		}
 		
-		table = new Table(jsonBooking.getJSONObject("table").getInt("id"),
-						  jsonBooking.getJSONObject("table").getString("description"),
-						  jsonBooking.getJSONObject("table").getInt("size"));
+		tableId = jsonBooking.getInt("table");
 		
 		// TODO: All the inserted data MUST be correct.
 	}
@@ -65,7 +63,7 @@ public class Booking {
 		this.partySize = partySize;
 		this.unixStart = unixStart;
 		this.unixEnd = unixEnd;
-		this.table = table;
+		this.tableId = table.getId();
 	}
 	
 	public Booking(int bookingID) {
@@ -101,7 +99,7 @@ public class Booking {
 	}
 	
 	public Table getTable() {
-		return table;
+		return new Table(tableId);
 	}
 	
 	public void setReferenceNumber(int pReferenceNumber) {
@@ -133,7 +131,7 @@ public class Booking {
 	}
 	
 	public void setTable(Table pTable) {
-		table = pTable;
+		tableId = pTable.getId();
 	}
 	
 	/**
@@ -151,7 +149,7 @@ public class Booking {
 		jsonBooking.put("partySize", partySize);
 		jsonBooking.put("date", unixStart);
 		jsonBooking.put("endingDate", unixEnd);
-		jsonBooking.put("table", table.getJSONObject());
+		jsonBooking.put("table", tableId);
 		
 		return jsonBooking;
 	}

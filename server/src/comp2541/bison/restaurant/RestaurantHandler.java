@@ -294,6 +294,35 @@ public class RestaurantHandler extends AbstractHandler {
 				
 				
 			}
+			
+		} else if (request.getRequestURI().equals("/tables")) {
+			// List of Tables Request:
+			
+			try {
+				// Get all the bookings from time to time:
+				ArrayList<Table> tables = restaurantDB.getTables();
+
+				// Build the JSON message:
+				JSONObject jsonResponse = new JSONObject();
+				JSONArray jsonTablesArray = new JSONArray();
+				for (Table t : tables) {
+					jsonTablesArray.put(t.getJSONObject());
+				}
+				jsonResponse.put("bookings", jsonTablesArray);
+
+				// Send OK and list of bookings:
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.getWriter().println(jsonResponse.toString());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				JSONObject jsonError = new JSONObject();
+				jsonError.put("errorMessage", "The request cannot be satisfied");
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().println(jsonError.toString());
+			}
 		} else {
 			// Dump the Request
 			response.setStatus(HttpServletResponse.SC_OK);

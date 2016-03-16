@@ -166,7 +166,7 @@ public class SQLiteDB extends Database {
 		//Execute insert into the DB
 		pstmt.executeUpdate();
 
-		//Log info (Booking insert success)
+		//Log info booking inserted
 		log.info("booking inserted");
 
 		//Execute query to retrieve ID from Booking table
@@ -480,6 +480,47 @@ public class SQLiteDB extends Database {
 
 		//return reference to server
 		return orderedMeals;
+	}
+
+	ArrayList<Table> getTables() throws Exception {
+		
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+
+		//Initialize prepared statement execution to retrieve tables
+		stmt = conn.createStatement();
+		String retrieve = "SELECT * FROM RestaurantTable";
+
+		//Retrieve booking objects
+		rs = stmt.executeQuery(retrieve);
+
+		//Clear tables from previous data
+		tables.clear();
+
+		//Retrieve table objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String description = rs.getString("description");
+			int size = rs.getInt("size");
+
+			//Create Booking instance 
+			Table table = new Table(referenceNumber, description, size);
+			tables.add(table);
+		}
+
+		//Log info
+		log.info("Table objects retrieved from RestaurantTable");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
+		//return reference to server
+		return tables;
 	}
 	
 	/**
