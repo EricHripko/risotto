@@ -361,7 +361,7 @@ public class SQLiteDB extends Database {
 		rs = stmt.executeQuery(retrieve);
 		
 		//Clear tables from previous data
-		tables.clear();
+		availableTables.clear();
 
 		//Retrieve booking objects from ResultSet
 		while(rs.next()) {
@@ -372,7 +372,7 @@ public class SQLiteDB extends Database {
 
 			//Create Booking instance 
 			Table table = new Table(referenceNumber, description, size);
-			tables.add(table);
+			availableTables.add(table);
 		}
 
 		//Log info
@@ -384,7 +384,7 @@ public class SQLiteDB extends Database {
 		conn.close();
 
 		//return reference to server
-		return tables;
+		return availableTables;
 	}
 
 	@Override
@@ -429,6 +429,57 @@ public class SQLiteDB extends Database {
 
 		//return reference to server
 		return meals;
+	}
+	
+	@Override
+	ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception {
+		
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+
+		//Initialize prepared statement execution to retrieve order for bookings
+		String orders = "SELECT Meal.* FROM" 									+
+						" RestaurantOrder JOIN Meal" 							+
+						" ON RestaurantOrder.mealID = Meal.ID JOIN" 			+
+						" Booking ON RestaurantOrder.bookingID = Booking.ID"	+
+						" WHERE (RestaurantOrder.bookingID = ?);";
+		pstmt = conn.prepareStatement(orders);
+		
+		//Set value
+		pstmt.setInt(1, booking.getReferenceNumber());
+		
+		//Clear ArrayList from previous data
+		orderedMeals.clear();
+		
+		//Execute query
+		rs = pstmt.executeQuery();
+		
+		//Retrieve booking objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String name = rs.getString("name");
+			String description = rs.getString("description");
+			int price = rs.getInt("price");
+			String category = rs.getString("category");
+
+			//Create Booking instance 
+			Meal meal = new Meal(referenceNumber, name, description, price, category);
+			orderedMeals.add(meal);
+		}
+
+		//Log info
+		log.info("Meal objects retrieved from database");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
+		//return reference to server
+		return orderedMeals;
 	}
 	
 	/**

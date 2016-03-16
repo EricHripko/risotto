@@ -67,6 +67,10 @@ public class Booking {
 		this.unixEnd = unixEnd;
 		this.table = table;
 	}
+	
+	public Booking(int bookingID) {
+		this.bookingID = bookingID;
+	}
 
 	public int getReferenceNumber() {
 		return bookingID;
