@@ -454,10 +454,10 @@ public class SQLiteDB extends Database {
 			//Retrieve data
 			int referenceNumber = rs.getInt("ID");
 			String description = rs.getString("description");
-			int price = rs.getInt("price");
+			int size = rs.getInt("size");
 
 			//Create Booking instance 
-			Table table = new Table(referenceNumber, description, price);
+			Table table = new Table(referenceNumber, description, size);
 			tables.add(table);
 		}
 
