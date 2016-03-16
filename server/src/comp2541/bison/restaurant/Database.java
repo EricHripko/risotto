@@ -24,6 +24,11 @@ public abstract class Database {
 	/**
 	 * ArrayList of type Table
 	 */
+	ArrayList<Table> availableTables = new ArrayList<>();
+	
+	/**
+	 * ArrayList of type Table
+	 */
 	ArrayList<Table> tables = new ArrayList<>();
 	
 	/**

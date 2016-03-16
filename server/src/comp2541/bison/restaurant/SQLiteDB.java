@@ -361,7 +361,7 @@ public class SQLiteDB extends Database {
 		rs = stmt.executeQuery(retrieve);
 		
 		//Clear tables from previous data
-		tables.clear();
+		availableTables.clear();
 
 		//Retrieve booking objects from ResultSet
 		while(rs.next()) {
@@ -372,7 +372,7 @@ public class SQLiteDB extends Database {
 
 			//Create Booking instance 
 			Table table = new Table(referenceNumber, description, size);
-			tables.add(table);
+			availableTables.add(table);
 		}
 
 		//Log info
@@ -384,7 +384,7 @@ public class SQLiteDB extends Database {
 		conn.close();
 
 		//return reference to server
-		return tables;
+		return availableTables;
 	}
 
 	@Override
@@ -431,6 +431,48 @@ public class SQLiteDB extends Database {
 		return meals;
 	}
 	
+	@Override
+	ArrayList<Table> getTables() throws Exception {
+		
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+
+		//Initialize prepared statement execution to retrieve bookings
+		stmt = conn.createStatement();
+		String retrieve = "SELECT * FROM RestaurantTable";
+
+		//Retrieve booking objects
+		rs = stmt.executeQuery(retrieve);
+
+		//Clear tables from previous data
+		tables.clear();
+
+		//Retrieve table objects from ResultSet
+		while(rs.next()) {
+			//Retrieve data
+			int referenceNumber = rs.getInt("ID");
+			String description = rs.getString("description");
+			int price = rs.getInt("price");
+
+			//Create Booking instance 
+			Table table = new Table(referenceNumber, description, price);
+			tables.add(table);
+		}
+
+		//Log info
+		log.info("Table objects retrieved from RestaurantTable");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+
+		//return reference to server
+		return tables;
+	}
+	
 	/**
 	 * Method that runs shell
 	 * script for testing 
@@ -450,11 +492,5 @@ public class SQLiteDB extends Database {
 		
 		//Console message
 		System.out.println(script + " executed successfully");
-	}
-
-	@Override
-	ArrayList<Table> getTables() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
