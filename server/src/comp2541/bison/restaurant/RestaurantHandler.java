@@ -260,8 +260,8 @@ public class RestaurantHandler extends AbstractHandler {
 				String query = request.getQueryString();
 
 				// Starting and ending time of the request:
-				int indexOfQuestionMark = query.indexOf("=");
-				String bookingIdStr = query.substring(indexOfQuestionMark+1);
+				int indexOfEqual = query.indexOf("=");
+				String bookingIdStr = query.substring(indexOfEqual+1);
 				int bookingId = Integer.parseInt(bookingIdStr);
 				
 				try {
