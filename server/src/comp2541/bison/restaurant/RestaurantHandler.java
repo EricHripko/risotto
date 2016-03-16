@@ -254,13 +254,13 @@ public class RestaurantHandler extends AbstractHandler {
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 					response.getWriter().println(jsonError.toString());
 				}
-			} else if (request.getRequestURI().equals("orders")) {
+			} else if (request.getRequestURI().equals("/orders")) {
 				// Orders of a Booking Request
 
 				String query = request.getQueryString();
 
 				// Starting and ending time of the request:
-				int indexOfQuestionMark = query.indexOf("?");
+				int indexOfQuestionMark = query.indexOf("=");
 				String bookingIdStr = query.substring(indexOfQuestionMark+1);
 				int bookingId = Integer.parseInt(bookingIdStr);
 				
