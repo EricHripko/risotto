@@ -166,7 +166,7 @@ public class SQLiteDB extends Database {
 		//Execute insert into the DB
 		pstmt.executeUpdate();
 
-		//Log info (Booking insert success)
+		//Log info booking inserted
 		log.info("booking inserted");
 
 		//Execute query to retrieve ID from Booking table
@@ -439,7 +439,7 @@ public class SQLiteDB extends Database {
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
 
-		//Initialize prepared statement execution to retrieve bookings
+		//Initialize prepared statement execution to retrieve tables
 		stmt = conn.createStatement();
 		String retrieve = "SELECT * FROM RestaurantTable";
 
