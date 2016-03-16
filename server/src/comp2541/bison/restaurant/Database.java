@@ -24,7 +24,7 @@ public abstract class Database {
 	/**
 	 * ArrayList of type Table
 	 */
-	ArrayList<Table> tables = new ArrayList<>();
+	ArrayList<Table> availableTables = new ArrayList<>();
 	
 	/**
 	 * ArrayList of type Table
@@ -35,6 +35,11 @@ public abstract class Database {
 	 * ArrayList of type Table
 	 */
 	ArrayList<Order> orders = new ArrayList<>();
+	
+	/**
+	 * ArrayList of type Meals
+	 */
+	ArrayList<Meal> orderedMeals = new ArrayList<>();
 	
 	/**
 	 * 
@@ -82,5 +87,11 @@ public abstract class Database {
 	 */
 	abstract ArrayList<Meal> getMeals() throws Exception;
 
+	/**
+	 * 
+	 * @param booking
+	 * @return ArrayList<Meal>
+	 * @throws Exception
+	 */
 	abstract ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception;
 }
