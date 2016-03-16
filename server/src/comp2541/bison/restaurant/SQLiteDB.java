@@ -361,7 +361,7 @@ public class SQLiteDB extends Database {
 		rs = stmt.executeQuery(retrieve);
 		
 		//Clear tables from previous data
-		tables.clear();
+		availableTables.clear();
 
 		//Retrieve booking objects from ResultSet
 		while(rs.next()) {
@@ -372,7 +372,7 @@ public class SQLiteDB extends Database {
 
 			//Create Booking instance 
 			Table table = new Table(referenceNumber, description, size);
-			tables.add(table);
+			availableTables.add(table);
 		}
 
 		//Log info
@@ -384,7 +384,7 @@ public class SQLiteDB extends Database {
 		conn.close();
 
 		//return reference to server
-		return tables;
+		return availableTables;
 	}
 
 	@Override
