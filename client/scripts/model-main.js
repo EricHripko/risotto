@@ -64,8 +64,12 @@ closeDateTime.setMinutes(59);
 openDateTime = Math.ceil(openDateTime.getTime() / 1000);
 closeDateTime = Math.ceil(closeDateTime.getTime() / 1000);
 
+// Viewmodel for the main screen
 var vmMainScreen = {};
 
+/**
+ * Refresh the list of bookings.
+ */
 function refreshBooking() {
     server.bookings.retrieve(undefined, {startingTime: openDateTime, endingTime: closeDateTime}).then(
         function (result) {
@@ -105,13 +109,16 @@ function refreshBooking() {
             vmMainScreen.timescale = timescale;
         }).catch(
         function (ex) {
-            console.log(ex);
-            alert("Failed to load bookings:" + JSON.stringify(ex));
+            ex.errorMessage = ex.errorMessage || "An error occured";
+            alert("Failed to load bookings: " + ex.errorMessage);
         });
 }
 
-function createBooking(e)
-{
+/**
+ * Create a new booking.
+ * @param e Click event.
+ */
+function createBooking(e) {
     // Identify the grid slots
     var slot = e.target;
     var row = slot.parentNode;
@@ -134,8 +141,12 @@ function createBooking(e)
     form.classList.remove("hidden");
 }
 
-function cancelBooking(e)
-{
+
+/**
+ * Cancel booking creation.
+ * @param e Click event.
+ */
+function cancelBooking(e) {
     // Hide previously opened form
     var form = document.getElementById("bookingCreation");
     form.classList.add("hidden");
@@ -143,6 +154,10 @@ function cancelBooking(e)
     form.reset();
 }
 
+/**
+ * Finish booking creation.
+ * @param e Click event.
+ */
 function confirmBooking(e) {
     // Retrieve the booking information
     var name = document.getElementById("name").value;

@@ -98,23 +98,25 @@ body
     /*
      * Booking card.
      */
-    div.booking
+    .booking
         position: absolute
         top: 0
         left: 0
         height: $booking-length / $interval-length * $interval-height
-        color: white
 
         box-sizing: border-box
         width: 100%
 
         padding: 10px
         background: #546e7a
+        color: white
         font-family: 'Lato', sans-serif
         font-weight: 100
         text-align: center
         font-size: 24px
+
         overflow: hidden
+        z-index: 10
         
         
         .bookingTime
@@ -226,3 +228,246 @@ body
     ::-webkit-input-placeholder
         color: white
         background: #2b79ac !important
+
+#menuScreen
+    position: absolute
+    top: -100%
+    left: 0
+
+    width: 100%
+    height: 100%
+
+    background: #263238
+    opacity: 0
+    z-index: 20
+
+    transition: top $animate, opacity $animate
+
+    &.show
+        top: 0
+        opacity: 1
+
+    /*
+     * Current order.
+     */
+    .leftPanel
+        position: absolute
+        top: 0
+        left: 0
+        bottom: 0
+
+        display: inline-block
+        width: 35%
+
+        padding: 16px 0
+
+        background: #2d2d33
+
+        /*
+         * Table name.
+         */
+        h2
+            font-family: 'Lato', sans-serif
+            color: white
+            text-align: center
+            font-size: 30px
+
+        /*
+         * Category name.
+         */
+        h3
+            font-family: 'Lato', sans-serif
+            position: relative
+            top: -25px
+            font-weight: 100
+            color: #e9592c
+            margin: 0
+            padding-top: 6px
+            font-size: 25px
+            padding-left: 15px
+
+        /*
+         * Order total.
+         */
+        .total
+            height: 40px
+            padding: 16px
+
+            border-top: solid rgba(#fff, .1) 1px
+
+            h4
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+                display: inline
+                color: white
+
+            h5
+                width: 84px
+
+                margin: 0
+
+                float: right
+                text-align: center
+
+                color: #61dbcb
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+
+        /*
+         * Ordered meal.
+         */
+        .meal
+            position: relative
+            padding: 0 16px
+
+            animation: fade-in 200ms
+
+            h4
+                height: 30px
+                margin: 8px 0
+
+                color: white
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+
+            /*
+             * How many meals ordered.
+             */
+            .counter
+                position: absolute
+                top: 0
+                right: 16px
+
+                color: #e9592c
+
+                /*
+                 * Actual counter.
+                 */
+                input
+                    display: block
+                    width: 28px
+                    height: 28px
+                    line-height: 28px
+
+                    float: left
+                    text-align: center
+
+                    color: #61dbcb
+                    font-family: 'Lato', sans-serif
+                    font-weight: 300
+                    font-size: 20px
+                    background: transparent
+                    border: none
+
+                /*
+                 * More and less buttons.
+                 */
+                .material-icons
+                    display: block
+
+                    cursor: pointer
+                    -webkit-user-select: none
+
+                    float: left
+                    text-align: center
+
+                    border: solid 2px #e9592c
+                    border-radius: 100%
+
+    /*
+     * Available meals.
+     */
+    .rightPanel
+        cursor: pointer
+        -webkit-user-select: none
+
+        width: 60%
+        box-sizing: border-box
+
+        margin-left: 35%
+        padding-left: 64px
+
+        /*
+         * Screen title.
+         */
+        h2
+            margin: 0
+            padding-top: 20px
+            padding-bottom: 10px
+
+            font-family: 'Lato', sans-serif
+            font-weight: 100
+            text-align: center
+            font-size: 25px
+            color: #61dbcb
+
+        /*
+         * Category name.
+         */
+        h3
+            margin: 0
+            padding-top: 16px
+            padding-left: 32px
+
+            font-family: 'Lato', sans-serif
+            font-weight: 100
+            font-size: 40px
+            color: #e9592c
+
+        .meal
+            position: relative
+
+            padding: 4px
+            padding-left: 32px
+
+            &:hover
+                background-color: lighten(#263238, 10%)
+                transition: background $animate
+            &:active
+                background-color: darken(#263238, 1%)
+                transition: background $animate
+
+            /*
+             * Meal name.
+             */
+            h4
+                display: block
+                margin: 0
+
+                letter-spacing: 1px
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+                color: white
+
+            /*
+             * Meal description.
+             */
+            h5
+                display: block
+                margin: 0
+
+                letter-spacing: 1px
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 16px
+                color: rgba(255, 255, 255, .3)
+
+            span.price
+                position: absolute
+                top: 8px
+                right: 8px
+
+                display: block
+
+                color: #61dbcb
+                font-family: 'Lato', sans-serif
+
+@keyframes fade-in
+    from
+        opacity: 0
+    to
+        opacity: 1

@@ -7,10 +7,11 @@
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="scripts/crud.js"></script>
-    <script type="text/javascript">var server = new CRUDResource("http://localhost:8080", ["bookings"]);</script>
+    <script type="text/javascript">var server = new CRUDResource("http://localhost:8080", ["bookings", "menu"]);</script>
     <script type="text/javascript" src="scripts/booking.js"></script>
     <script type="text/javascript" src="scripts/rivets.bundled.js"></script>
     <script type="text/javascript" src="scripts/model-main.js"></script>
+    <script type="text/javascript" src="scripts/model-menu.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 </head>
@@ -30,7 +31,7 @@
             </tr>
             <tr rv-each-time="timescale" rv-hours="time.hour" rv-mins="time.mins">
                 <td rv-each-table="time.tables" rv-table="table.id" onclick="createBooking(event)">
-                    <div class="booking" rv-each-booking="table.bookings">
+                    <div class="booking" rv-each-booking="table.bookings" onclick="showOrderScreen(event)">
                        <div class="bookingTime">
                            {booking.date | time}<br>
                        </div>
@@ -71,6 +72,41 @@
         </form>
     </div>
 
+</div>
+<div id="menuScreen">
+    <div class="leftPanel">
+        <h2>Table {table.description}</h2>
+        <div class="meals">
+            <div rv-each-meal="order" class="meal">
+                <h4>{meal.name}</h4>
+                <div class="counter">
+                    <i class="less material-icons" onclick="decreaseCount(event)">remove</i>
+                    <input type="text" rv-value="meal.count">
+                    <i class="more material-icons" onclick="increaseCount(event)">add</i>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="total">
+            <h4>Total</h4>
+            <h5>{orderTotal | gbp}</h5>
+        </div>
+    </div>
+    <div class="rightPanel">
+        <h2>Menu</h2>
+        <div>
+            <div rv-each-category="menu">
+                <h3>{category.name}</h3>
+                <div>
+                    <div class="meal" rv-each-meal="category.meals" rv-category="meal.category" onclick="orderMeal(event)">
+                        <h4>{meal.name}</h4>
+                        <h5>{meal.description}</h5>
+                        <span class="price">{meal.price | gbp}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
