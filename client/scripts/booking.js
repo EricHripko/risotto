@@ -5,9 +5,10 @@
  * @param emailAddress Email address of the person booking.
  * @param date Booking date.
  * @param partySize Party size.
+ * @param table Table ID.
  * @constructor
  */
-var Booking = function (customerName, phoneNumber, emailAddress, partySize, date) {
+var Booking = function (customerName, phoneNumber, emailAddress, partySize, date, table) {
     /**
      * Booking date.
      */
@@ -30,6 +31,10 @@ var Booking = function (customerName, phoneNumber, emailAddress, partySize, date
      * Email Address of the person booking.
      */
     this.emailAddress = emailAddress;
+    /**
+     * Target table ID.
+     */
+    this.table = table;
 };
 
 /**
