@@ -107,6 +107,7 @@ function refreshBooking() {
             vmMainScreen.hours = hours;
             vmMainScreen.granularity = granularity;
             vmMainScreen.timescale = timescale;
+            vmMainScreen.bookings = bookings;
         }).catch(
         function (ex) {
             ex.errorMessage = ex.errorMessage || "An error occured";

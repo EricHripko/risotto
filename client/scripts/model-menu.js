@@ -14,7 +14,7 @@ rivets.formatters.gbp = function (value) {
 // Perform data binding
 document.addEventListener("DOMContentLoaded", function() {
     // Load menu
-    server.menu.retrieve(undefined, {startingTime: openDateTime, endingTime: closeDateTime}).then(
+    server.menu.retrieve(undefined, {}).then(
         function (result) {
             // Setup view model
             vmMenu.menu = [];
@@ -112,7 +112,28 @@ function showOrderScreen(event) {
     event.stopPropagation();
 
     // Identify the table
-    var tableIndex = Array.prototype.indexOf.call(event.currentTarget.parentNode.parentNode.children, event.currentTarget.parentNode);
+    var target = event.currentTarget;
+    var tableIndex = Array.prototype.indexOf.call(target.parentNode.parentNode.children, target.parentNode);
     var table = vmMainScreen.tables[tableIndex];
+    // Identify the booking
+    var id = target.getAttribute("id");
+    var booking = vmMainScreen.bookings.filter(function (booking) { return booking.referenceNumber == id; })[0];
+
     vmMenu.table = table;
+    vmMenu.booking = booking;
+}
+
+function discardOrder() {
+    document.getElementById("menuScreen").classList.remove("show");
+}
+
+function confirmOrder() {
+    // Identify the items ordered
+    var order = [];
+    vmMenu.order.forEach(function (meal) {
+        for(var i = 0; i < meal.count; i++)
+            order.push({booking: vmMenu.booking.referenceNumber, meal: meal.id});
+    });
+
+    server.orders.create({orders: order});
 }

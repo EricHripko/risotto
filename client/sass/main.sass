@@ -4,6 +4,28 @@ $interval-length: 15
 $side-background: #2d2d33
 $animate: ease-in-out 200ms
 
+@mixin bordered-icon()
+    width: 24px
+    height: 24px
+
+    line-height: 24px
+    margin-left: 3px
+    text-align: center
+
+    font-size: 20px
+    border-radius: 100%
+
+    cursor: pointer
+    -webkit-user-select: none
+
+@mixin enlarged-icon()
+    width: 48px
+    height: 48px
+
+    font-size: 40px
+    line-height: 48px
+
+
 .hidden
     opacity: 0
     transform: scale(0)
@@ -190,22 +212,9 @@ body
         margin: 5px
 
     #bookingConfirm, #bookingCancel
-        width: 24px
-        height: 24px
-
-        line-height: 24px
-        margin-left: 3px
-        text-align: center
-
-        font-size: 20px
-
+        @include bordered-icon
         float: right
         border: solid rgba(255, 255, 255, .3) 2px
-        border-radius: 100%
-
-        cursor: pointer
-        user-select: none
-        -webkit-user-select: none
 
     input
         width: calc(100% - 10px)
@@ -262,6 +271,34 @@ body
         padding: 16px 0
 
         background: #2d2d33
+
+        /*
+         * Confirm order.
+         */
+        #orderConfirm
+            @include bordered-icon
+            @include enlarged-icon
+            position: absolute
+            bottom: 16px
+            left: 16px
+
+            color: #61dbcb
+            border: solid rgba(#61dbcb, .3) 2px
+
+        /*
+         * Pay order.
+         */
+        #orderPay
+            @include bordered-icon
+            @include enlarged-icon
+            position: absolute
+            bottom: 16px
+            right: 16px
+
+            font-size: 34px
+
+            color: #61dbcb
+            border: solid rgba(#61dbcb, .3) 2px
 
         /*
          * Table name.
@@ -366,16 +403,12 @@ body
                  * More and less buttons.
                  */
                 .material-icons
+                    @include bordered-icon
                     display: block
 
-                    cursor: pointer
-                    -webkit-user-select: none
-
                     float: left
-                    text-align: center
 
                     border: solid 2px #e9592c
-                    border-radius: 100%
 
     /*
      * Available meals.
@@ -389,6 +422,15 @@ body
 
         margin-left: 35%
         padding-left: 64px
+
+        #orderDiscard
+            @include bordered-icon
+            position: absolute
+            top: 16px
+            right: 16px
+
+            color: white
+            border: solid rgba(255, 255, 255, .3) 2px
 
         /*
          * Screen title.

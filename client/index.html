@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="scripts/crud.js"></script>
-    <script type="text/javascript">var server = new CRUDResource("http://localhost:8080", ["bookings", "menu"]);</script>
+    <script type="text/javascript">var server = new CRUDResource("http://localhost:8080", ["bookings", "menu", "orders"]);</script>
     <script type="text/javascript" src="scripts/booking.js"></script>
     <script type="text/javascript" src="scripts/rivets.bundled.js"></script>
     <script type="text/javascript" src="scripts/model-main.js"></script>
@@ -31,7 +31,7 @@
             </tr>
             <tr rv-each-time="timescale" rv-hours="time.hour" rv-mins="time.mins">
                 <td rv-each-table="time.tables" rv-table="table.id" onclick="createBooking(event)">
-                    <div class="booking" rv-each-booking="table.bookings" onclick="showOrderScreen(event)">
+                    <div class="booking" rv-each-booking="table.bookings" rv-id="booking.referenceNumber" onclick="showOrderScreen(event)">
                        <div class="bookingTime">
                            {booking.date | time}<br>
                        </div>
@@ -91,8 +91,11 @@
             <h4>Total</h4>
             <h5>{orderTotal | gbp}</h5>
         </div>
+        <i id="orderConfirm" class="material-icons" onclick="confirmOrder()">done</i>
+        <i id="orderPay" class="material-icons">payment</i>
     </div>
     <div class="rightPanel">
+        <i id="orderDiscard" class="material-icons" onclick="discardOrder()">clear</i>
         <h2>Menu</h2>
         <div>
             <div rv-each-category="menu">
