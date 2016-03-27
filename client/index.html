@@ -116,9 +116,9 @@
 <div id="payScreen">
     <i id="paymentDiscard" class="material-icons" onclick="discardPayment()">clear</i>
     <div id="payPage">
-        <form>
+        <form id="payForm">
             <h1>
-                Payment Details
+                Paying
                 <br>
                 <div id="amount">{orderTotal | gbp}</div>
             </h1>
@@ -127,13 +127,13 @@
             <div id="bottom">
                 <div id="cardNameWrapper">
                     <label for="cardName">Cardholder name</label>
-                    <input id="cardName" type="text" onkeypress='return (event.charCode >= 97 && event.charCode <= 122) || event.charCode==32'>
+                    <input id="cardName" type="text" onkeypress="return onlyAlpha(event);">
                 </div>
 
-                <i id="okIcon1" class="material-icons">check</i>
+                <i id="cardVerify" class="material-icons">check</i>
                 <div id="cardNumberWrapper">
                     <label for="number">Card Number</label>
-                    <input id="number" type="text" style="width: 200px;" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onfocus="checkInp1()" maxlength="16">
+                    <input id="number" type="text" style="width: 200px;" onkeypress="return onlyNumber(event);" oninput="verifyCard(event)" maxlength="16">
                 </div>
                 <br id="terribleLayout" />
 
@@ -149,10 +149,10 @@
                     </select>
                 </div>
 
-                <i id="okIcon2" class="material-icons">check</i>
+                <i id="ccvVerify" class="material-icons">check</i>
                 <div id="cvvWrapper">
                     <label for="cvv">CVV</label>
-                    <input id="cvv" type="text" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <input id="cvv" type="text" maxlength="4" onkeypress="return onlyNumber(event);" oninput="verifyCCV(event);">
                 </div>
                 <br>
                 <button id="payConfirm" type="button" onclick="confirmPayment()">Pay</button>

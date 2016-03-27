@@ -590,26 +590,32 @@ body
 
             input:focus
                 border-color: #61dbcb
-                border-radius: 15px
                 outline: none
 
 
-        #okIcon1
+        #cardVerify
             float: left
             margin-left: -20px
             margin-top: 15px
-            visibility: hidden
 
             color: #61dbcb
+            opacity: 0
 
-        #okIcon2
+            transition: opacity $animate
+            &.show
+                opacity: 1
+
+        #ccvVerify
             float: left
             margin-top: 26px
-            margin-left: 32px
-            margin-right: 4px
-            visibility: hidden
+            margin-left: 24px
 
             color: #61dbcb
+            opacity: 0
+
+            transition: opacity $animate
+            &.show
+                opacity: 1
 
     #cardNameWrapper
         float: left
