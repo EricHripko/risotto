@@ -152,6 +152,7 @@ function showOrderScreen(event) {
 
 function discardOrder() {
     document.getElementById("menuScreen").classList.remove("show");
+    discardPayment();
 }
 
 function confirmOrder() {
