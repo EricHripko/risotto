@@ -119,8 +119,35 @@ function showOrderScreen(event) {
     var id = target.getAttribute("id");
     var booking = vmMainScreen.bookings.filter(function (booking) { return booking.referenceNumber == id; })[0];
 
+    // Setup binding
     vmMenu.table = table;
     vmMenu.booking = booking;
+    vmMenu.order = [];
+    vmMenu.orderTotal = 0;
+
+    server.orders.retrieve(null, {id: id}).then(
+        function (result) {
+            var order = [];
+            var orderTotal = 0;
+            result.meals.forEach(function (meal) {
+                var item = order.filter(function (x) { return x.id == meal.id; });
+                if(item.length > 0)
+                    item[0].count++;
+                else {
+                    meal.count = 1;
+                    order.push(meal);
+                }
+
+                orderTotal += meal.price;
+            });
+
+            vmMenu.order = order;
+            vmMenu.orderTotal = orderTotal;
+        }).catch(
+        function (ex) {
+            ex.errorMessage = ex.errorMessage || "An error occured";
+            alert("Failed to load the order: " + ex.errorMessage);
+        });
 }
 
 function discardOrder() {
@@ -135,5 +162,12 @@ function confirmOrder() {
             order.push({booking: vmMenu.booking.referenceNumber, meal: meal.id});
     });
 
-    server.orders.create({orders: order});
+    server.orders.create({orders: order}).then(
+        function (result) {
+            document.getElementById("menuScreen").classList.remove("show");
+        }).catch(
+        function (ex) {
+            ex.errorMessage = ex.errorMessage || "An error occured";
+            alert("Failed to confirm order: " + ex.errorMessage);
+        });
 }

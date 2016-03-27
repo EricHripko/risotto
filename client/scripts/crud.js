@@ -63,7 +63,9 @@ function CRUDResource(url, children) {
 
                 // Command was successful
                 //var response = this.getResponseHeader("Content-type") == "application/json" ? JSON.parse(this.responseText) : this.responseText;
-                var response = JSON.parse(this.responseText);
+                var response = {};
+                if(this.responseText.trim() != "")
+                    response = JSON.parse(this.responseText);
                 resolve(response);
             };
             request.onerror = function () {
