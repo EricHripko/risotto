@@ -19,4 +19,12 @@ build:
     - copy client\*.html %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client
     - copy client\css\*.css %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\css
     - copy client\scripts\*.js %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\scripts
+    - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\bin
+    - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\bin\locales
+    - copy C:\Release\NWSJS\*.* %BINARIES_DROP%\Bison-%CI_BUILD_ID%\bin
+    - copy C:\Release\NWSJS\locales\*.* %BINARIES_DROP%\Bison-%CI_BUILD_ID%\bin\locales
     - echo Binaries available at %BINARIES_HREF%/Bison-%CI_BUILD_ID%/
+    - copy client\*.html %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
+    - copy client\*.json %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
+    - copy client\css\*.css %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\css
+    - copy client\scripts\*.js %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\scripts
