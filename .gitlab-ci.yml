@@ -23,8 +23,8 @@ build:
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\locales
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\css
     - mkdir %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\scripts
-    - copy C:\Release\NWSJS\*.* %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
-    - copy C:\Release\NWSJS\locales\*.* %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\locales
+    - copy C:\Release\NWJS\*.* %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
+    - copy C:\Release\NWJS\locales\*.* %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\locales
     - copy client\*.html %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
     - copy client\*.json %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
     - copy client\css\*.css %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\css
