@@ -29,5 +29,5 @@ build:
     - copy client\*.json %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
     - copy client\css\*.css %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\css
     - copy client\scripts\*.js %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\scripts
-    - C:\Release\7-Zip\7z.exe a %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\Client.zip %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin
+    - C:\Release\7-Zip\7z.exe a %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\Client.zip %BINARIES_DROP%\Bison-%CI_BUILD_ID%\client\bin\*
     - echo Binaries available at %BINARIES_HREF%/Bison-%CI_BUILD_ID%/
