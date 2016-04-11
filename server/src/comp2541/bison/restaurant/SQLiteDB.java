@@ -543,4 +543,13 @@ public class SQLiteDB extends Database {
 		//Console message
 		System.out.println(script + " executed successfully");
 	}
+
+	/**
+	 * Removes all the orders made by a booking.
+	 */
+	@Override
+	void removeAllOrders(Booking booking) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
