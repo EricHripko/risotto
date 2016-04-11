@@ -548,7 +548,7 @@ public class SQLiteDB extends Database {
 	 * Removes all the orders made by a booking.
 	 */
 	@Override
-	void removeAllOrders(Booking booking) throws Exception {
+	void removeAllOrders(Booking booking) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -102,6 +102,6 @@ public abstract class Database {
 
 	abstract ArrayList<Table> getTables() throws Exception;
 	
-	abstract void removeAllOrders(Booking booking) throws Exception;
+	abstract void removeAllOrders(Booking booking);
 
 }
