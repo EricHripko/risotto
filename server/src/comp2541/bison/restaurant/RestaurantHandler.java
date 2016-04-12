@@ -142,6 +142,14 @@ public class RestaurantHandler extends AbstractHandler {
 					ArrayList<Order> unsatisfiedOrders = new ArrayList<Order>();  // Unsatisfied orders to send back
 					boolean requestFullySatisfied = true; // Are all the requests satisfied?
 
+					// Cleans all the orders made previously.
+					for (Object objectOrder : jsonArrayOrder) {
+						JSONObject jsonOrder = (JSONObject) objectOrder;
+						Order order = new Order(jsonOrder);
+						Booking booking = new Booking(order.getBookingId());
+						restaurantDB.removeAllOrders(booking);
+					}
+					
 					// Insert all the orders into the database:
 					for (Object objectOrder : jsonArrayOrder) {
 						// jsonOrder must be a JSONObject as specified in the Wiki,

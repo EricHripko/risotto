@@ -100,6 +100,17 @@ public abstract class Database {
 	 */
 	abstract ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception;
 
+	/**
+	 * 
+	 * @return ArrayList<Tables>
+	 * @throws Exception
+	 */
 	abstract ArrayList<Table> getTables() throws Exception;
+	
+	/**
+	 * 
+	 * @param booking
+	 */
+	abstract void removeAllOrders(Booking booking) throws Exception;
 
 }

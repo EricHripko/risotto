@@ -482,6 +482,7 @@ public class SQLiteDB extends Database {
 		return orderedMeals;
 	}
 
+	@Override
 	ArrayList<Table> getTables() throws Exception {
 		
 		//Connect to database
@@ -523,6 +524,34 @@ public class SQLiteDB extends Database {
 		return tables;
 	}
 	
+	@Override
+	void removeAllOrders(Booking booking) throws Exception {
+
+		//Connect to database
+		Class.forName("org.sqlite.JDBC");
+		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		conn.setAutoCommit(false);
+
+		//Create statement 
+		stmt = conn.createStatement();
+		
+		//Remove order query
+		String query = "DELETE FROM RestaurantOrder " 										+
+					   "WHERE RestaurantOrder.bookingID = " + booking.getReferenceNumber()	+
+					   ";";
+		
+		//Execute query
+		stmt.executeUpdate(query);
+		
+		//Log info (table created successfully)
+		log.info("Tables created successfully");
+
+		//Free resources + commit
+		stmt.close();
+		conn.commit();
+		conn.close();
+	}
+	
 	/**
 	 * Method that runs shell
 	 * script for testing 
@@ -543,4 +572,6 @@ public class SQLiteDB extends Database {
 		//Console message
 		System.out.println(script + " executed successfully");
 	}
+
+	
 }
