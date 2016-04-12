@@ -191,6 +191,9 @@ document.addEventListener("DOMContentLoaded", function() {
         hour: 0,
         mins: 0
     };
+    server.tables.retrieve(undefined, {}).then(function (result) {
+        tables = result.tables;
+    });
     rivets.bind(document.getElementById("mainScreen"), vmMainScreen);
 
     // Periodically refresh the model
