@@ -306,7 +306,7 @@ public class RestaurantHandler extends AbstractHandler {
 					for (Table t : tables) {
 						jsonTablesArray.put(t.getJSONObject());
 					}
-					jsonResponse.put("bookings", jsonTablesArray);
+					jsonResponse.put("tables", jsonTablesArray);
 	
 					// Send OK and list of bookings:
 					response.setStatus(HttpServletResponse.SC_OK);
