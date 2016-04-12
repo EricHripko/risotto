@@ -101,7 +101,7 @@ public class RestaurantHandler extends AbstractHandler {
 							tableFound = true;
 
 							// Update table ID
-							booking.getTable().setId(table.getId());
+							booking.setTable(table);
 
 							int referenceNumber = restaurantDB.insertBooking(booking);
 							booking.setReferenceNumber(referenceNumber);
