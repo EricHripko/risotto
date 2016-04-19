@@ -80,6 +80,19 @@ body
             font-family: 'Lato', sans-serif
             font-size: 20px
             color: white
+        /*
+         * Choose the previous date interval.
+         */
+        #reportOpen
+            @include bordered-icon
+            position: absolute
+            top: 16px
+            right: 16px
+
+            font-size: 16px
+
+            color: white
+            border: solid rgba(saturate(#e9592c, 18), .6) 2px
 
 
 /*
@@ -238,6 +251,10 @@ body
         color: white
         background: #2b79ac !important
 
+
+/*
+ * Screen that displays the current menu.
+ */
 #menuScreen
     position: absolute
     top: -100%
@@ -282,8 +299,8 @@ body
             bottom: 16px
             left: 16px
 
-            color: #61dbcb
-            border: solid rgba(#61dbcb, .3) 2px
+            color: white
+            border: solid rgba(#61dbcb, .6) 2px
 
         /*
          * Pay order.
@@ -297,8 +314,8 @@ body
 
             font-size: 34px
 
-            color: #61dbcb
-            border: solid rgba(#61dbcb, .3) 2px
+            color: white
+            border: solid rgba(#61dbcb, .6) 2px
 
         /*
          * Table name.
@@ -378,7 +395,7 @@ body
                 top: 0
                 right: 16px
 
-                color: #e9592c
+                color: white
 
                 /*
                  * Actual counter.
@@ -408,7 +425,7 @@ body
 
                     float: left
 
-                    border: solid 2px #e9592c
+                    border: solid rgba(saturate(#e9592c, 18), .6) 2px
 
     /*
      * Available meals.
@@ -508,6 +525,10 @@ body
                 color: #61dbcb
                 font-family: 'Lato', sans-serif
 
+
+/*
+ * Payment screen.
+ */
 #payScreen
     position: absolute
     top: -300px
@@ -671,6 +692,146 @@ body
 
         color: white
         border: solid rgba(255, 255, 255, .3) 2px
+
+
+/*
+ * Accounting reports screen.
+ */
+#reportScreen
+    position: absolute
+    top: -100%
+    left: 0
+
+    opacity: 0
+    z-index: 20
+
+    width: 100%
+    height: 100%
+    padding: 16px
+
+    color: white
+    font-family: 'Lato', sans-serif
+    background: #263238
+
+    box-sizing: border-box
+
+    transition: top $animate, opacity $animate
+
+    &.show
+        top: 0
+        opacity: 1
+
+    /*
+     * Screen title.
+     */
+    h1
+        font-weight: 100
+        color: #61dbcb
+        margin-top: 0
+
+    /*
+     * Month name and total.
+     */
+    h2
+        font-weight: 300
+        color: #e9592c
+
+        .total
+            color: white
+
+    /*
+     * Calendar with total takings.
+     */
+    table
+        width: 100%
+
+        border-spacing: 0
+
+        /*
+         * Headers with week day names.
+         */
+        th
+            font-weight: 100
+            font-size: 20px
+            color: white
+
+            padding-bottom: 16px
+
+        td, th
+            border-right: solid #0bf4ff 2px
+            border-bottom: solid #65a5ec 1px
+            border-left: none
+            border-top: none
+
+        /*
+         * Day tile.
+         */
+        td
+            position: relative
+
+            box-sizing: border-box
+            width: 14%
+            height: 120px
+            padding: 8px
+
+            text-align: right
+            vertical-align: top
+
+            color: #ccc
+            font-size: 18px
+
+            .total
+                position: absolute
+                top: 50%
+                left: 0
+                right: 0
+                bottom: 0
+
+                height: 42px
+                margin-top: -21px
+                text-align: center
+
+                color: #61dbcb
+                font-size: 32px
+
+        th:last-child, td:last-child
+            border-right: none
+
+    /*
+     * Close the window.
+     */
+    #reportClose
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 16px
+
+        color: white
+        border: solid rgba(255, 255, 255, .3) 2px
+
+    /*
+     * Choose the previous date interval.
+     */
+    #dateBefore
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 88px
+
+        color: white
+        border: solid rgba(saturate(#e9592c, 18), .6) 2px
+
+    /*
+     * Choose the next date interval.
+     */
+    #dateAfter
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 52px
+
+        color: white
+        border: solid rgba(saturate(#e9592c, 18), .6) 2px
 
 @keyframes fade-in
     from

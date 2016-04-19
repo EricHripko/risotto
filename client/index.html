@@ -13,6 +13,7 @@
     <script type="text/javascript" src="scripts/model-main.js"></script>
     <script type="text/javascript" src="scripts/model-menu.js"></script>
     <script type="text/javascript" src="scripts/model-pay.js"></script>
+    <script type="text/javascript" src="scripts/model-report.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 </head>
@@ -23,6 +24,8 @@
        <h1>Bookings</h1>
        <h2>{now | time}</h2>
        <h3>{now | shortDate}</h3>
+
+       <i id="reportOpen" class="material-icons" onclick="reportOpen(event)">book</i>
    </div>
 
     <div id="bookingGrid">
@@ -160,6 +163,35 @@
 
         </form>
     </div>
+</div>
+
+<div id="reportScreen">
+    <i id="reportClose" class="material-icons" onclick="reportClose(event)">clear</i>
+    <i id="dateBefore" class="material-icons" onclick="reportBefore(event)">keyboard_arrow_left</i>
+    <i id="dateAfter" class="material-icons" onclick="reportAfter(event)">keyboard_arrow_right</i>
+    <h1>Financial Summary</h1>
+    <h2>
+        {month} takings
+        &nbsp;
+        <span class="total" rv-text="total | gbp"></span>
+    </h2>
+    <table>
+        <tr>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
+        </tr>
+        <tr rv-each-week="weeks">
+            <td rv-each-day="week">
+                {day.day}
+                <div class="total" rv-unless="day.empty" rv-text="day.total | gbp"></div>
+            </td>
+        </tr>
+    </table>
 </div>
 
 </body>
