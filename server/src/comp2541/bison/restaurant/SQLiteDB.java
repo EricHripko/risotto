@@ -3,7 +3,6 @@ package comp2541.bison.restaurant;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-
 import org.apache.log4j.*;
 
 
@@ -19,27 +18,6 @@ public class SQLiteDB extends Database {
 	 */
 	private String dbName = null;
 	
-	/**
-	 * Connection object
-	 */
-	private Connection conn = null;
-	
-	/**
-	 * Statement object
-	 */
-	private Statement stmt = null;
-	
-	/**
-	 * PreparedStatement object
-	 */
-	private PreparedStatement pstmt = null;
-	
-	/**
-	 * Result Set object
-	 */
-	private ResultSet rs = null;
-	
-
 	/**
 	 * SQLiteDB public constructor
 	 * 
@@ -69,6 +47,10 @@ public class SQLiteDB extends Database {
 	 */
 	private void setUp() throws Exception {
 
+		//Variable declaration
+		Connection conn = null;
+		Statement stmt = null;
+		
 		//Connection set up.
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -141,9 +123,14 @@ public class SQLiteDB extends Database {
 	@Override
 	public int insertBooking(Booking booking) throws Exception {
 
+		//Variable declaration
 		int ref = -1;
-
-		//Connection set up.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		
+		//Connection to db
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
@@ -180,6 +167,7 @@ public class SQLiteDB extends Database {
 		
 		//Close connections
 		rs.close();
+		stmt.close();
 		pstmt.close();
 		conn.commit();
 		conn.close();
@@ -193,12 +181,14 @@ public class SQLiteDB extends Database {
 		
 		boolean checkMeal = false;
 		boolean checkBooking = false;
+		PreparedStatement pstmt = null;
 		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
 
 		//Connection setup
+		Connection conn = null;
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
@@ -253,9 +243,9 @@ public class SQLiteDB extends Database {
 		log.info("order inserted");
 
 		//Close connections
-		pstmt.close();
 		rs1.close();
 		rs2.close();
+		pstmt.close();
 		pstmt1.close();
 		pstmt2.close();
 		conn.commit();
@@ -265,8 +255,11 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
 		
-		//List of type booking
+		//Variable declaration
 		ArrayList<Booking> bookings = new ArrayList<>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		
 		//Connection set up.
 		Class.forName("org.sqlite.JDBC");
@@ -334,9 +327,12 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception {
 		
-		//List of type Table
+		//Variable declaration
 		ArrayList<Table> availableTables = new ArrayList<>();
-
+		ResultSet rs = null;
+		Connection conn = null;
+		Statement stmt = null;
+		
 		//Connection set up.
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
@@ -387,6 +383,9 @@ public class SQLiteDB extends Database {
 		
 		//List of type Meal
 		ArrayList<Meal> meals = new ArrayList<>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		
 		//Connection set up.
 		Class.forName("org.sqlite.JDBC");
@@ -431,10 +430,14 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception {
 		
-		//List of type Meal
+		//Variable declaration
 		ArrayList<Meal> orderedMeals = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
 		//Connection set up.
+		
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
@@ -472,7 +475,7 @@ public class SQLiteDB extends Database {
 
 		//Close connections
 		rs.close();
-		stmt.close();
+		pstmt.close();
 		conn.commit();
 		conn.close();
 
@@ -482,10 +485,14 @@ public class SQLiteDB extends Database {
 	@Override
 	ArrayList<Table> getTables() throws Exception {
 		
-		//List of type Table
+		//Variable declaration
 		ArrayList<Table> tables = new ArrayList<>();
+		ResultSet rs = null;
+		Connection conn = null;
+		Statement stmt = null;
 		
 		//Connection to database
+		
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
@@ -524,7 +531,11 @@ public class SQLiteDB extends Database {
 	@Override
 	void removeAllOrders(Booking booking) throws Exception {
 
-		//Connection to database
+		//Variable declaration
+		Connection conn = null;
+		Statement stmt = null;
+		
+		//Variable declaration
 		Class.forName("org.sqlite.JDBC");
 		conn = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 		conn.setAutoCommit(false);
