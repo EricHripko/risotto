@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Database abstract class that 
  * defines the general usage of the
- * database using JDBC framework.
+ * database.
  * 
  * @author Ilyass Taouil
  */
