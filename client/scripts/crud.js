@@ -34,28 +34,38 @@ function CRUDResource(url, children) {
         return new Promise(function (resolve, reject) {
 
             var request = new XMLHttpRequest();
-            request.open(method, resource.url + suffix, true);
 
             // Set the request parameters
-            var body;
+            var body = "";
             if(method != "GET") {
+                request.open(method, resource.url + suffix, true);
                 request.setRequestHeader("Content-type", "application/json");
                 body = JSON.stringify(parameters);
             }
-            else
+            else {
+                suffix += "?";
                 Object.keys(parameters).forEach(function (key) {
-                    body += encodeURI(key) + "=" + encodeURI(parameters[key]);
+                    suffix += encodeURI(key) + "=" + encodeURI(parameters[key]) + "&";
                 });
+                suffix = suffix.substring(0, suffix.length - 1);
+                request.open(method, resource.url + suffix, true);
+            }
 
             request.onload = function () {
                 // An error returned by the server
                 if(this.status >= 400) {
-                    reject(new ResourceError(this.status, this.responseText));
+                    //if(this.getResponseHeader("Content-type") == "application/json")
+                        reject(JSON.parse(this.responseText));
+                    //else
+                    //    reject(new ResourceError(this.status, this.responseText));
                     return;
                 }
 
                 // Command was successful
-                var response = this.getResponseHeader("Content-type") == "application/json" ? JSON.parse(this.responseText) : this.responseText;
+                //var response = this.getResponseHeader("Content-type") == "application/json" ? JSON.parse(this.responseText) : this.responseText;
+                var response = {};
+                if(this.responseText.trim() != "")
+                    response = JSON.parse(this.responseText);
                 resolve(response);
             };
             request.onerror = function () {
@@ -77,9 +87,10 @@ function CRUDResource(url, children) {
     /**
      * Retrieve the existing resource.
      * @param id Unique identifier of the resource.
+     * @param parameters Retrieval parameters.
      */
-    this.retrieve = function (id) {
-        return this.request("GET", {}, id);
+    this.retrieve = function (id, parameters) {
+        return this.request("GET", parameters, id);
     };
 
     /**

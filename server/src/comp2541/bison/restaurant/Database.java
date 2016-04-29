@@ -4,39 +4,16 @@ import java.util.ArrayList;
 
 /**
  * Database abstract class that 
- * defines the general usage of
- * databAse using JDBC framework
- * independently of what database
- * engine is used.
- * 
+ * defines the general usage of the
+ * database.
  * 
  * @author Ilyass Taouil
- *
  */
 
 public abstract class Database {
-	
+		
 	/**
-	 * ArrayList of type Booking
-	 */
-	ArrayList<Booking> bookings = new ArrayList<>();
-	
-	/**
-	 * ArrayList of type Table
-	 */
-	ArrayList<Table> tables = new ArrayList<>();
-	
-	/**
-	 * ArrayList of type Table
-	 */
-	ArrayList<Meal> meals = new ArrayList<>();
-	
-	/**
-	 * ArrayList of type Table
-	 */
-	ArrayList<Order> orders = new ArrayList<>();
-	
-	/**
+	 * Constructor
 	 * 
 	 * @param dbName
 	 */
@@ -81,4 +58,26 @@ public abstract class Database {
 	 * @throws Exception
 	 */
 	abstract ArrayList<Meal> getMeals() throws Exception;
+
+	/**
+	 * 
+	 * @param booking
+	 * @return ArrayList<Meal>
+	 * @throws Exception
+	 */
+	abstract ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception;
+
+	/**
+	 * 
+	 * @return ArrayList<Tables>
+	 * @throws Exception
+	 */
+	abstract ArrayList<Table> getTables() throws Exception;
+	
+	/**
+	 * 
+	 * @param booking
+	 */
+	abstract void removeAllOrders(Booking booking) throws Exception;
+
 }

@@ -1,36 +1,124 @@
-$interval-height: 24px
+$interval-height: 15px
 $booking-length: 60 * 2
 $interval-length: 15
+$side-background: #2d2d33
+$animate: ease-in-out 200ms
+
+@mixin bordered-icon()
+    width: 24px
+    height: 24px
+
+    line-height: 24px
+    margin-left: 3px
+    text-align: center
+
+    font-size: 20px
+    border-radius: 100%
+
+    cursor: pointer
+    -webkit-user-select: none
+
+@mixin enlarged-icon()
+    width: 48px
+    height: 48px
+
+    font-size: 40px
+    line-height: 48px
+
+
+.hidden
+    opacity: 0
+    transform: scale(0)
 
 body
-    background: grey
-    master
+    background: #263238
+    margin: 0
+    height: 100%
+
+    #mainScreen
         overflow: hidden
         position: relative
         width: 100%
+        height: 100vh
+        margin: 0
+
+    /*
+     * Header with title and current date/time.
+     */
+    #header
+        h1
+            font-family: 'Lato', sans-serif
+            font-weight: 100
+            color: #61dbcb
+            text-align: center
+
+        h2
+            position: absolute
+            top: 10px
+            left: 0
+
+            width: 64px
+            height: 300px
+
+            margin: 0
+            text-align: center
+            overflow: hidden
+
+            color: white
+            font-family: 'Lato', sans-serif
+            font-size: 20px
+
+            background: $side-background
+
+        h3
+            position: absolute
+            top: 10px
+            left: 80px
+
+            margin: 0
+
+            font-family: 'Lato', sans-serif
+            font-size: 20px
+            color: white
+        /*
+         * Choose the previous date interval.
+         */
+        #reportOpen
+            @include bordered-icon
+            position: absolute
+            top: 16px
+            right: 16px
+
+            font-size: 16px
+
+            color: white
+            border: solid rgba(saturate(#e9592c, 18), .6) 2px
+
 
 /*
  * Calendar grid.
  */
 #calendar
-    position: absolute
+    position: relative
     top: 0
     left: 64px
 
     width: calc(100% - 64px)
     height: 100%
-
+    
+       
     border-collapse: collapse
 
     th,td
-        border: solid #ccc 1px
+        
+        border-right: solid #0bf4ff 2px
+        
 
     /*
      * Signal the new hour.
      */
-    tr[mins="45"]
-        td
-            border-bottom: solid #111 1px
+    tr[mins="45"] td, th
+        border-bottom: solid #65a5ec 1px
 
     /*
      * Interval cell.
@@ -39,11 +127,13 @@ body
         position: relative
         height: $interval-height
         box-sizing: border-box
+        
+        
 
     /*
      * Booking card.
      */
-    div.booking
+    .booking
         position: absolute
         top: 0
         left: 0
@@ -52,28 +142,699 @@ body
         box-sizing: border-box
         width: 100%
 
-        padding: 8px
+        padding: 10px
+        background: #546e7a
+        color: white
+        font-family: 'Lato', sans-serif
+        font-weight: 100
+        text-align: center
+        font-size: 24px
 
-        background: #eee
-
+        overflow: hidden
+        z-index: 10
+        
+        
+        .bookingTime
+            color: #00ffde
+            font-weight: 300
+            font-size: 20px
+        
+        .otherInfo
+            font-size: 20px
+        
+        .customerName 
+            font-size: 25px
+    
+    .header 
+        color: #e9592c
+        font-family: 'Lato', sans-serif
+        font-weight: 100
+        font-size: 20px
+        padding-bottom: 15px
+        
+/*
+ * Side bar with hour marks.
+ */
 #timescale
     position: absolute
-    top: 0
+    top: 112px
     left: 0
 
     box-sizing: border-box
     width: 64px
 
     padding: 0
+    padding-bottom: 11px
     margin: 0
+    
 
-    background: white
+    background: $side-background
 
     li
         display: block
-        height: 60 / $interval-length * $interval-height
+        height: 60 / $interval-length * $interval-height + 2px
+        color: white
+        font-family: 'Lato', sans-serif
 
         text-align: center
 
-        &:first-child
-            margin-top: $interval-height
+/*
+ * Form to create a booking at the given time slot.
+ */
+#bookingCreation
+    position: absolute
+    top: 0
+    left: 0
+    z-index: 10
+
+    box-sizing: border-box
+    width: 300px
+
+    padding: 4px
+    overflow: hidden
+
+    color: white
+    font-size: 20px
+    font-family: 'Lato', sans-serif
+    background: #2b79ac
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2)
+    transition: opacity $animate, transform $animate, top $animate, left $animate
+
+    #time
+        display: inline-block
+        margin: 5px
+
+    #bookingConfirm, #bookingCancel
+        @include bordered-icon
+        float: right
+        border: solid rgba(255, 255, 255, .3) 2px
+
+    input
+        width: calc(100% - 10px)
+        margin: 5px 6px
+
+        border: none
+        border-bottom: solid rgba(255, 255, 255, .3) 2px
+
+        color: white
+        font-size: 15px
+        font-weight: 200
+        background: #2b79ac
+
+    input:focus
+        background-color: #2b79ac !important
+        color: white
+        outline-width: 0
+
+
+    ::-webkit-input-placeholder
+        color: white
+        background: #2b79ac !important
+
+
+/*
+ * Screen that displays the current menu.
+ */
+#menuScreen
+    position: absolute
+    top: -100%
+    left: 0
+
+    width: 100%
+    height: 100%
+
+    background: #263238
+    opacity: 0
+    z-index: 20
+
+    transition: top $animate, opacity $animate
+
+    &.show
+        top: 0
+        opacity: 1
+
+    /*
+     * Current order.
+     */
+    .leftPanel
+        position: absolute
+        top: 0
+        left: 0
+        bottom: 0
+
+        display: inline-block
+        width: 35%
+
+        padding: 16px 0
+
+        background: #2d2d33
+
+        /*
+         * Confirm order.
+         */
+        #orderConfirm
+            @include bordered-icon
+            @include enlarged-icon
+            position: absolute
+            bottom: 16px
+            left: 16px
+
+            color: white
+            border: solid rgba(#61dbcb, .6) 2px
+
+        /*
+         * Pay order.
+         */
+        #orderPay
+            @include bordered-icon
+            @include enlarged-icon
+            position: absolute
+            bottom: 16px
+            right: 16px
+
+            font-size: 34px
+
+            color: white
+            border: solid rgba(#61dbcb, .6) 2px
+
+        /*
+         * Table name.
+         */
+        h2
+            font-family: 'Lato', sans-serif
+            color: white
+            text-align: center
+            font-size: 30px
+
+        /*
+         * Category name.
+         */
+        h3
+            font-family: 'Lato', sans-serif
+            position: relative
+            top: -25px
+            font-weight: 100
+            color: #e9592c
+            margin: 0
+            padding-top: 6px
+            font-size: 25px
+            padding-left: 15px
+
+        /*
+         * Order total.
+         */
+        .total
+            height: 40px
+            padding: 16px
+
+            border-top: solid rgba(#fff, .1) 1px
+
+            h4
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+                display: inline
+                color: white
+
+            h5
+                width: 84px
+
+                margin: 0
+
+                float: right
+                text-align: center
+
+                color: #61dbcb
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+
+        /*
+         * Ordered meal.
+         */
+        .meal
+            position: relative
+            padding: 0 16px
+
+            animation: fade-in 200ms
+
+            h4
+                height: 30px
+                margin: 8px 0
+
+                color: white
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+
+            /*
+             * How many meals ordered.
+             */
+            .counter
+                position: absolute
+                top: 0
+                right: 16px
+
+                color: white
+
+                /*
+                 * Actual counter.
+                 */
+                input
+                    display: block
+                    width: 28px
+                    height: 28px
+                    line-height: 28px
+
+                    float: left
+                    text-align: center
+
+                    color: #61dbcb
+                    font-family: 'Lato', sans-serif
+                    font-weight: 300
+                    font-size: 20px
+                    background: transparent
+                    border: none
+
+                /*
+                 * More and less buttons.
+                 */
+                .material-icons
+                    @include bordered-icon
+                    display: block
+
+                    float: left
+
+                    border: solid rgba(saturate(#e9592c, 18), .6) 2px
+
+    /*
+     * Available meals.
+     */
+    .rightPanel
+        cursor: pointer
+        -webkit-user-select: none
+
+        width: 60%
+        box-sizing: border-box
+
+        margin-left: 35%
+        padding-left: 64px
+
+        #orderDiscard
+            @include bordered-icon
+            position: absolute
+            top: 16px
+            right: 16px
+
+            color: white
+            border: solid rgba(255, 255, 255, .3) 2px
+
+        /*
+         * Screen title.
+         */
+        h2
+            margin: 0
+            padding-top: 20px
+            padding-bottom: 10px
+
+            font-family: 'Lato', sans-serif
+            font-weight: 100
+            text-align: center
+            font-size: 25px
+            color: #61dbcb
+
+        /*
+         * Category name.
+         */
+        h3
+            margin: 0
+            padding-top: 16px
+            padding-left: 32px
+
+            font-family: 'Lato', sans-serif
+            font-weight: 100
+            font-size: 40px
+            color: #e9592c
+
+        .meal
+            position: relative
+
+            padding: 4px
+            padding-left: 32px
+
+            &:hover
+                background-color: lighten(#263238, 10%)
+                transition: background $animate
+            &:active
+                background-color: darken(#263238, 1%)
+                transition: background $animate
+
+            /*
+             * Meal name.
+             */
+            h4
+                display: block
+                margin: 0
+
+                letter-spacing: 1px
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 20px
+                color: white
+
+            /*
+             * Meal description.
+             */
+            h5
+                display: block
+                margin: 0
+
+                letter-spacing: 1px
+                font-family: 'Lato', sans-serif
+                font-weight: 300
+                font-size: 16px
+                color: rgba(255, 255, 255, .3)
+
+            span.price
+                position: absolute
+                top: 8px
+                right: 8px
+
+                display: block
+
+                color: #61dbcb
+                font-family: 'Lato', sans-serif
+
+
+/*
+ * Payment screen.
+ */
+#payScreen
+    position: absolute
+    top: -300px
+    left: 50%
+
+    width: 400px
+
+    margin-left: -200px
+    z-index: 30
+    opacity: 0
+
+    transition: top $animate, opacity $animate
+
+    &.show
+        top: 200px
+        opacity: 1
+
+    input, label
+        display: block
+        text-transform: uppercase
+
+    form
+        border-radius: 15px
+        height: 240px
+        width: 100%
+
+        h1
+
+            height: 80px
+            margin: 0
+            background: #61dbcb
+            border-top-left-radius: 15px
+            border-top-right-radius: 15px
+            font-family: 'Lato', sans-serif
+            font-size: 30px
+            font-weight: 300
+            padding-left: 10px
+            padding-top: 20px
+            color: white
+
+        h3
+
+            margin-bottom: 50px
+            font-family: 'Lato', sans-serif
+            font-size: 30px
+            font-weight: 300
+
+            color: white
+            display: none
+            position: relative
+            text-align: center
+
+
+
+
+            #amount
+                font-size: 20px
+                font-weight: 100
+
+        #bottom
+            background: white
+            height: 120px
+            border-bottom-left-radius: 15px
+            border-bottom-right-radius: 15px
+            padding-top: 30px
+
+            label
+                color: #a2a2a2
+                font-family: 'Lato', sans-serif
+                font-weight: 100
+                font-size: 10px
+
+            input
+                border-radius: 3px
+                margin-top: 2px
+                text-align: center
+                border: 1px solid #d5d5d5
+                height: 20px
+                -webkit-transition: all .5s ease
+
+            input:focus
+                border-color: #61dbcb
+                outline: none
+
+
+        #cardVerify
+            float: left
+            margin-left: -20px
+            margin-top: 15px
+
+            color: #61dbcb
+            opacity: 0
+
+            transition: opacity $animate
+            &.show
+                opacity: 1
+
+        #ccvVerify
+            float: left
+            margin-top: 26px
+            margin-left: 24px
+
+            color: #61dbcb
+            opacity: 0
+
+            transition: opacity $animate
+            &.show
+                opacity: 1
+
+    #cardNameWrapper
+        float: left
+
+        margin-right: 50px
+        margin-left: 10px
+
+    #cardNumberWrapper
+        float: left
+
+    #cardName
+        width: 120px
+
+    #cvvWrapper
+        position: relative
+
+        float: left
+        margin-top: 10px
+
+    #cvv
+        width: 60px
+
+    #terribleLayout
+        clear: both
+
+
+    #expiryDate
+        float: left
+
+        margin-left: 10px
+        margin-top: 10px
+
+    button
+        margin-top: 5px
+        margin-right: 10px
+        float: right
+        height: 25px
+        border-radius: 10px
+        border: none
+        width: 50px
+        background: #61dbcb
+        font-size: 15px
+        color: white
+        font-family: 'Lato', sans-serif
+        font-weight: 100
+        outline: none
+
+    #paymentDiscard
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 16px
+
+        color: white
+        border: solid rgba(255, 255, 255, .3) 2px
+
+
+/*
+ * Accounting reports screen.
+ */
+#reportScreen
+    position: absolute
+    top: -100%
+    left: 0
+
+    opacity: 0
+    z-index: 20
+
+    width: 100%
+    height: 100%
+    padding: 16px
+
+    color: white
+    font-family: 'Lato', sans-serif
+    background: #263238
+
+    box-sizing: border-box
+
+    transition: top $animate, opacity $animate
+
+    &.show
+        top: 0
+        opacity: 1
+
+    /*
+     * Screen title.
+     */
+    h1
+        font-weight: 100
+        color: #61dbcb
+        margin-top: 0
+
+    /*
+     * Month name and total.
+     */
+    h2
+        font-weight: 300
+        color: #e9592c
+
+        .total
+            color: white
+
+    /*
+     * Calendar with total takings.
+     */
+    table
+        width: 100%
+
+        border-spacing: 0
+
+        /*
+         * Headers with week day names.
+         */
+        th
+            font-weight: 100
+            font-size: 20px
+            color: white
+
+            padding-bottom: 16px
+
+        td, th
+            border-right: solid #0bf4ff 2px
+            border-bottom: solid #65a5ec 1px
+            border-left: none
+            border-top: none
+
+        /*
+         * Day tile.
+         */
+        td
+            position: relative
+
+            box-sizing: border-box
+            width: 14%
+            height: 120px
+            padding: 8px
+
+            text-align: right
+            vertical-align: top
+
+            color: #ccc
+            font-size: 18px
+
+            .total
+                position: absolute
+                top: 50%
+                left: 0
+                right: 0
+                bottom: 0
+
+                height: 42px
+                margin-top: -21px
+                text-align: center
+
+                color: #61dbcb
+                font-size: 32px
+
+        th:last-child, td:last-child
+            border-right: none
+
+    /*
+     * Close the window.
+     */
+    #reportClose
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 16px
+
+        color: white
+        border: solid rgba(255, 255, 255, .3) 2px
+
+    /*
+     * Choose the previous date interval.
+     */
+    #dateBefore
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 88px
+
+        color: white
+        border: solid rgba(saturate(#e9592c, 18), .6) 2px
+
+    /*
+     * Choose the next date interval.
+     */
+    #dateAfter
+        @include bordered-icon
+        position: absolute
+        top: 16px
+        right: 52px
+
+        color: white
+        border: solid rgba(saturate(#e9592c, 18), .6) 2px
+
+@keyframes fade-in
+    from
+        opacity: 0
+    to
+        opacity: 1

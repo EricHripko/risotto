@@ -2,7 +2,7 @@
   "name": "RestaurantClient",
   "version": "1.0.0",
   "description": "Client application for the restaurant",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "gulp styles"

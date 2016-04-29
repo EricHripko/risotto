@@ -101,7 +101,7 @@ public class RestaurantHandler extends AbstractHandler {
 							tableFound = true;
 
 							// Update table ID
-							booking.getTable().setId(table.getId());
+							booking.setTable(table);
 
 							int referenceNumber = restaurantDB.insertBooking(booking);
 							booking.setReferenceNumber(referenceNumber);
@@ -142,6 +142,14 @@ public class RestaurantHandler extends AbstractHandler {
 					ArrayList<Order> unsatisfiedOrders = new ArrayList<Order>();  // Unsatisfied orders to send back
 					boolean requestFullySatisfied = true; // Are all the requests satisfied?
 
+					// Cleans all the orders made previously.
+					for (Object objectOrder : jsonArrayOrder) {
+						JSONObject jsonOrder = (JSONObject) objectOrder;
+						Order order = new Order(jsonOrder);
+						Booking booking = new Booking(order.getBookingId());
+						restaurantDB.removeAllOrders(booking);
+					}
+					
 					// Insert all the orders into the database:
 					for (Object objectOrder : jsonArrayOrder) {
 						// jsonOrder must be a JSONObject as specified in the Wiki,
@@ -253,13 +261,77 @@ public class RestaurantHandler extends AbstractHandler {
 
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 					response.getWriter().println(jsonError.toString());
-				}		
-			} else {
-				// Dump the Request
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().println("");
-			}
+				}
+			} else if (request.getRequestURI().equals("/orders")) {
+				// Orders of a Booking Request
 
+				String query = request.getQueryString();
+
+				// Starting and ending time of the request:
+				int indexOfEqual = query.indexOf("=");
+				String bookingIdStr = query.substring(indexOfEqual+1);
+				int bookingId = Integer.parseInt(bookingIdStr);
+				
+				try {
+					// Get list of ordered meals from Database:
+					ArrayList<Meal> orderedMeals = restaurantDB.getOrderedMeals(new Booking(bookingId));
+					
+					// Transform ArrayList<Meal> in a JSONObject object
+					// of the form specified in the Wiki for "GET /orders":
+					JSONObject jsonResponse = new JSONObject();
+					JSONArray jsonMealsArray = new JSONArray();
+					
+					for (Meal meal : orderedMeals) {
+						jsonMealsArray.put(meal.getJSONObject());
+					}
+					jsonResponse.put("meals", jsonMealsArray);
+					
+					// Send OK and list of meals:
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().println(jsonResponse.toString());
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+				}
+				
+				
+			} else if (request.getRequestURI().equals("/tables")) {
+				// List of Tables Request:
+			
+				try {
+					// Get all the bookings from time to time:
+					ArrayList<Table> tables = restaurantDB.getTables();
+
+					// Build the JSON message:
+					JSONObject jsonResponse = new JSONObject();
+					JSONArray jsonTablesArray = new JSONArray();
+					for (Table t : tables) {
+						jsonTablesArray.put(t.getJSONObject());
+					}
+					jsonResponse.put("tables", jsonTablesArray);
+	
+					// Send OK and list of bookings:
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().println(jsonResponse.toString());
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+	
+					JSONObject jsonError = new JSONObject();
+					jsonError.put("errorMessage", "The request cannot be satisfied");
+	
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println(jsonError.toString());
+				}
+			} else {
+				// TODO Handle other GET requests.
+			}
 		}
 
 		// The request has been handled correctly.

@@ -19,36 +19,11 @@ var tables = [
         id: 4,
         description: "#4",
         size: 5
-    }
-];
-// List of all bookingss
-var bookings = [
-    {
-        referenceNumber: 15246437,
-        customerName: "Joanna Doe",
-        phoneNumber: "07483215619",
-        emailAddress: "ehripko@redev.co.uk",
-        partySize: 3,
-        date: 1456304400,
-        table: 1
     },
     {
-        referenceNumber: 15246437,
-        customerName: "John Doe",
-        phoneNumber: "07484565622",
-        emailAddress: "ehripko@redev.co.uk",
-        partySize: 5,
-        date: 1456315200,
-        table: 2
-    },
-    {
-        referenceNumber: 15246437,
-        customerName: "Janice Doe",
-        phoneNumber: "07488210633",
-        emailAddress: "ehripko@redev.co.uk",
-        partySize: 2,
-        date: 1456322400,
-        table: 4
+        id: 5,
+        description: "#5",
+        size: 4
     }
 ];
 
@@ -56,43 +31,174 @@ var bookings = [
 rivets.formatters.padZeroes = function (value) {
     return value < 10 ? "0" + value : value;
 };
+rivets.formatters.nth = function (value) {
+    if(value > 10 && value < 20)
+        return "th";
 
-// Date and time grid
-var granularity = 15;
-var timescale = [];
-var openTime = 9;
-var closeTime = 17;
-var hours = [];
-// Create time intervals
-for(var hour = openTime; hour < closeTime; hour++) {
-    // Save all the opening hours
-    if(hours.indexOf(hour) == -1)
-        hours.push(hour);
+    value = value % 10;
+    var map = ["th", "st", "nd", "rd", "th"];
+    return map[Math.min(value, map.length - 1)];
+};
+rivets.formatters.time = function (value) {
+    if(!(value instanceof Date))
+        value = new Date(value * 1000);
+    return rivets.formatters.padZeroes(value.getHours()) + ":" + rivets.formatters.padZeroes(value.getMinutes());
+};
+rivets.formatters.shortDate = function (value) {
+    if(!(value instanceof Date))
+        value = new Date(value * 1000);
 
-    for (var minutes = 0; minutes < 60; minutes = minutes + 15) {
-        var interval = {hour: hour, mins: minutes, tables: []};
-        // For each interval add a table
-        tables.forEach(function (table) {
-            table = Object.assign({}, table);
-            interval.tables.push(table);
-            // For each table find appropriate bookings
-            table.bookings = bookings.filter(function (booking) {
-                var date = new Date(booking.date * 1000);
-                return booking.table == table.id && date.getHours() == hour && date.getMinutes() == minutes;
-            });
-        });
-        timescale.push(interval);
-    }
-}
-// Create the model for the view
-var viewModel = {
-    tables: tables,
-    hours: hours,
-    granularity: granularity,
-    timescale: timescale
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return months[value.getMonth()] + " " + value.getDate() + rivets.formatters.nth(value.getDate());
 };
 
+// Identify the opening and closing UNIX times
+var openTime = 12;
+var closeTime = 21;
+var openDateTime = new Date();
+var closeDateTime = new Date();
+openDateTime.setHours(openTime - 1);
+openDateTime.setMinutes(59);
+closeDateTime.setHours(closeTime - 1);
+closeDateTime.setMinutes(59);
+openDateTime = Math.ceil(openDateTime.getTime() / 1000);
+closeDateTime = Math.ceil(closeDateTime.getTime() / 1000);
+
+// Viewmodel for the main screen
+var vmMainScreen = {};
+
+/**
+ * Refresh the list of bookings.
+ */
+function refreshBooking() {
+    server.bookings.retrieve(undefined, {startingTime: openDateTime, endingTime: closeDateTime}).then(
+        function (result) {
+            var bookings = result.bookings;
+
+            // Date and time grid
+            var granularity = 15;
+            var timescale = [];
+            var hours = [];
+            // Create time intervals
+            for (var hour = openTime; hour < closeTime; hour++) {
+                // Save all the opening hours
+                if (hours.indexOf(hour) == -1)
+                    hours.push(hour);
+
+                for (var minutes = 0; minutes < 60; minutes = minutes + 15) {
+                    var interval = {hour: hour, mins: minutes, tables: []};
+                    // For each interval add a table
+                    tables.forEach(function (table) {
+                        table = Object.assign({}, table);
+                        interval.tables.push(table);
+                        // For each table find appropriate bookings
+                        table.bookings = bookings.filter(function (booking) {
+                            var date = new Date(booking.date * 1000);
+                            return booking.table == table.id && date.getHours() == hour && date.getMinutes() == minutes;
+                        });
+                    });
+                    timescale.push(interval);
+                }
+            }
+
+            // Create the model for the view
+            vmMainScreen.now = new Date();
+            vmMainScreen.tables = tables;
+            vmMainScreen.hours = hours;
+            vmMainScreen.granularity = granularity;
+            vmMainScreen.timescale = timescale;
+            vmMainScreen.bookings = bookings;
+        }).catch(
+        function (ex) {
+            ex.errorMessage = ex.errorMessage || "An error occured";
+            alert("Failed to load bookings: " + ex.errorMessage);
+        });
+}
+
+/**
+ * Create a new booking.
+ * @param e Click event.
+ */
+function createBooking(e) {
+    // Identify the grid slots
+    var slot = e.target;
+    var row = slot.parentNode;
+
+    // Identify the time and date of a booking
+    vmMainScreen.activeSlot.hour = row.getAttribute("hours");
+    vmMainScreen.activeSlot.mins = row.getAttribute("mins");
+    vmMainScreen.activeSlot.table = slot.getAttribute("table");
+
+    // Display booking creation form
+    var bounds = slot.getBoundingClientRect();
+    var form = document.getElementById("bookingCreation");
+    var fBounds = form.getBoundingClientRect();
+    if(bounds.top + fBounds.height < window.innerHeight)
+        form.style.top = bounds.top + "px";
+    else
+        form.style.top = (window.innerHeight - fBounds.height) + "px";
+    form.style.left = bounds.left + "px";
+    form.style.width = bounds.width + "px";
+    form.classList.remove("hidden");
+}
+
+
+/**
+ * Cancel booking creation.
+ * @param e Click event.
+ */
+function cancelBooking(e) {
+    // Hide previously opened form
+    var form = document.getElementById("bookingCreation");
+    form.classList.add("hidden");
+    // Reset the input
+    form.reset();
+}
+
+/**
+ * Finish booking creation.
+ * @param e Click event.
+ */
+function confirmBooking(e) {
+    // Retrieve the booking information
+    var name = document.getElementById("name").value;
+    var phone = document.getElementById("phone").value;
+    var party = document.getElementById("party").value;
+    var email = document.getElementById("email").value;
+    // Create a booking object and send the information off
+    party = parseInt(party);
+    var today = new Date(openDateTime * 1000);
+    var date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), vmMainScreen.activeSlot.hour, vmMainScreen.activeSlot.mins, 0, 0);
+
+    var booking = new Booking(name, phone, email, party, date, vmMainScreen.activeSlot.table);
+    BookingService.make(booking).then(
+        function (val) {
+            alert("Booking created, customer reference is " + val.referenceNumber);
+            refreshBooking();
+            cancelBooking();
+        }).catch(
+        function (ex) {
+            alert(ex.errorMessage);
+            cancelBooking();
+        });
+}
+
 // Perform data binding
-document.addEventListener("DOMContentLoaded", function () {
-    rivets.bind(document.getElementById("bookingGrid"), viewModel);
+document.addEventListener("DOMContentLoaded", function() {
+    // Setup view model
+    refreshBooking();
+    vmMainScreen.activeSlot = {
+        hour: 0,
+        mins: 0
+    };
+    server.tables.retrieve(undefined, {}).then(function (result) {
+        tables = result.tables;
+    });
+    rivets.bind(document.getElementById("mainScreen"), vmMainScreen);
+
+    // Periodically refresh the model
+    setInterval(refreshBooking, 1000);
+    setInterval(function () {
+        vmMainScreen.now = new Date();
+    }, 500);
 });
