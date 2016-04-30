@@ -1,15 +1,15 @@
-1|small|2
-2|medium|4
-3|small|2
-4|medium|4
-5|large|8
-6|medium|4
-7|medium|4
-8|medium|4
-9|large|4
-10|large|5
-11|large|6
-12|large|7
-13|medium|4
-14|large|8
-15|medium|4
+1|1 (Small)|2
+2|2 (Small)|2
+3|3 (Small)|3
+4|4 (Small)|3
+5|5 (Small)|3
+6|6 (Medium)|4
+7|7 (Medium)|4
+8|8 (Medium)|4
+9|9 (Medium)|5
+10|10 (Medium)|6
+11|11 (Large)|7
+12|12 (Large)|7
+13|13 (Large)|8
+14|14 (Large)|9
+15|15 (Large)|10
