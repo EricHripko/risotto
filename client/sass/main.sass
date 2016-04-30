@@ -540,6 +540,10 @@ body
     z-index: 30
     opacity: 0
 
+    box-shadow: 0  8px 32px  8px rgba(0, 0, 0, 0.15), 0 16px 16px -8px rgba(0, 0, 0, 0.3), 0 24px 36px  4px rgba(0, 0, 0, 0.1)
+    border-radius: 15px
+    border: solid rgba(0, 0, 0, .24) 1px
+
     transition: top $animate, opacity $animate
 
     &.show
@@ -556,7 +560,6 @@ body
         width: 100%
 
         h1
-
             height: 80px
             margin: 0
             background: #61dbcb
@@ -568,6 +571,9 @@ body
             padding-left: 10px
             padding-top: 20px
             color: white
+
+            #amount
+                color: rgba(0, 0, 0, .54)
 
         h3
 
@@ -589,14 +595,14 @@ body
                 font-weight: 100
 
         #bottom
-            background: white
+            background: #263238
             height: 120px
             border-bottom-left-radius: 15px
             border-bottom-right-radius: 15px
             padding-top: 30px
 
             label
-                color: #a2a2a2
+                color: rgba(255, 255, 255, .87)
                 font-family: 'Lato', sans-serif
                 font-weight: 100
                 font-size: 10px
@@ -605,7 +611,9 @@ body
                 border-radius: 3px
                 margin-top: 2px
                 text-align: center
-                border: 1px solid #d5d5d5
+                color: white
+                background: lighten(#263238, 3)
+                border: solid rgba(255, 255, 255, .27) 1px
                 height: 20px
                 -webkit-transition: all .5s ease
 
@@ -832,6 +840,27 @@ body
 
         color: white
         border: solid rgba(saturate(#e9592c, 18), .6) 2px
+
+    /*
+     * Summary of the bookings on the day.
+     */
+    #daySummary
+        display: none
+        position: absolute
+        top: 160px
+        left: 50%
+
+        width: 400px
+        margin-left: -200px
+
+        background: #263238
+        box-shadow: 0  8px 32px  8px rgba(0, 0, 0, 0.15), 0 16px 16px -8px rgba(0, 0, 0, 0.3), 0 24px 36px  4px rgba(0, 0, 0, 0.1)
+        border-radius: 15px
+        border: solid rgba(0, 0, 0, .24) 1px
+
+        transition: top $animate, opacity $animate
+
+
 
 @keyframes fade-in
     from
