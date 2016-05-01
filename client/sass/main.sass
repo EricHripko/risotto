@@ -5,23 +5,29 @@ $side-background: #2d2d33
 $animate: ease-in-out 200ms
 
 @mixin bordered-icon()
-    width: 3vmin
-    height: 3vmin
+    display: flex
+    justify-content: center
+    align-items: center
 
-    line-height: 3vmin
+    width: 4vmin
+    height: 4vmin
+
     text-align: center
 
-    font-size: 2vmin
+    font-size: 3vmin
     border-radius: 100%
 
+    box-sizing: border-box
     cursor: pointer
     -webkit-user-select: none
 
 @mixin enlarged-icon()
+    display: flex
+    justify-content: center
+    align-items: center
+
     width: 6vmin
     height: 6vmin
-
-    padding-top: 1vmin
 
     font-size: 4vmin
     line-height: 4vmin
@@ -344,8 +350,6 @@ body
             bottom: 16px
             right: 16px
 
-            font-size: 34px
-
             color: white
             border: solid rgba(#61dbcb, .6) 2px
 
@@ -426,6 +430,10 @@ body
                 position: absolute
                 top: 0
                 right: 16px
+
+                display: flex
+                justify-content: center
+                align-items: center
 
                 color: white
 
@@ -824,6 +832,8 @@ body
             color: #ccc
             font-size: 2vmin
 
+            -webkit-user-select: none
+
             .total
                 position: absolute
                 top: 50%
@@ -882,12 +892,12 @@ body
      */
     #daySummary
         @include box-shadow
-        display: none
-        position: absolute
-        top: 160px
+        position: fixed
+        top: -1000px
         left: 50%
 
         width: 400px
+        padding-bottom: 10px
         margin-left: -200px
 
         background: #263238
@@ -895,6 +905,114 @@ body
         border: solid rgba(0, 0, 0, .24) 1px
 
         transition: top $animate, opacity $animate
+
+        &.show
+            top: 60px
+
+        /*
+         * Popup header.
+         */
+        .header
+            height: 100px
+
+            box-sizing: border-box
+            padding: 20px 10px
+
+            font-family: "Lato", sans-serif
+
+            background: #61dbcb
+            border-top-left-radius: 16px
+            border-top-right-radius: 16px
+
+            /*
+             * Day chosen and total on that day.
+             */
+            h1
+                font-weight: 300
+                font-size: 30px
+                margin: 0
+
+                color: white
+
+                .total
+                    font-weight: 300
+                    font-size: 30px
+                    margin: 0
+
+                    color: rgba(0, 0, 0, 0.54)
+
+            /*
+             * Control to close the popup.
+             */
+            #dayClose
+                @include bordered-icon
+                position: absolute
+                top: 16px
+                right: 16px
+
+                color: white
+                border: solid rgba(255, 255, 255, .3) 2px
+
+        /*
+         * Popup contents.
+         */
+        .body
+            @include scrollbar
+            display: block
+            max-height: 55vh
+            overflow-y: scroll
+
+
+        /*
+         * Booking time.
+         */
+        h2
+            color: #e9592c
+
+            font-family: "Lato", sans-serif
+            font-weight: 100
+            font-size: 28px
+
+            margin-bottom: 0
+            margin-left: 10px
+
+        /*
+         * A specific meal.
+         */
+        .meal
+            position: relative
+            padding-left: 10px
+            margin-bottom: 10px
+
+            h4
+                margin: 0
+                font-size: 20px
+            h5
+                margin: 0
+                letter-spacing: 1px
+                font-size: 16px
+                color: rgba(255, 255, 255, 0.3)
+
+            span.total
+                position: absolute
+                top: 0
+                right: 8px
+
+                display: block
+
+                color: #e9592c
+                font-size: 20px
+                font-family: 'Lato', sans-serif
+
+            span.price
+                position: absolute
+                top: 8px
+                right: 8px
+
+                display: block
+
+                color: #61dbcb
+                font-family: 'Lato', sans-serif
 
 
 

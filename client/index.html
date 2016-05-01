@@ -169,35 +169,56 @@
     <i id="reportClose" class="material-icons" onclick="reportClose(event)">clear</i>
     <i id="dateBefore" class="material-icons" onclick="reportBefore(event)">keyboard_arrow_left</i>
     <i id="dateAfter" class="material-icons" onclick="reportAfter(event)">keyboard_arrow_right</i>
-    <h1>Financial Summary</h1>
-    <h2>
-        {month} takings
-        &nbsp;
-        <span class="total" rv-text="total | gbp"></span>
-    </h2>
-    <table>
-        <tr>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
-            <th>Sun</th>
-        </tr>
-        <tr rv-each-week="weeks">
-            <td rv-each-day="week">
-                {day.day}
-                <div class="total" rv-unless="day.empty" rv-text="day.total | gbp"></div>
-            </td>
-        </tr>
-    </table>
-    <div id="daySummary">
-        <h3>
-            1st takings
+    <div id="monthSummary">
+        <h1>Financial Summary</h1>
+        <h2>
+            {month} takings
             &nbsp;
             <span class="total" rv-text="total | gbp"></span>
-        </h3>
+        </h2>
+        <table>
+            <tr>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                <th>Sun</th>
+            </tr>
+            <tr rv-each-week="weeks">
+                <td rv-each-day="week" onclick="dayOpen(event)">
+                    <span class="day">{day.day}</span>
+                    <div class="total" rv-unless="day.empty" rv-text="day.total | gbp"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="daySummary">
+        <div class="header">
+            <h1>
+                {month} {dayOfMonth}{dayOfMonth | nth}
+                <br>
+                <span class="total">{total}</span>
+            </h1>
+            <i id="dayClose" class="material-icons" onclick="dayClose()">clear</i>
+        </div>
+
+        <div class="body">
+            <div rv-each-booking="bookings">
+                <h2>Table {booking.table.description}, {booking.date | time} - {booking.endingDate | time}</h2>
+                <div class="meal" rv-each-item="booking.items">
+                    <h4>{item.name}</h4>
+                    <h5>x{item.count}</h5>
+                    <span class="price">{item.price | gbp}</span>
+                </div>
+                <div class="meal">
+                    <h4>Total</h4>
+                    <h5>&nbsp;</h5>
+                    <span class="total">{booking.order.total | gbp}</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
