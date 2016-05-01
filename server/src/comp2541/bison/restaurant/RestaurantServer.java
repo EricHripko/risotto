@@ -5,7 +5,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.thread.ThreadPool;
 
 /**
- * The server of the restaurant.
+ * The server for the restaurant software.
  * 
  * @author Michele Cipriano
  *

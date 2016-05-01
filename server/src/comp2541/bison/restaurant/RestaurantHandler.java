@@ -17,10 +17,8 @@ import comp2541.bison.restaurant.handlers.*;
 
 /**
  * This class handles all the requests from the client
- * respecting the Wiki document (See "Client-Server Communication).
- * 
- * @author Michele Cipriano
- *
+ * respecting the Wiki document (See "Client-Server Communication").
+ * @author Michele Cipriano, Iaroslav Khrypko
  */
 public class RestaurantHandler extends AbstractHandler {
 	static Logger log = Logger.getLogger(RestaurantHandler.class.getName());

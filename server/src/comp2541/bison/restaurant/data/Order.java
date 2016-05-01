@@ -4,13 +4,16 @@ import org.json.JSONObject;
 
 /**
  * Class managing orders of a booking (a table in the short period of time).
- * 
  * @author Michele Cipriano
- *
  */
 public class Order {
-	
+	/**
+	 * Meal identifier.
+	 */
 	private int mealId;
+	/**
+	 * Booking identifier.
+	 */
 	private int bookingId;
 	
 	/**
@@ -19,7 +22,7 @@ public class Order {
 	 * booking.
 	 * 
 	 * @param pMealId Id of the meal.
-	 * @param pBookingId Id of the booking.
+	 * @param pBooking Id Id of the booking.
 	 */
 	public Order(int pMealId, int pBookingId) {
 		mealId = pMealId;
@@ -36,16 +39,25 @@ public class Order {
 		bookingId = jsonObject.getInt("booking");
 	}
 
-	/**
-	 * @return the mealId
-	 */
 	public int getMealId() {
 		return mealId;
 	}
 	
+	public void setMealId(int mealId) {
+		this.mealId = mealId;
+	}
+
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
+	}
+	
 	/**
-	 * 
-	 * @return A JSONObject corresponding to the order.
+	 * Convert this instance into a JSON object with all the corresponding data.
+	 * @return JSON object.
 	 */
 	public JSONObject getJSONObject() {
 		JSONObject jsonOrder = new JSONObject();
@@ -55,26 +67,4 @@ public class Order {
 		
 		return jsonOrder;
 	}
-
-	/**
-	 * @param mealId the mealId to set
-	 */
-	public void setMealId(int mealId) {
-		this.mealId = mealId;
-	}
-
-	/**
-	 * @return the bookingId
-	 */
-	public int getBookingId() {
-		return bookingId;
-	}
-
-	/**
-	 * @param bookingId the bookingId to set
-	 */
-	public void setBookingId(int bookingId) {
-		this.bookingId = bookingId;
-	}
-	
 }

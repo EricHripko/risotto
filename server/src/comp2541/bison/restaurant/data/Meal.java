@@ -3,24 +3,37 @@ package comp2541.bison.restaurant.data;
 import org.json.JSONObject;
 
 /**
- * 
+ * Meal class represents the a single meal in the menu.
  * @author Jones Agwata
- *
  */
 public class Meal {
-	
+	/**
+	 * Unique identifier.
+	 */
 	private int id;
+	/**
+	 * Name of the meal.
+	 */
 	private String name;
+	/**
+	 * Description of the meal.
+	 */
 	private String description;
+	/**
+	 * Price of the meal.
+	 */
 	private int price;
+	/**
+	 * Type of the meal.
+	 */
 	private String type;
 	
 	/**
-	 * 
-	 * @param pName
-	 * @param pDescription
-	 * @param pPrice
-	 * @param pType
+	 * Create a new meal.
+	 * @param pName Meal name.
+	 * @param pDescription Meal description.
+	 * @param pPrice Meal price.
+	 * @param pType Meal type.
 	 */
 	public Meal(int pID, String pName, String pDescription, int pPrice, String pType){
 		id = pID;
@@ -31,46 +44,50 @@ public class Meal {
 		
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public int getId() {
 		return id;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getName() {
 		return name;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getDescription() {
 		return description;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public int getPrice() {
 		return price;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String getType() {
 		return type;
 	}
 	
+	public void setId(int pId) {
+		id = pId;
+	}
+	
+	public void setName(String pMealName) {
+		name = pMealName;
+	}
+	
+	public void setDescription(String pDescription) {
+		description = pDescription;
+	}
+	
+	public void setPrice(int pPrice) {
+		price = pPrice;
+	}
+	
+	public void setType(String pType) {
+		type = pType;
+	}
+	
+	/**
+	 * Convert this instance into a JSON object with all the corresponding data.
+	 * @return JSON object.
+	 */
 	public JSONObject getJSONObject() {
 		JSONObject jsonMeal = new JSONObject();
 		
@@ -81,45 +98,5 @@ public class Meal {
 		jsonMeal.put("category", type);
 		
 		return jsonMeal;
-	}
-	
-	/**
-	 * 
-	 * @param pId
-	 */
-	public void setId(int pId) {
-		id = pId;
-	}
-	
-	/**
-	 * 
-	 * @param pMealName
-	 */
-	public void setName(String pMealName) {
-		name = pMealName;
-	}
-	
-	/**
-	 * 
-	 * @param pDescription
-	 */
-	public void setDescription(String pDescription) {
-		description = pDescription;
-	}
-	
-	/**
-	 * 
-	 * @param pPrice
-	 */
-	public void setPrice(int pPrice) {
-		price = pPrice;
-	}
-	
-	/**
-	 * 
-	 * @param pType
-	 */
-	public void setType(String pType) {
-		type = pType;
 	}
 }

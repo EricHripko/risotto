@@ -62,10 +62,19 @@ public class Booking {
 		}
 		
 		tableId = jsonBooking.getInt("table");
-		
-		// TODO: All the inserted data MUST be correct.
 	}
 	
+	/**
+	 * Create a new booking.
+	 * @param bookingID Booking reference.
+	 * @param customerName Customer name.
+	 * @param phoneNumber Phone number.
+	 * @param email Email.
+	 * @param partySize How many people are included.
+	 * @param unixStart Booking start time.
+	 * @param unixEnd Booking end time.
+	 * @param table Table that the booking was placed on.
+	 */
 	public Booking(int bookingID, 
 				   String customerName, 
 				   String phoneNumber, 

@@ -4,77 +4,79 @@ import org.json.JSONObject;
 
 /**
  * Class implementing the tables of the restaurant.
- * 
  * @author Michele Cipriano
- *
  */
 public class Table {
-
+	/**
+	 * Unique table identifier.
+	 */
 	private int id;
+	/**
+	 * Table description.
+	 */
 	private String description;
+	/**
+	 * Table size.
+	 */
 	private int size;
 	
+	/**
+	 * Create a new table.
+	 * @param pId Table identifier.
+	 */
 	public Table(int pId) {
 		id = pId;
 	}
 	
+	/**
+	 * Create a new table.
+	 * @param pDescription Table description.
+	 * @param pSize Table size.
+	 */
 	public Table(String pDescription, int pSize) {
 		description = pDescription;
 		size = pSize;
 	}
 	
+	/**
+	 * Create a new table.
+	 * @param pId Table identifier.
+	 * @param pDescription Table description.
+	 * @param pSize Table size.
+	 */
 	public Table(int pId, String pDescription, int pSize) {
 		id = pId;
 		description = pDescription;
 		size = pSize;
 	}
 	
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
 	
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 	
-	/**
-	 * @return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
 	
-	/**
-	 * @param description the description to set
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	
-	/**
-	 * @return the size
-	 */
 	public int getSize() {
 		return size;
 	}
-	
-	/**
-	 * @param size the size to set
-	 */
 	
 	public void setSize(int size) {
 		this.size = size;
 	}
 	
 	/**
-	 * 
-	 * @return The JSON object of the Table.
+	 * Convert this instance into a JSON object with all the corresponding data.
+	 * @return JSON object.
 	 */
 	public JSONObject getJSONObject() {
 		JSONObject jsonTable = new JSONObject();
