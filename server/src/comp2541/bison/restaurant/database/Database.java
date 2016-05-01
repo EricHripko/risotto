@@ -1,6 +1,11 @@
-package comp2541.bison.restaurant;
+package comp2541.bison.restaurant.database;
 
 import java.util.ArrayList;
+
+import comp2541.bison.restaurant.data.Booking;
+import comp2541.bison.restaurant.data.Meal;
+import comp2541.bison.restaurant.data.Order;
+import comp2541.bison.restaurant.data.Table;
 
 /**
  * Database abstract class that 
@@ -25,14 +30,14 @@ public abstract class Database {
 	 * @return referenceID
 	 * @throws Exception
 	 */
-	abstract int insertBooking(Booking booking) throws Exception;
+	public abstract int insertBooking(Booking booking) throws Exception;
 	
 	/**
 	 * 
 	 * @param order
 	 * @throws Exception
 	 */
-	abstract void insertOrder(Order order) throws Exception;
+	public abstract void insertOrder(Order order) throws Exception;
 	
 	/**
 	 * 
@@ -41,7 +46,7 @@ public abstract class Database {
 	 * @return ArrayList<Booking>
 	 * @throws Exception
 	 */
-	abstract ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception;
+	public abstract ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception;
 	
 	/**
 	 * 
@@ -50,14 +55,14 @@ public abstract class Database {
 	 * @return ArrayList<Table>
 	 * @throws Exception
 	 */
-	abstract ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception;
+	public abstract ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception;
 	
 	/**
 	 * 
 	 * @return ArrayList<Meal>
 	 * @throws Exception
 	 */
-	abstract ArrayList<Meal> getMeals() throws Exception;
+	public abstract ArrayList<Meal> getMeals() throws Exception;
 
 	/**
 	 * 
@@ -65,19 +70,19 @@ public abstract class Database {
 	 * @return ArrayList<Meal>
 	 * @throws Exception
 	 */
-	abstract ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception;
+	public abstract ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception;
 
 	/**
 	 * 
 	 * @return ArrayList<Tables>
 	 * @throws Exception
 	 */
-	abstract ArrayList<Table> getTables() throws Exception;
+	public abstract ArrayList<Table> getTables() throws Exception;
 	
 	/**
 	 * 
 	 * @param booking
 	 */
-	abstract void removeAllOrders(Booking booking) throws Exception;
+	public abstract void removeAllOrders(Booking booking) throws Exception;
 
 }

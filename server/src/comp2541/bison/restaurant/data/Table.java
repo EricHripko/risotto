@@ -1,4 +1,4 @@
-package comp2541.bison.restaurant;
+package comp2541.bison.restaurant.data;
 
 import org.json.JSONObject;
 

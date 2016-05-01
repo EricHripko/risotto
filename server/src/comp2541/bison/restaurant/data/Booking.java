@@ -1,28 +1,48 @@
-package comp2541.bison.restaurant;
+package comp2541.bison.restaurant.data;
 
 import org.json.JSONObject;
 
 /**
  * The Booking class manages the Booking objects
  * used in the requests in the HTTP communication.
- * 
  * @author Michele Cipriano
- *
  */
 public class Booking {
-	
-	private int bookingID; /** Reference number of the booking. (ID in the database) */
-	private String customerName; /** Name of the customer. */
-	private String phoneNumber;	 /** Phone number of the costumer. */
-	private String email;		 /** Email of the costumer. */
-	private int partySize;		 /** Number of people of the party. */
-	private long unixStart;		 /** Date of start of the booking. */
-	private long unixEnd;		 /** Date of end of the booking. */
-	private int tableId;		 /** Table assigned to the booking. */
+	/**
+	 * Reference number of the booking. (ID in the database)
+	 */
+	private int bookingID;
+	/**
+	 * Name of the customer.
+	 */
+	private String customerName;
+	/**
+	 * Phone number of the costumer.
+	 */
+	private String phoneNumber;
+	/**
+	 * Email of the costumer.
+	 */
+	private String email;
+	/**
+	 * Number of people of the party.
+	 */
+	private int partySize;
+	/**
+	 * Date of start of the booking.
+	 */
+	private long unixStart;
+	/**
+	 * Date of end of the booking.
+	 */
+	private long unixEnd;
+	/**
+	 * Table assigned to the booking.
+	 */
+	private int tableId;
 	
 	/**
 	 * Constructor from JSON object.
-	 * 
 	 * @param jsonBooking A JSON object containing mandatory information for the booking.
 	 */
 	public Booking(JSONObject jsonBooking) {

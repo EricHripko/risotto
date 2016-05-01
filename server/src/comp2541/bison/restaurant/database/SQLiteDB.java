@@ -1,9 +1,14 @@
-package comp2541.bison.restaurant;
+package comp2541.bison.restaurant.database;
 
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import org.apache.log4j.*;
+
+import comp2541.bison.restaurant.data.Booking;
+import comp2541.bison.restaurant.data.Meal;
+import comp2541.bison.restaurant.data.Order;
+import comp2541.bison.restaurant.data.Table;
 
 /**
  * 
@@ -170,7 +175,7 @@ public class SQLiteDB extends Database {
 	 * Inserts new order in the DB.
 	 */
 	@Override
-	void insertOrder(Order order) throws Exception {
+	public void insertOrder(Order order) throws Exception {
 		
 		boolean checkMeal = false;
 		boolean checkBooking = false;
@@ -234,7 +239,7 @@ public class SQLiteDB extends Database {
 	 * 
 	 */
 	@Override
-	ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
+	public ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
 		
 		ArrayList<Booking> bookings = new ArrayList<>();
 		
@@ -302,7 +307,7 @@ public class SQLiteDB extends Database {
 	 * Returns all available tables between startTime and endTime
 	 */
 	@Override
-	ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception {
+	public ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception {
 		
 		ArrayList<Table> availableTables = new ArrayList<>();
 		
@@ -349,7 +354,7 @@ public class SQLiteDB extends Database {
 	 * Returns all meals in stored in the DB.
 	 */
 	@Override
-	ArrayList<Meal> getMeals() throws Exception {
+	public ArrayList<Meal> getMeals() throws Exception {
 		
 		ArrayList<Meal> meals = new ArrayList<>();
 		
@@ -394,7 +399,7 @@ public class SQLiteDB extends Database {
 	 * Returns 
 	 */
 	@Override
-	ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception {
+	public ArrayList<Meal> getOrderedMeals(Booking booking) throws Exception {
 		
 		ArrayList<Meal> orderedMeals = new ArrayList<>();
 		
@@ -443,7 +448,7 @@ public class SQLiteDB extends Database {
 	 * Returns all tables in the DB restaurantTable.
 	 */
 	@Override
-	ArrayList<Table> getTables() throws Exception {
+	public ArrayList<Table> getTables() throws Exception {
 		
 		ArrayList<Table> tables = new ArrayList<>();
 				
@@ -483,7 +488,7 @@ public class SQLiteDB extends Database {
 	 * Removes all orders in the RestaurantOrder DB table.
 	 */
 	@Override
-	void removeAllOrders(Booking booking) throws Exception {
+	public void removeAllOrders(Booking booking) throws Exception {
 
 		//Load SQLite driver
 		Class.forName("org.sqlite.JDBC");
