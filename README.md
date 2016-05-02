@@ -10,6 +10,11 @@ The server can be executed everywhere thanks to its Java implementation and the
 client can be used by everyone easily thanks to its beutiful UI.
 
 ## Installation
+To clone the repository from GitLab type:
+```
+git clone git@gitlab.com:comp2541/bison.git
+```
+
 To create a .jar file of the server type from `bison/server`:
 ```
 ant distribute
