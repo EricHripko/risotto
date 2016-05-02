@@ -1,15 +1,22 @@
-Risotto
+Risotto (image of the logo here?)
 -----------------------------
 
 Risotto is a restaurant management system whose aim is to simplify the job of
 the employees.
 It provides a client, a server and a database that can be used to take bookings,
-orders, manage menu and tables of the restaurant.
+orders, manage menu and tables of the restaurant, take payments and analyze
+the revenues.
 The server can be executed everywhere thanks to its Java implementation and the
 client can be used by everyone easily thanks to its beutiful UI.
 
 ## Installation
-How to install the server.
+To create a .jar file of the server type from `bison/server`:
+```
+ant distribute
+```
 
 ## Execution
-How to execute the sever (and the client?).
+To execute the server run from `bison/server/bin`:
+```
+java -jar RestaurantServer.jar
+```
