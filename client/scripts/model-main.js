@@ -53,8 +53,8 @@ rivets.formatters.shortDate = function (value) {
 };
 
 // Identify the opening and closing UNIX times
-var openTime = 12;
-var closeTime = 21;
+var openTime = 10;
+var closeTime = 20;
 var openDateTime = new Date();
 var closeDateTime = new Date();
 openDateTime.setHours(openTime - 1);
@@ -181,6 +181,48 @@ function confirmBooking(e) {
             alert(ex.errorMessage);
             cancelBooking();
         });
+}
+
+/**
+ * View the bookings before the current date.
+ * @param e Click event.
+ */
+function bookingBefore(e) {
+    // Do not allow viewing bookings in the past
+    var now = Math.ceil(new Date().getTime() / 1000);
+    if(closeDateTime - 86400 * 2 < now)
+        document.getElementById("bookingBefore").classList.remove("show");
+    if(closeDateTime - 86400 < now)
+        return;
+
+    // Advance the unix time by one day
+    openDateTime -= 86400;
+    closeDateTime -= 86400;
+    refreshBooking();
+}
+
+/**
+ * View the bookings after the current date.
+ * @param e Click event.
+ */
+function bookingAfter(e) {
+    // Do not allow viewing bookings in the past
+    var now = Math.ceil(new Date().getTime() / 1000);
+    if(closeDateTime - 86400 < now)
+        document.getElementById("bookingBefore").classList.add("show");
+
+    // Advance the unix time by one day
+    openDateTime += 86400;
+    closeDateTime += 86400;
+    refreshBooking();
+}
+
+/**
+ * Close the current application.
+ * @param e Click event.
+ */
+function appClose(e) {
+    close();
 }
 
 // Perform data binding

@@ -107,6 +107,13 @@ function recalculateTotal() {
 }
 
 function showOrderScreen(event) {
+    // Do not allow viewing bookings in the past
+    var now = Math.ceil(new Date().getTime() / 1000);
+    if(openDateTime > now) {
+        event.stopPropagation();
+        return;
+    }
+
     // Show order screen
     document.getElementById("menuScreen").classList.add("show");
     event.stopPropagation();
