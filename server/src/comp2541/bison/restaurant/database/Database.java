@@ -12,13 +12,13 @@ import comp2541.bison.restaurant.data.Table;
  * @author Ilyass Taouil
  */
 public abstract class Database {
-		
+
 	/**
 	 * Create a new database.
 	 * @param dbName Name for the new database.
 	 */
 	public Database(String dbName){}
-	
+
 	/**
 	 * Insert a booking into the database.
 	 * @param booking Booking object.
@@ -26,14 +26,14 @@ public abstract class Database {
 	 * @throws Exception Exception thrown in case of DB failure.
 	 */
 	public abstract int insertBooking(Booking booking) throws Exception;
-	
+
 	/**
 	 * Insert an order into the database.
 	 * @param order Order object.
 	 * @throws Exception Exception thrown in case of DB failure.
 	 */
 	public abstract void insertOrder(Order order) throws Exception;
-	
+
 	/**
 	 * Retrieve the bookings within the given date/time range.
 	 * @param startTime Unix start time.
@@ -42,7 +42,7 @@ public abstract class Database {
 	 * @throws Exception Exception thrown in case of DB failure.
 	 */
 	public abstract ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception;
-	
+
 	/**
 	 * Retrieve all the available tables in the given date/time range.
 	 * @param startTime Unix start time.
@@ -51,7 +51,7 @@ public abstract class Database {
 	 * @throws Exception Exception thrown in case of DB failure.
 	 */
 	public abstract ArrayList<Table> getAvailableTables(long startTime, long endTime) throws Exception;
-	
+
 	/**
 	 * Retrieve all the available meals.
 	 * @return ArrayList<Meal> List of meals orderable.
@@ -73,7 +73,7 @@ public abstract class Database {
 	 * @throws Exception Exception thrown in case of DB failure.
 	 */
 	public abstract ArrayList<Table> getTables() throws Exception;
-	
+
 	/**
 	 * Remove all the ordered meals within the given booking.
 	 * @param booking Booking.
