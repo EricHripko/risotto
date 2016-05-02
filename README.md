@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://gitlab.com/comp2541/bison/blob/data-binding/client/Icon.jpg">
+    <img src="client/Icon.jpg">
 </div>
 -----------------------------
 
