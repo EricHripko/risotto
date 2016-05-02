@@ -1,4 +1,6 @@
-Risotto (image of the logo here?)
+<div align="center">
+    <img src="https://gitlab.com/comp2541/bison/blob/data-binding/client/Icon.jpg">
+</div>
 -----------------------------
 
 Risotto is a restaurant management system whose aim is to simplify the job of
