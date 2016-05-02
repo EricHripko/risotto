@@ -21,7 +21,10 @@ import comp2541.bison.restaurant.handlers.*;
  * @author Michele Cipriano, Iaroslav Khrypko
  */
 public class RestaurantHandler extends AbstractHandler {
-	static Logger log = Logger.getLogger(RestaurantHandler.class.getName());
+	/**
+	 * Logger for this class.
+	 */
+	private static Logger log = Logger.getLogger(RestaurantHandler.class.getName());
 
 	/**
 	 * Database for the server.
@@ -84,9 +87,12 @@ public class RestaurantHandler extends AbstractHandler {
 		String key = method + " " + uri;
 		String wildcard = method + " *";
 		
+		log.debug("Incoming request: " + key);
+		
 		// Handle the request
 		if(_handlers.containsKey(key) || _handlers.containsKey(wildcard)) {
 			Class<? extends BaseHandler> cls = _handlers.containsKey(wildcard) ? _handlers.get(wildcard) : _handlers.get(key);
+			log.debug("Request matched to handler: " + cls.getName());
 			try {
 				BaseHandler handler = cls.newInstance();
 				handler.setRequest(request);
@@ -97,6 +103,7 @@ public class RestaurantHandler extends AbstractHandler {
 				// The request has been handled correctly.
 				baseRequest.setHandled(true);
 			} catch (InstantiationException | IllegalAccessException e) {
+				log.fatal("Failed to process the request", e);
 			}
 		}
 	}
