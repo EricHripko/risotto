@@ -1,5 +1,6 @@
 package comp2541.bison.restaurant.handlers;
-
+import comp2541.bison.restaurant.EmailBookingReminder;
+import comp2541.bison.restaurant.SMSBookingReminder;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -37,6 +38,14 @@ public class PostBookingsHandler extends BaseHandler {
 
 					int referenceNumber = database.insertBooking(booking);
 					booking.setReferenceNumber(referenceNumber);
+					
+					if(booking.getPhoneNumber() != null ){
+						new SMSBookingReminder(booking);
+					}
+					if(booking.getEmail() != null){
+						new EmailBookingReminder(booking);
+					}
+					
 
 					// Send OK and referenceNumber to the client.
 					response.setStatus(HttpServletResponse.SC_OK);

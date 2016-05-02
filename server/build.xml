@@ -5,6 +5,7 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. --><project basedir="." default="build" name="server">
     <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
@@ -18,9 +19,19 @@
         <pathelement location="jetty-servlets-9.3.7.v20160115.jar"/>
         <pathelement location="servlet-api-3.1.jar"/>
         <pathelement location="jetty-io-9.3.7.v20160115.jar"/>
-        <pathelement location="json-20160212.jar"/>
+        <pathelement location="jackson-core-asl-1.9.13.jar"/>
+        <pathelement location="jackson-mapper-asl-1.9.3.jar"/>
+        <pathelement location="httpclient-4.5.2.jar"/>
+        <pathelement location="httpcore-4.4.4.jar"/>
         <pathelement location="sqlite-jdbc-3.7.2.jar"/>
+        <pathelement location="slf4j-api-1.7.18.jar"/>
         <pathelement location="log4j-1.2.17.jar"/>
+        <pathelement location="slf4j-log4j12-1.7.18.jar"/>
+        <pathelement location="commons-lang3-3.4.jar"/>
+        <pathelement location="jjwt-0.6.0.jar"/>
+        <pathelement location="json-simple-1.1.1.jar"/>
+        <pathelement location="sendgrid-java.jar"/>
+        <pathelement location="twilio-java-sdk-6.3.0.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -58,9 +69,30 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="New_configuration">
+    <target name="Main">
         <java classname="comp2541.bison.restaurant.Main" failonerror="true" fork="yes">
             <classpath refid="server.classpath"/>
         </java>
+    </target>
+    <target name="MenuTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="comp2541.bison.restaurantTest.MenuTest" todir="${junit.output.dir}"/>
+            <classpath refid="server.classpath"/>
+        </junit>
+    </target>
+    <target name="New_configuration">
+        <java classname="" failonerror="true" fork="yes">
+            <classpath refid="server.classpath"/>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
     </target>
 </project>

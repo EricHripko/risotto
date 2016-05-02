@@ -24,18 +24,18 @@ public class PostOrdersHandler extends BaseHandler {
 			boolean requestFullySatisfied = true; // Are all the requests satisfied?
 
 			// Cleans all the orders made previously.
-			for (Object objectOrder : jsonArrayOrder) {
-				JSONObject jsonOrder = (JSONObject) objectOrder;
+			for (int i = 0; i<jsonArrayOrder.length();i++) {
+				JSONObject jsonOrder = (JSONObject) jsonArrayOrder.get(i);
 				Order order = new Order(jsonOrder);
 				Booking booking = new Booking(order.getBookingId());
 				database.removeAllOrders(booking);
 			}
 			
 			// Insert all the orders into the database
-			for (Object objectOrder : jsonArrayOrder) {
+			for (int i = 0; i<jsonArrayOrder.length();i++) {
 				// jsonOrder must be a JSONObject as specified in the Wiki,
 				// otherwise the structure of the JSON message is not correct.
-				JSONObject jsonOrder = (JSONObject) objectOrder;
+				JSONObject jsonOrder = (JSONObject) jsonArrayOrder.get(i);
 				Order order = new Order(jsonOrder);
 
 				try {
