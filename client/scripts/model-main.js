@@ -103,6 +103,10 @@ function createBooking(e) {
     vmMainScreen.activeSlot.mins = row.getAttribute("mins");
     vmMainScreen.activeSlot.table = slot.getAttribute("table");
 
+    // Ensure full booking can fit in before closing time
+    if(closeTime - (parseInt(vmMainScreen.activeSlot.hour) + vmMainScreen.activeSlot.mins / 60) < 2)
+        return;
+
     // Display booking creation form
     var bounds = slot.getBoundingClientRect();
     var form = document.getElementById("bookingCreation");
