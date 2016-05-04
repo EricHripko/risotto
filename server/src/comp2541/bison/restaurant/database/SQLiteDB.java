@@ -39,13 +39,13 @@ public class SQLiteDB extends Database {
 		this.dbName = dbName;
 
 		// Drop tables via shell script
-		//executeScript("dropScriptDB.sh");
+		executeScript("dropScriptDB.sh");
 
 		// Setting Up DB
 		setUp();
 
 		// Import data into tables
-		//executeScript("importScriptDB.sh");
+		executeScript("importScriptDB.sh");
 	}
 
 	/**
@@ -457,15 +457,22 @@ public class SQLiteDB extends Database {
 
 		//Get file path for execution
 		File file = new File(script);
-		String path = file.getAbsolutePath();
-
-		//Process builder object instantiation
-		ProcessBuilder pb = new ProcessBuilder(path);
-		//Process execution
-		Process p = pb.start();     
-		p.waitFor();           
-
-		//Console message
-		System.out.println(script + " executed successfully");
+		
+		if(file.exists()) {
+			// Get file path
+			String path = file.getAbsolutePath();
+			
+			//Process builder object instantiation
+			ProcessBuilder pb = new ProcessBuilder(path);
+			
+			//Process execution
+			Process p = pb.start();     
+			p.waitFor();    
+			
+			System.out.println(script + " executed successfully");
+		}
+		else {
+			System.out.println(script + " not found!");
+		}
 	}
 }
