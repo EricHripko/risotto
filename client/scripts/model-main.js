@@ -1,31 +1,5 @@
 // List of all tables
-var tables = [
-    {
-        id: 1,
-        description: "#1",
-        size: 4
-    },
-    {
-        id: 2,
-        description: "#2",
-        size: 3
-    },
-    {
-        id: 3,
-        description: "#3",
-        size: 2
-    },
-    {
-        id: 4,
-        description: "#4",
-        size: 5
-    },
-    {
-        id: 5,
-        description: "#5",
-        size: 4
-    }
-];
+var tables = [];
 
 // Formatters
 rivets.formatters.padZeroes = function (value) {
@@ -53,8 +27,8 @@ rivets.formatters.shortDate = function (value) {
 };
 
 // Identify the opening and closing UNIX times
-var openTime = 12;
-var closeTime = 21;
+var openTime = 10;
+var closeTime = 20;
 var openDateTime = new Date();
 var closeDateTime = new Date();
 openDateTime.setHours(openTime - 1);
@@ -66,6 +40,7 @@ closeDateTime = Math.ceil(closeDateTime.getTime() / 1000);
 
 // Viewmodel for the main screen
 var vmMainScreen = {};
+vmMainScreen.now = new Date();
 
 /**
  * Refresh the list of bookings.
@@ -102,7 +77,6 @@ function refreshBooking() {
             }
 
             // Create the model for the view
-            vmMainScreen.now = new Date();
             vmMainScreen.tables = tables;
             vmMainScreen.hours = hours;
             vmMainScreen.granularity = granularity;
@@ -128,6 +102,10 @@ function createBooking(e) {
     vmMainScreen.activeSlot.hour = row.getAttribute("hours");
     vmMainScreen.activeSlot.mins = row.getAttribute("mins");
     vmMainScreen.activeSlot.table = slot.getAttribute("table");
+
+    // Ensure full booking can fit in before closing time
+    if(closeTime - (parseInt(vmMainScreen.activeSlot.hour) + vmMainScreen.activeSlot.mins / 60) < 2)
+        return;
 
     // Display booking creation form
     var bounds = slot.getBoundingClientRect();
@@ -183,6 +161,50 @@ function confirmBooking(e) {
         });
 }
 
+/**
+ * View the bookings before the current date.
+ * @param e Click event.
+ */
+function bookingBefore(e) {
+    // Do not allow viewing bookings in the past
+    var now = Math.ceil(new Date().getTime() / 1000);
+    if(closeDateTime - 86400 * 2 < now)
+        document.getElementById("bookingBefore").classList.remove("show");
+    if(closeDateTime - 86400 < now)
+        return;
+
+    // Advance the unix time by one day
+    openDateTime -= 86400;
+    closeDateTime -= 86400;
+    vmMainScreen.now = new Date(vmMainScreen.now.getFullYear(), vmMainScreen.now.getMonth(), vmMainScreen.now.getDate() - 1, vmMainScreen.now.getHours(), vmMainScreen.now.getMinutes());
+    refreshBooking();
+}
+
+/**
+ * View the bookings after the current date.
+ * @param e Click event.
+ */
+function bookingAfter(e) {
+    // Do not allow viewing bookings in the past
+    var now = Math.ceil(new Date().getTime() / 1000);
+    if(closeDateTime - 86400 < now)
+        document.getElementById("bookingBefore").classList.add("show");
+
+    // Advance the unix time by one day
+    openDateTime += 86400;
+    closeDateTime += 86400;
+    vmMainScreen.now = new Date(vmMainScreen.now.getFullYear(), vmMainScreen.now.getMonth(), vmMainScreen.now.getDate() + 1, vmMainScreen.now.getHours(), vmMainScreen.now.getMinutes());
+    refreshBooking();
+}
+
+/**
+ * Close the current application.
+ * @param e Click event.
+ */
+function appClose(e) {
+    close();
+}
+
 // Perform data binding
 document.addEventListener("DOMContentLoaded", function() {
     // Setup view model
@@ -199,6 +221,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // Periodically refresh the model
     setInterval(refreshBooking, 1000);
     setInterval(function () {
-        vmMainScreen.now = new Date();
+        var now = new Date();
+        vmMainScreen.now.setHours(now.getHours());
+        vmMainScreen.now.setMinutes(now.getMinutes());
     }, 500);
 });

@@ -11,33 +11,33 @@ import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 /**
  * Main class for the server. Here the server is launched and connected
  * with the HTTP data handler and the log handler.
- * 
  * @author Michele Cipriano
- *
  */
 public class Main {
 	/**
-	 * The program starts from here.
-	 * @param args Standard arguments.
+	 * Logger for this class.
 	 */
-	static Logger log = Logger.getLogger(Main.class.getName());
+	private static Logger log = Logger.getLogger(Main.class.getName());
 
+	/**
+	 * The program starts from here.
+	 * @param args Command-line arguments.
+	 */
 	public static void main(String[] args) {
-		// TODO Test the code
 		try {
-			 
-			RestaurantServer restaurantServer = new RestaurantServer(8080, new ExecutorThreadPool());
+			// Create a server
+			int port = 8080;
+			RestaurantServer restaurantServer = new RestaurantServer(port, new ExecutorThreadPool());
 			
-			
+			// Create request handler
 			HandlerCollection handlers = new HandlerCollection();
-			//Handler to log requests
 			RequestLogHandler requestLogHandler = new RequestLogHandler();
 			RestaurantHandler restaurantHandler = new RestaurantHandler("restaurantdatabase.db");
 			handlers.setHandlers(new Handler[]{requestLogHandler, restaurantHandler });
 			restaurantServer.setHandler(handlers);
 			
 			//Creates log file for requests to the server
-			NCSARequestLog requestLog = new NCSARequestLog("./restaurantserver.log");
+			NCSARequestLog requestLog = new NCSARequestLog("./restaurant.request.log");
 			requestLog.setRetainDays(90);
 			requestLog.setAppend(true);
 			requestLog.setExtended(false);
@@ -45,13 +45,10 @@ public class Main {
 			requestLogHandler.setRequestLog(requestLog);
 			
 			restaurantServer.start();
-			log.info("Server started");
+			log.info("Server started at " + port);
 			restaurantServer.join();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			log.fatal(e.getMessage());
-			
+			log.fatal(e.getMessage(), e);
 		}
 	}
 }
