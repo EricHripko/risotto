@@ -163,7 +163,6 @@ function dayOpen(e) {
             return a.date - b.date;
         });
         vmDaySummary.bookings = bookings;
-        console.log(bookings.map(function(b){return b.date;}));
         bookings.forEach(function (booking) {
             // Identify the booking table
             var table = vmMainScreen.tables.filter(function(table) { return booking.table == table.id })[0];
@@ -179,7 +178,6 @@ function dayOpen(e) {
                 return meals[0];
             });
             booking.items = items;
-            console.log(booking);
         });
 
         document.getElementById("daySummary").classList.add("show");
