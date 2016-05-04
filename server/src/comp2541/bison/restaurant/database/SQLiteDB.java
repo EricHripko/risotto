@@ -1,6 +1,5 @@
 package comp2541.bison.restaurant.database;
 
-import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import org.apache.log4j.*;
@@ -38,14 +37,8 @@ public class SQLiteDB extends Database {
 
 		this.dbName = dbName;
 
-		// Drop tables via shell script
-		executeScript("dropScriptDB.sh");
-
 		// Setting Up DB
 		setUp();
-
-		// Import data into tables
-		executeScript("importScriptDB.sh");
 	}
 
 	/**
@@ -446,33 +439,6 @@ public class SQLiteDB extends Database {
 			stmt.executeUpdate(delete);
 
 			log.info("Orders removed");
-		}
-	}
-
-	/**
-	 * Shell Scripting Executor.
-	 * @param script (fileName).
-	 */
-	public void executeScript(String script) throws Exception {
-
-		//Get file path for execution
-		File file = new File(script);
-		
-		if(file.exists()) {
-			// Get file path
-			String path = file.getAbsolutePath();
-			
-			//Process builder object instantiation
-			ProcessBuilder pb = new ProcessBuilder(path);
-			
-			//Process execution
-			Process p = pb.start();     
-			p.waitFor();    
-			
-			System.out.println(script + " executed successfully");
-		}
-		else {
-			System.out.println(script + " not found!");
 		}
 	}
 }
