@@ -5,7 +5,7 @@
 # -----------------------------------------------
 
 # File declaration
-FILE = restaurantdatabase.db
+FILE=restaurantdatabase.db
 
 # Execute
 if [ -e "$FILE" ]
