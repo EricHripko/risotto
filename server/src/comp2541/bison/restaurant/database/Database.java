@@ -41,7 +41,7 @@ public abstract class Database {
 	 * @return ArrayList<Booking> List of bookings that match the criteria.
 	 * @throws Exception Exception thrown in case of DB failure.
 	 */
-	public abstract ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception;
+	public abstract ArrayList<Booking> getBookings(long startTime, long endTime);
 
 	/**
 	 * Retrieve all the available tables in the given date/time range.
