@@ -5,12 +5,12 @@
 # -----------------------------------------------
 
 # File declaration
-FILE = restaurantdatabase.db
+FILE=restaurantdatabase.db
 
 # Execute
 if [ -e "$FILE" ]
 then
-	# Drop tables from the database
+	# Import data
 	sqlite3 restaurantdatabase.db ".import tables.txt RestaurantTable"
 	sqlite3 restaurantdatabase.db ".import meals.txt Meal"
 else
