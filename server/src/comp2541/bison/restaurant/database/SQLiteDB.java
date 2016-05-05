@@ -191,10 +191,9 @@ public class SQLiteDB extends Database {
 	 * Returns all bookings happening between startTime and endTime.
 	 * @param startTime.
 	 * @param endTime.
-	 * @throws Exception.
 	 */
 	@Override
-	public synchronized ArrayList<Booking> getBookings(long startTime, long endTime) throws Exception {
+	public synchronized ArrayList<Booking> getBookings(long startTime, long endTime) {
 
 		ArrayList<Booking> bookings = new ArrayList<>();
 
